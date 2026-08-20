@@ -13,3 +13,5 @@
   </view>
   <view class="muted" style="margin-top:24rpx;text-align:center">共 17 部经典 · 对应五大内功养成</view>
 </view>
+
+<ai-assistant />

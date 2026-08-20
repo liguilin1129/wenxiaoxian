@@ -21,3 +21,5 @@
     <button class="btn soft" style="margin-top:16rpx" data-id="{{item.id}}" bindtap="redeem">兑换</button>
   </view>
 </view>
+
+<ai-assistant />

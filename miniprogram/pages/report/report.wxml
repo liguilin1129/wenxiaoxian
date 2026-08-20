@@ -25,3 +25,5 @@
     <view style="font-size:52rpx;font-weight:800;color:var(--brand-700);margin-top:4rpx">+{{weekGain}} 分</view>
   </view>
 </view>
+
+<ai-assistant />

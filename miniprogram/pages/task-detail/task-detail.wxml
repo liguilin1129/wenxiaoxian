@@ -34,3 +34,5 @@
 
   <button class="btn" style="margin-top:8rpx" bindtap="checkin">今日打卡 +{{maxPoints}}</button>
 </view>
+
+<ai-assistant />

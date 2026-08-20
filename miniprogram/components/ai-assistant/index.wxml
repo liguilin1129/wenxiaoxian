@@ -1,0 +1,59 @@
+<!-- 全局悬浮 AI 助手 -->
+<view class="ai-wrap">
+  <!-- 悬浮按钮 -->
+  <view class="ai-fab" bindtap="onToggle" hover-class="fab-hover">
+    <view class="fab-ring"></view>
+    <view class="fab-icon">
+      <text class="fab-text">AI</text>
+    </view>
+  </view>
+
+  <!-- 操作面板（弹出层） -->
+  <view wx:if="{{showPanel}}" class="ai-mask" bindtap="onClose" catchtouchmove="preventMove">
+    <view class="ai-panel" catchtap>
+      <!-- 面板头部 -->
+      <view class="panel-header">
+        <view class="panel-avatar">
+          <text class="avatar-emoji">🤖</text>
+        </view>
+        <view class="panel-info">
+          <text class="panel-title">小贤 AI 助手</text>
+          <text class="panel-sub">有什么可以帮你的？</text>
+        </view>
+        <view class="panel-close" bindtap="onClose">
+          <text>✕</text>
+        </view>
+      </view>
+
+      <!-- 操作按钮列表 -->
+      <view class="action-list">
+        <view
+          wx:for="{{actions}}"
+          wx:key="icon"
+          class="action-item"
+          data-type="{{item.icon}}"
+          bindtap="onAction"
+        >
+          <view class="action-icon" style="background: {{item.color}}15; border-color: {{item.color}}30;">
+            <text class="action-emoji" style="color: {{item.color}}">
+              <text wx:if="{{item.icon === 'record'}}">📝</text>
+              <text wx:if="{{item.icon === 'checkin'}}">✅</text>
+              <text wx:if="{{item.icon === 'task'}}>➕</text>
+              <text wx:if="{{item.icon === 'chat'}}">💬</text>
+            </text>
+          </view>
+          <view class="action-body">
+            <text class="action-label">{{item.label}}</text>
+            <text class="action-desc">{{item.desc}}</text>
+          </view>
+          <text class="action-arrow">›</text>
+        </view>
+      </view>
+
+      <!-- 面板底部提示 -->
+      <view class="panel-footer">
+        <text>点击空白处关闭</text>
+      </view>
+    </view>
+  </view>
+</view>

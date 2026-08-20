@@ -18,3 +18,5 @@
 
   <button class="btn" style="margin-top:12rpx" bindtap="start">开始约定 →</button>
 </view>
+
+<ai-assistant />
