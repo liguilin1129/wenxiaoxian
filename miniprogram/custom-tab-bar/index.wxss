@@ -12,6 +12,11 @@
   background: #FFFFFF;
   box-shadow: 0 -2rpx 16rpx rgba(0, 0, 0, 0.06);
   z-index: 999;
+  transition: transform 0.25s ease;
+}
+/* 聊天面板等全屏弹层打开时，把导航栏下移移出屏幕，避免遮挡输入栏 */
+.tabbar-hidden {
+  transform: translateY(100%);
 }
 
 /* ---- Tab 项 ---- */

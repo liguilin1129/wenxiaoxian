@@ -25,11 +25,24 @@ Component({
 
   methods: {
     onToggle() {
-      this.setData({ showPanel: !this.data.showPanel });
+      const show = !this.data.showPanel;
+      this.setData({ showPanel: show });
+      this.setTabBarHidden(show);
     },
 
     onClose() {
       this.setData({ showPanel: false });
+      this.setTabBarHidden(false);
+    },
+
+    // 打开聊天面板时把底部导航栏下移，避免遮挡输入框
+    setTabBarHidden(hidden) {
+      try {
+        const pages = getCurrentPages();
+        const page = pages[pages.length - 1];
+        const tabBar = page && page.getTabBar && page.getTabBar();
+        if (tabBar) tabBar.setData({ hidden: !!hidden });
+      } catch (e) {}
     },
 
     onInput(e) {
