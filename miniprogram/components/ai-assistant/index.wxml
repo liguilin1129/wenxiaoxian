@@ -1,4 +1,4 @@
-<!-- 全局悬浮 AI 助手 -->
+<!-- 全局悬浮 AI 助手（聊天型） -->
 <view class="ai-wrap">
   <!-- 悬浮按钮 -->
   <view class="ai-fab" bindtap="onToggle" hover-class="fab-hover">
@@ -8,7 +8,7 @@
     </view>
   </view>
 
-  <!-- 操作面板（弹出层） -->
+  <!-- 聊天面板（贴底弹层） -->
   <view wx:if="{{showPanel}}" class="ai-mask" bindtap="onClose" catchtouchmove="preventMove">
     <view class="ai-panel" catchtap="preventMove">
       <!-- 面板头部 -->
@@ -18,41 +18,43 @@
         </view>
         <view class="panel-info">
           <text class="panel-title">小贤 AI 助手</text>
-          <text class="panel-sub">有什么可以帮你的？</text>
+          <text class="panel-sub">陪你一起养成好习惯</text>
         </view>
         <view class="panel-close" bindtap="onClose">
           <text>✕</text>
         </view>
       </view>
 
-      <!-- 操作按钮列表 -->
-      <view class="action-list">
+      <!-- 消息区 -->
+      <scroll-view class="chat-body" scroll-y scroll-into-view="{{scrollTarget}}" scroll-with-animation>
         <view
-          wx:for="{{actions}}"
-          wx:key="icon"
-          class="action-item"
-          data-type="{{item.icon}}"
-          bindtap="onAction"
+          wx:for="{{messages}}"
+          wx:key="id"
+          id="msg-{{item.id}}"
+          class="msg-row {{item.role}}"
         >
-          <view class="action-icon" style="background: {{item.color}}15; border-color: {{item.color}}30;">
-            <text class="action-emoji" style="color: {{item.color}}">
-              <text wx:if="{{item.icon === 'record'}}">📝</text>
-              <text wx:if="{{item.icon === 'checkin'}}">✅</text>
-              <text wx:if="{{item.icon === 'task'}}">➕</text>
-              <text wx:if="{{item.icon === 'chat'}}">💬</text>
-            </text>
-          </view>
-          <view class="action-body">
-            <text class="action-label">{{item.label}}</text>
-            <text class="action-desc">{{item.desc}}</text>
-          </view>
-          <text class="action-arrow">›</text>
+          <view class="msg-bubble">{{item.content}}</view>
         </view>
-      </view>
+        <view wx:if="{{typing}}" class="msg-row ai">
+          <view class="msg-bubble typing">
+            <text class="dot"></text>
+            <text class="dot"></text>
+            <text class="dot"></text>
+          </view>
+        </view>
+      </scroll-view>
 
-      <!-- 面板底部提示 -->
-      <view class="panel-footer">
-        <text>点击空白处关闭</text>
+      <!-- 输入栏 -->
+      <view class="chat-input-bar">
+        <input
+          class="chat-input"
+          value="{{draft}}"
+          bindinput="onInput"
+          placeholder="说点什么…"
+          confirm-type="send"
+          bindconfirm="onSend"
+        />
+        <view class="send-btn" bindtap="onSend">发送</view>
       </view>
     </view>
   </view>
