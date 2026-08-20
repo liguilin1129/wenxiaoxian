@@ -38,7 +38,7 @@
             <text class="action-emoji" style="color: {{item.color}}">
               <text wx:if="{{item.icon === 'record'}}">📝</text>
               <text wx:if="{{item.icon === 'checkin'}}">✅</text>
-              <text wx:if="{{item.icon === 'task'}}>➕</text>
+              <text wx:if="{{item.icon === 'task'}}">➕</text>
               <text wx:if="{{item.icon === 'chat'}}">💬</text>
             </text>
           </view>
