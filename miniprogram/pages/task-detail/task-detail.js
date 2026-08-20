@@ -25,6 +25,11 @@ Page({
     }
   },
   checkin() {
-    wx.showToast({ title: '已记录 +' + this.data.maxPoints + ' 分（演示）', icon: 'none' });
+    if (!this.data.maxPoints) {
+      wx.showToast({ title: '该任务暂无积分奖励', icon: 'none' });
+      return;
+    }
+    store.recordBonus(this.data.task.name, this.data.maxPoints);
+    wx.showToast({ title: '已记录 +' + this.data.maxPoints + ' 分', icon: 'none' });
   }
 });

@@ -1,0 +1,13 @@
+<!-- 自定义底部导航（Light UI Kit） -->
+<view class="tabbar">
+  <view
+    wx:for="{{list}}"
+    wx:key="index"
+    class="tb {{selected === index ? 'on' : ''}}"
+    data-path="{{item.pagePath}}"
+    bindtap="switchTab"
+  >
+    <text class="ico">{{item.icon}}</text>
+    <text class="txt">{{item.text}}</text>
+  </view>
+</view>

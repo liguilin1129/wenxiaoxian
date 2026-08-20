@@ -57,6 +57,18 @@ function isSigned() {
   return state().signed;
 }
 
+function recordBonus(name, points) {
+  const s = state();
+  s.child.points += points;
+  s.pointsHistory.unshift({
+    title: name,
+    dim: 'habit',
+    date: formatToday(),
+    delta: points
+  });
+  return { points: s.child.points };
+}
+
 function formatToday() {
   const d = new Date();
   const m = ('0' + (d.getMonth() + 1)).slice(-2);
@@ -65,5 +77,5 @@ function formatToday() {
 }
 
 module.exports = {
-  state, dimMeta, todayDoneCount, todayGain, toggleTodayTask, redeem, signContract, isSigned
+  state, dimMeta, todayDoneCount, todayGain, toggleTodayTask, redeem, recordBonus, signContract, isSigned
 };
