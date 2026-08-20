@@ -240,7 +240,7 @@
   padding-bottom: 8rpx;
   width: 110rpx;
   position: relative;
-  top: -28rpx;
+  top: -12rpx;
 }
 .center-inner {
   width: 100rpx;
