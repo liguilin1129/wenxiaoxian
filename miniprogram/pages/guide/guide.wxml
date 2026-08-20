@@ -1,22 +1,81 @@
 <view class="scr-head">
-  <view class="greet">家庭会议</view>
-  <view class="title">签订成长合约</view>
+  <view class="greet">{{step === 0 ? '成长第一步' : (step === 1 ? '家庭会议中' : '会议表决')}}</view>
+  <view class="title">{{step === 0 ? '召开家庭会议' : (step === 1 ? '商议成长合约' : '签订成长合约')}}</view>
+  <!-- 步骤指示 -->
+  <view class="steps">
+    <view class="step {{step >= 0 ? 'on' : ''}}"><text class="snum">1</text><text class="stxt">召开会议</text></view>
+    <view class="step-line"></view>
+    <view class="step {{step >= 1 ? 'on' : ''}}"><text class="snum">2</text><text class="stxt">商议条款</text></view>
+    <view class="step-line"></view>
+    <view class="step {{step >= 2 ? 'on' : ''}}"><text class="snum">3</text><text class="stxt">举手签订</text></view>
+  </view>
 </view>
 
 <view class="scr-body">
-  <view style="background:var(--brand-soft);border-radius:40rpx;height:256rpx;display:flex;align-items:center;justify-content:center;margin-bottom:32rpx;font-size:96rpx">📜</view>
 
-  <view class="small" style="margin-bottom:28rpx">和文小贤一起约定，让好习惯自然发生。四大维度共同构成成长积分。</view>
-
-  <view wx:for="{{dims}}" wx:key="key" class="card" style="border-left:8rpx solid {{item.color}}">
-    <view class="row between">
-      <text class="tn">{{item.name}}</text>
-      <text class="pill pill-{{item.key}}">权重 {{item.weight}}</text>
+  <!-- 步骤1：召开家庭会议 -->
+  <block wx:if="{{step === 0}}">
+    <view class="meet-hero">
+      <view class="meet-emoji">👨‍👩‍👧</view>
+      <view class="small" style="text-align:center;margin:20rpx 0 8rpx">文小贤小朋友的成长合约，不是家长单方面规定，而是由<text style="color:var(--brand-700);font-weight:700">全家坐下来一起开会商定</text>。</view>
+      <view class="small" style="text-align:center">围坐一起，把"好习惯怎么养成、积分怎么算"说清楚，孩子也参与讨论。</view>
     </view>
-    <view class="small" style="margin-top:12rpx">{{item.desc}}</view>
-  </view>
 
-  <button class="btn" style="margin-top:12rpx" bindtap="start">开始约定 →</button>
+    <view class="card flat tip">
+      <text class="tn" style="font-size:28rpx">📌 本次会议议程</text>
+      <view class="tip-li">· 一起确认四大成长维度</view>
+      <view class="tip-li">· 商量每个维度的积分权重</view>
+      <view class="tip-li">· 约定积分规则可随时复盘</view>
+    </view>
+
+    <button class="btn" style="margin-top:12rpx" bindtap="enterMeeting">召开家庭会议，开始商议 →</button>
+  </block>
+
+  <!-- 步骤2：商议合约条款 -->
+  <block wx:if="{{step === 1}}">
+    <view class="small" style="margin-bottom:20rpx">逐项读出、充分讨论，全家达成一致后勾选「同意」。</view>
+
+    <view wx:for="{{agenda}}" wx:key="key" class="card clause" style="border-left:8rpx solid {{item.color}}">
+      <view class="row between">
+        <view class="row" style="gap:14rpx">
+          <text class="tn">{{item.name}}</text>
+          <text wx:if="{{item.weight}}" class="pill pill-habit">权重 {{item.weight}}</text>
+        </view>
+        <view class="agree {{item.agreed ? 'on' : ''}}" data-i="{{index}}" bindtap="toggleAgree">
+          {{item.agreed ? '✓ 同意' : '待商议'}}
+        </view>
+      </view>
+      <view class="small" style="margin-top:12rpx">{{item.desc}}</view>
+    </view>
+
+    <view class="progress-tip {{allAgreed ? 'ok' : ''}}">
+      {{allAgreed ? '✅ 全部条款已协商一致，可提交表决' : '尚有条款待达成一致'}}
+    </view>
+
+    <button class="btn {{allAgreed ? '' : 'soft'}}" style="margin-top:8rpx" bindtap="submitVote">提交全家表决 →</button>
+    <button class="btn text" style="margin-top:12rpx" bindtap="enterMeeting">返回再讨论</button>
+  </block>
+
+  <!-- 步骤3：举手签订 -->
+  <block wx:if="{{step === 2}}">
+    <view class="sign-hero">
+      <view class="scroll-emoji">📜</view>
+      <view class="tn" style="font-size:30rpx;text-align:center;margin-top:8rpx">家庭成长合约（草案）</view>
+      <view class="small" style="text-align:center;margin-top:6rpx">经家庭会议充分商议，以下条款全体通过</view>
+    </view>
+
+    <view class="card flat summary">
+      <view wx:for="{{agenda}}" wx:key="key" class="row between sum-li">
+        <text class="small">{{item.name}}{{item.weight ? '（' + item.weight + '）' : ''}}</text>
+        <text class="pill pill-habit">已通过 ✓</text>
+      </view>
+    </view>
+
+    <view class="sign-note">✍️ 请全家举手通过，由文小贤和小贤家长共同签订，合约即刻生效。</view>
+
+    <button class="btn" style="margin-top:8rpx" bindtap="signAndStart">全体通过，共同签订合约 →</button>
+  </block>
+
 </view>
 
 <ai-assistant />
