@@ -1,0 +1,22 @@
+<view class="scr-head">
+  <view class="greet">积分明细</view>
+  <view class="title">{{points}} 分</view>
+</view>
+
+<view class="scr-body">
+  <view class="chips" style="margin-bottom:24rpx">
+    <text class="pill {{filter==='all'?'pill-habit':''}}" data-f="all" bindtap="setFilter">全部</text>
+    <text class="pill {{filter==='get'?'pill-habit':''}}" data-f="get" bindtap="setFilter">获得</text>
+    <text class="pill {{filter==='use'?'pill-taste':''}}" data-f="use" bindtap="setFilter">消耗</text>
+  </view>
+
+  <view wx:for="{{list}}" wx:key="index" class="task">
+    <view class="row between">
+      <view>
+        <view class="tn" style="font-size:28rpx">{{item.title}}</view>
+        <view class="muted">{{dimName[item.dim]}} · {{item.date}}</view>
+      </view>
+      <text class="{{item.delta >= 0 ? 'pts-pos' : 'pts-neg'}}">{{item.delta >= 0 ? '+' : ''}}{{item.delta}}</text>
+    </view>
+  </view>
+</view>

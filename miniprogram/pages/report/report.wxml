@@ -1,0 +1,27 @@
+<view class="scr-head">
+  <view class="greet">本周综评</view>
+  <view class="title">成长报告</view>
+</view>
+
+<view class="scr-body">
+  <view class="card">
+    <view class="h3">四维表现</view>
+    <view wx:for="{{dims}}" wx:key="key" class="rep-bar">
+      <view class="rl"><text>{{item.name}}</text><text style="color:{{item.dark}};font-weight:700">{{item.pct}}</text></view>
+      <view class="bar"><view class="fill" style="width:{{item.pct}}%;background:{{item.color}}"></view></view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="h3">五类内功</view>
+    <view wx:for="{{neigong}}" wx:key="name" class="rep-bar">
+      <view class="rl"><text>{{item.name}}</text><text style="font-weight:700">{{item.pct}}</text></view>
+      <view class="bar"><view class="fill" style="width:{{item.pct}}%"></view></view>
+    </view>
+  </view>
+
+  <view class="card" style="text-align:center">
+    <view class="muted">本周累计获得</view>
+    <view style="font-size:52rpx;font-weight:800;color:var(--brand-700);margin-top:4rpx">+{{weekGain}} 分</view>
+  </view>
+</view>

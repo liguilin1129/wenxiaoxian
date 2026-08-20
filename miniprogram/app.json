@@ -1,0 +1,36 @@
+{
+  "pages": [
+    "pages/guide/guide",
+    "pages/index/index",
+    "pages/tasks/tasks",
+    "pages/task-detail/task-detail",
+    "pages/checkin/checkin",
+    "pages/points/points",
+    "pages/classics/classics",
+    "pages/rewards/rewards",
+    "pages/report/report",
+    "pages/profile/profile"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTitleText": "文小贤 · 成长花园",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F5F5F7"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#8B8B9E",
+    "selectedColor": "#6366F1",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "首页" },
+      { "pagePath": "pages/tasks/tasks", "text": "任务" },
+      { "pagePath": "pages/classics/classics", "text": "经典" },
+      { "pagePath": "pages/profile/profile", "text": "我的" }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

@@ -1,0 +1,20 @@
+<view class="scr-head">
+  <view class="greet">家庭会议</view>
+  <view class="title">签订成长合约</view>
+</view>
+
+<view class="scr-body">
+  <view style="background:var(--brand-soft);border-radius:40rpx;height:256rpx;display:flex;align-items:center;justify-content:center;margin-bottom:32rpx;font-size:96rpx">📜</view>
+
+  <view class="small" style="margin-bottom:28rpx">和文小贤一起约定，让好习惯自然发生。四大维度共同构成成长积分。</view>
+
+  <view wx:for="{{dims}}" wx:key="key" class="card" style="border-left:8rpx solid {{item.color}}">
+    <view class="row between">
+      <text class="tn">{{item.name}}</text>
+      <text class="pill pill-{{item.key}}">权重 {{item.weight}}</text>
+    </view>
+    <view class="small" style="margin-top:12rpx">{{item.desc}}</view>
+  </view>
+
+  <button class="btn" style="margin-top:12rpx" bindtap="start">开始约定 →</button>
+</view>

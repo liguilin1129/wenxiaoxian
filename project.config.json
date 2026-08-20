@@ -1,0 +1,42 @@
+{
+  "miniprogramRoot": "miniprogram/",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "newFeature": true,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "useCompilerPlugins": [
+      "typescript"
+    ],
+    "disableUseStrict": false,
+    "swc": false,
+    "disableSWC": true,
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "localPlugins": false,
+    "condition": false,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
+  },
+  "appid": "wx3500942b3bcc79f4",
+  "projectname": "wenxiaoxian",
+  "libVersion": "3.16.1",
+  "compileType": "miniprogram",
+  "description": "文小贤 · 家庭教养积分小程序（Light UI Kit 风格）",
+  "simulatorPluginLibVersion": {},
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "editorSetting": {}
+}

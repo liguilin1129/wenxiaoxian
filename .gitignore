@@ -1,0 +1,17 @@
+# ===== 操作系统 / 编辑器 =====
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+*.log
+
+# ===== 依赖（本小程序为纯源码，无 node_modules；此处为通用预留） =====
+node_modules/
+
+# ===== 微信开发者工具本地缓存（不入库） =====
+project.private.config.json
+
+# ===== 密钥 / 本地配置（切勿入库） =====
+*.local
+.env

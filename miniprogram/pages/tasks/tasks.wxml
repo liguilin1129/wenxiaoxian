@@ -1,0 +1,27 @@
+<view class="scr-head">
+  <view class="greet">鼓励中心</view>
+  <view class="title">任务与行为</view>
+</view>
+
+<view class="scr-body">
+  <view class="chips" style="margin-bottom:24rpx">
+    <text class="pill {{filter==='all'?'pill-habit':''}}" data-f="all" bindtap="setFilter">全部</text>
+    <text class="pill {{filter==='heart'?'pill-heart':''}}" data-f="heart" bindtap="setFilter">好身心</text>
+    <text class="pill {{filter==='body'?'pill-body':''}}" data-f="body" bindtap="setFilter">好身体</text>
+    <text class="pill {{filter==='habit'?'pill-habit':''}}" data-f="habit" bindtap="setFilter">好习惯</text>
+    <text class="pill {{filter==='taste'?'pill-taste':''}}" data-f="taste" bindtap="setFilter">好品味</text>
+  </view>
+
+  <block wx:for="{{groups}}" wx:key="dim">
+    <view class="h3" style="color:{{dimColor[item.dim]}}">{{item.dimName}}</view>
+    <view wx:for="{{item.list}}" wx:for-item="t" wx:key="id" class="task" data-id="{{t.id}}" bindtap="goDetail">
+      <view class="tn">{{t.name}}</view>
+      <view class="chips">
+        <text wx:for="{{t.tags}}" wx:for-item="tag" wx:key="*this" class="pill">{{tag}}</text>
+      </view>
+      <view wx:for="{{t.rewards}}" wx:for-item="r" wx:key="name" class="reward">
+        <text>{{r.name}}</text><text class="pts-pos">+{{r.points}}</text>
+      </view>
+    </view>
+  </block>
+</view>

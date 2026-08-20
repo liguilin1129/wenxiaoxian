@@ -1,0 +1,23 @@
+.tabbar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  height: 110rpx;
+  padding-bottom: env(safe-area-inset-bottom);
+  display: flex;
+  background: #fff;
+  border-top: 1rpx solid #ECECF1;
+  z-index: 999;
+}
+.tb {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4rpx;
+  color: #8B8B9E;
+  font-size: 22rpx;
+}
+.tb.on { color: #4338CA; }
+.tb .ico { font-size: 40rpx; line-height: 1; }
+.tb .txt { font-size: 22rpx; }

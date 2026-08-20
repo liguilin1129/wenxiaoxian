@@ -1,0 +1,26 @@
+<view class="scr-head">
+  <view class="greet">{{today}}</view>
+  <view class="title">今日打卡</view>
+</view>
+
+<view class="scr-body">
+  <view class="points-hero">
+    <view class="lbl">今日已得</view>
+    <view class="num">+{{gain}}</view>
+    <view class="row between" style="margin-top:8rpx">
+      <text class="lv">已完成 {{done}} / {{total}}</text>
+      <text style="font-size:22rpx;opacity:.9">继续加油</text>
+    </view>
+  </view>
+
+  <view wx:for="{{tasks}}" wx:key="id" class="task" data-index="{{index}}" bindtap="toggle">
+    <view class="row between">
+      <text class="tn">{{item.name}}</text>
+      <view class="check {{item.done ? 'on' : ''}}">{{item.done ? '✓' : ''}}</view>
+    </view>
+    <view class="chips">
+      <text class="pill pill-{{item.dim}}">{{dimName[item.dim]}}</text>
+      <text class="pill">+{{item.points}}</text>
+    </view>
+  </view>
+</view>

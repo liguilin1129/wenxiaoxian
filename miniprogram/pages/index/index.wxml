@@ -1,0 +1,80 @@
+<view class="scr-head">
+  <view class="row between" style="align-items:flex-start">
+    <view>
+      <view class="greet">早上好，文小贤 👋</view>
+      <view class="title">你的成长花园</view>
+    </view>
+    <view class="avatar">{{child.avatar}}</view>
+  </view>
+</view>
+
+<view class="scr-body">
+  <!-- 积分等级卡 -->
+  <view class="card" style="padding:36rpx">
+    <view class="row between" style="align-items:flex-end">
+      <view>
+        <view class="muted">当前积分</view>
+        <view style="font-size:64rpx;font-weight:800;color:var(--ink-1);line-height:1;margin-top:4rpx">{{child.points}}</view>
+      </view>
+      <text class="pill pill-habit">{{child.levelName}} · Lv.{{child.levelNum}}</text>
+    </view>
+    <view class="bar" style="margin-top:24rpx"><view class="fill" style="width:{{levelPct}}%"></view></view>
+    <view class="row between" style="margin-top:16rpx;font-size:22rpx;color:var(--ink-2)">
+      <text>距 Lv.{{nextLevel}} 还差 {{need}} 分</text>
+      <text>本周 +{{child.weekGain}}</text>
+    </view>
+  </view>
+
+  <!-- 连续打卡 -->
+  <view class="card row between" style="margin-top:24rpx">
+    <view class="row" style="gap:22rpx">
+      <text style="font-size:44rpx">🔥</text>
+      <view>
+        <view class="tn" style="font-size:28rpx">连续打卡 {{child.streak}} 天</view>
+        <view class="muted">坚持，是成长最美的样子</view>
+      </view>
+    </view>
+    <text class="pill pill-habit">习惯+</text>
+  </view>
+
+  <!-- 四维成长 -->
+  <view class="row between" style="margin:32rpx 4rpx 16rpx">
+    <view class="h3" style="margin:0">四维成长</view>
+    <text class="small" style="color:var(--brand-700);font-weight:600" bindtap="goReport">查看报告 ›</text>
+  </view>
+  <view class="quad">
+    <view wx:for="{{dims}}" wx:key="key" class="q">
+      <view class="qn"><text class="dot" style="background:{{item.color}}"></text>{{item.name}}</view>
+      <view class="qpct" style="color:{{item.dark}}">{{item.pct}}%</view>
+      <view class="bar"><view class="fill" style="width:{{item.pct}}%;background:{{item.color}}"></view></view>
+    </view>
+  </view>
+
+  <!-- 今日待打卡 -->
+  <view class="row between" style="margin:32rpx 4rpx 16rpx">
+    <view class="h3" style="margin:0">今日待打卡</view>
+    <text class="small" style="color:var(--ink-3)">{{doneCount}} / {{total}} 已完成</text>
+  </view>
+  <view wx:for="{{today}}" wx:key="id" class="task" bindtap="goCheckin">
+    <view class="row between">
+      <text class="tn">{{item.name}}</text>
+      <view class="check {{item.done ? 'on' : ''}}">{{item.done ? '✓' : ''}}</view>
+    </view>
+    <view class="chips">
+      <text class="pill pill-{{item.dim}}">{{dimName[item.dim]}}</text>
+      <text class="pill">+{{item.points}}</text>
+    </view>
+  </view>
+
+  <!-- 经典今日推荐 -->
+  <view class="h3" style="margin:32rpx 4rpx 16rpx">经典今日推荐</view>
+  <view class="card" style="background:var(--c-heart-bg);border:none" bindtap="goClassics">
+    <view class="row between">
+      <view>
+        <view class="tn" style="font-size:28rpx;color:var(--c-heart-d)">《论语》· 学而篇</view>
+        <view class="muted" style="margin-top:6rpx">已读 12 / 20 章 · 对应「正其心」</view>
+      </view>
+      <text class="btn sm" style="margin:0">诵读</text>
+    </view>
+  </view>
+</view>

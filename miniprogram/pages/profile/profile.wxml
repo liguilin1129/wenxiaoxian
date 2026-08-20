@@ -1,0 +1,39 @@
+<view class="scr-head">
+  <view class="row" style="gap:28rpx;align-items:center">
+    <view class="avatar lg">{{child.avatar}}</view>
+    <view>
+      <view class="title" style="font-size:38rpx">{{child.name}}</view>
+      <view class="greet">{{child.levelName}} · Lv.{{child.levelNum}} · {{child.points}} 分</view>
+    </view>
+  </view>
+</view>
+
+<view class="scr-body">
+  <view class="card">
+    <view class="h3">我的合约</view>
+    <view class="small">家庭会议已签约 · 四大维度权重生效中</view>
+  </view>
+
+  <view class="menu" bindtap="goClassics">
+    <view class="mt"><text class="mi">📖</text>经典书架</view>
+    <text class="mv">17 部 ›</text>
+  </view>
+  <view class="menu" bindtap="goRewards">
+    <view class="mt"><text class="mi">🎁</text>奖励商城</view>
+    <text class="mv">4 个心愿 ›</text>
+  </view>
+  <view class="menu" bindtap="goReport">
+    <view class="mt"><text class="mi">📊</text>成长报告</view>
+    <text class="mv">每周生成 ›</text>
+  </view>
+  <view class="menu" bindtap="goMembers">
+    <view class="mt"><text class="mi">👨‍👩‍👦</text>家庭成员</view>
+    <text class="mv">爸爸 · 妈妈 ›</text>
+  </view>
+  <view class="menu" bindtap="goSettings">
+    <view class="mt"><text class="mi">⚙️</text>设置</view>
+    <text class="mv">提醒 · 主题 ›</text>
+  </view>
+
+  <button class="btn soft" style="margin-top:8rpx" bindtap="logout">退出成长花园</button>
+</view>

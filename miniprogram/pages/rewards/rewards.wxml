@@ -1,0 +1,23 @@
+<view class="scr-head">
+  <view class="greet" style="color:var(--c-taste-d);font-weight:600">奖励商城</view>
+  <view class="title">用积分换心愿</view>
+</view>
+
+<view class="scr-body">
+  <view class="points-hero">
+    <view class="lbl" style="opacity:.85">我的余额</view>
+    <view class="num">{{points}}</view>
+    <text class="lv" style="background:rgba(255,255,255,.18)">积分可自由兑换</text>
+  </view>
+
+  <view wx:for="{{rewards}}" wx:key="id" class="task">
+    <view class="row between">
+      <view>
+        <view class="tn">{{item.name}}</view>
+        <view class="muted">{{item.desc}}</view>
+      </view>
+      <text class="pill pill-taste">{{item.cost}} 分</text>
+    </view>
+    <button class="btn soft" style="margin-top:16rpx" data-id="{{item.id}}" bindtap="redeem">兑换</button>
+  </view>
+</view>
