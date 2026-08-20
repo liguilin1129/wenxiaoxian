@@ -196,6 +196,7 @@
   display: flex;
   align-items: center;
   padding: 16rpx 20rpx;
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
   border-top: 1rpx solid #F0F0F5;
   background: #FFFFFF;
   flex-shrink: 0;

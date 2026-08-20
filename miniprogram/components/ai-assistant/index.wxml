@@ -10,7 +10,7 @@
 
   <!-- 聊天面板（贴底弹层） -->
   <view wx:if="{{showPanel}}" class="ai-mask" bindtap="onClose" catchtouchmove="preventMove">
-    <view class="ai-panel" catchtap="preventMove">
+    <view class="ai-panel" style="bottom: {{kbBottom}}" catchtap="preventMove">
       <!-- 面板头部 -->
       <view class="panel-header">
         <view class="panel-avatar">
@@ -50,6 +50,8 @@
           class="chat-input"
           value="{{draft}}"
           bindinput="onInput"
+          bindfocus="onFocus"
+          bindblur="onBlur"
           placeholder="说点什么…"
           confirm-type="send"
           bindconfirm="onSend"

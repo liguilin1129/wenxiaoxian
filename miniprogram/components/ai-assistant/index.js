@@ -12,6 +12,7 @@ Component({
     draft: '',
     typing: false,
     scrollTarget: '',
+    kbBottom: '0px',
     messages: [
       {
         id: 1,
@@ -33,6 +34,15 @@ Component({
 
     onInput(e) {
       this.setData({ draft: e.detail.value });
+    },
+
+    // 键盘避让：聚焦时把面板抬到键盘上方，失焦时还原
+    onFocus(e) {
+      const h = (e.detail && e.detail.height) ? e.detail.height : 0;
+      this.setData({ kbBottom: h + 'px' });
+    },
+    onBlur() {
+      this.setData({ kbBottom: '0px' });
     },
 
     onSend() {
