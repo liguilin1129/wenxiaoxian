@@ -2,18 +2,15 @@
 <view class="tabbar">
   <!-- 左侧：首页 / 任务 -->
   <view
-    wx:for="{{list}}"
+    wx:for="{{leftList}}"
     wx:key="pagePath"
-    wx:if="{{index < 2}}"
-    class="tab-item {{selected === index ? 'active' : ''}}"
-    data-index="{{index}}"
+    class="tab-item {{selected === item.idx ? 'active' : ''}}"
+    data-index="{{item.idx}}"
     bindtap="switchTab"
   >
     <view class="icon-wrap">
-      <!-- 首页图标 -->
-      <view wx:if="{{index === 0}}" class="icon {{selected === 0 ? 'icon-home-active' : 'icon-home'}}"></view>
-      <!-- 任务图标 -->
-      <view wx:if="{{index === 1}}" class="icon {{selected === 1 ? 'icon-task-active' : 'icon-task'}}"></view>
+      <view wx:if="{{item.idx === 0}}" class="icon {{selected === 0 ? 'icon-home-active' : 'icon-home'}}"></view>
+      <view wx:if="{{item.idx === 1}}" class="icon {{selected === 1 ? 'icon-task-active' : 'icon-task'}}"></view>
     </view>
     <text class="label">{{item.text}}</text>
   </view>
@@ -28,18 +25,15 @@
 
   <!-- 右侧：成长 / 我的 -->
   <view
-    wx:for="{{list}}"
+    wx:for="{{rightList}}"
     wx:key="pagePath"
-    wx:if="{{index >= 2}}"
-    class="tab-item {{selected === index ? 'active' : ''}}"
-    data-index="{{index}}"
+    class="tab-item {{selected === item.idx ? 'active' : ''}}"
+    data-index="{{item.idx}}"
     bindtap="switchTab"
   >
     <view class="icon-wrap">
-      <!-- 成长图标 -->
-      <view wx:if="{{index === 2}}" class="icon {{selected === 2 ? 'icon-growth-active' : 'icon-growth'}}"></view>
-      <!-- 我的图标 -->
-      <view wx:if="{{index === 3}}" class="icon {{selected === 3 ? 'icon-mine-active' : 'icon-mine'}}"></view>
+      <view wx:if="{{item.idx === 2}}" class="icon {{selected === 2 ? 'icon-growth-active' : 'icon-growth'}}"></view>
+      <view wx:if="{{item.idx === 3}}" class="icon {{selected === 3 ? 'icon-mine-active' : 'icon-mine'}}"></view>
     </view>
     <text class="label">{{item.text}}</text>
   </view>

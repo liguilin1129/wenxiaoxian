@@ -1,18 +1,22 @@
 Component({
   data: {
     selected: 0,
-    // 左右各2个Tab + 中间凸起按钮（不是Tab页）
-    list: [
-      { pagePath: '/pages/index/index', text: '首页', icon: 'home', iconActive: 'home-fill' },
-      { pagePath: '/pages/tasks/tasks', text: '任务', icon: 'checkbox', iconActive: 'checkbox-filled' },
-      { pagePath: '/pages/report/report', text: '成长', icon: 'chart', iconActive: 'chart-fill' },
-      { pagePath: '/pages/profile/profile', text: '我的', icon: 'user', iconActive: 'user-fill' }
+    // 左侧2个Tab（idx 为全局真实索引，供高亮/跳转使用）
+    leftList: [
+      { idx: 0, pagePath: '/pages/index/index', text: '首页' },
+      { idx: 1, pagePath: '/pages/tasks/tasks', text: '任务' }
+    ],
+    // 右侧2个Tab
+    rightList: [
+      { idx: 2, pagePath: '/pages/report/report', text: '成长' },
+      { idx: 3, pagePath: '/pages/profile/profile', text: '我的' }
     ]
   },
   methods: {
     switchTab(e) {
       const index = e.currentTarget.dataset.index;
-      const item = this.data.list[index];
+      const all = this.data.leftList.concat(this.data.rightList);
+      const item = all[index];
       if (item) {
         wx.switchTab({ url: item.pagePath });
       }
