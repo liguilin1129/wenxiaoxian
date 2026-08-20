@@ -51,9 +51,11 @@ Component({
     },
 
     quickCheckin() {
-      const state = app.globalData;
-      const today = new Date().toISOString().slice(0, 10);
-      const undone = state.todayTasks.filter(t => !state.doneToday.includes(today + '_' + t.id));
+      const s = app.globalData;
+      const undone = [];
+      s.todayTasks.forEach((t, i) => {
+        if (!t.done) undone.push({ t, i });
+      });
 
       if (undone.length === 0) {
         wx.showToast({ title: '今天已经全部打卡啦！🎉', icon: 'none' });
@@ -61,10 +63,10 @@ Component({
       }
 
       // 自动打卡第一个未完成任务
-      const task = undone[0];
-      require('../../utils/store').toggleTodayTask(task.id);
+      const item = undone[0];
+      require('../../utils/store').toggleTodayTask(item.i);
       wx.showToast({
-        title: `✅ 已打卡：${task.name}`,
+        title: '✅ 已打卡：' + item.t.name,
         icon: 'success'
       });
 
