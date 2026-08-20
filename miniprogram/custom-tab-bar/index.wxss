@@ -1,23 +1,267 @@
+/* ===== 中间凸起+按钮底部导航 ===== */
 .tabbar {
   position: fixed;
-  left: 0; right: 0; bottom: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   height: 110rpx;
   padding-bottom: env(safe-area-inset-bottom);
   display: flex;
-  background: #fff;
-  border-top: 1rpx solid #ECECF1;
+  align-items: flex-end;
+  justify-content: space-around;
+  background: #FFFFFF;
+  box-shadow: 0 -2rpx 16rpx rgba(0, 0, 0, 0.06);
   z-index: 999;
 }
-.tb {
+
+/* ---- Tab 项 ---- */
+.tab-item {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4rpx;
-  color: #8B8B9E;
-  font-size: 22rpx;
+  padding-top: 12rpx;
+  color: #B0B0BF;
+  transition: color 0.2s;
 }
-.tb.on { color: #4338CA; }
-.tb .ico { font-size: 40rpx; line-height: 1; }
-.tb .txt { font-size: 22rpx; }
+.tab-item.active {
+  color: #6366F1;
+}
+.tab-item .label {
+  font-size: 22rpx;
+  margin-top: 4rpx;
+  line-height: 1.2;
+}
+
+.icon-wrap {
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---- 纯CSS图标：首页（房子） ---- */
+.icon-home {
+  width: 44rpx;
+  height: 40rpx;
+  border: 3rpx solid #B0B0BF;
+  border-bottom: none;
+  border-radius: 8rpx 8rpx 0 0;
+  position: relative;
+  box-sizing: border-box;
+}
+.icon-home::before {
+  content: '';
+  position: absolute;
+  top: -14rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 14rpx solid transparent;
+  border-right: 14rpx solid transparent;
+  border-bottom: 14rpx solid #B0B0BF;
+}
+.icon-home::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14rpx;
+  height: 14rpx;
+  border: 3rpx solid #B0B0BF;
+  border-radius: 2rpx;
+  background: #fff;
+}
+.icon-home-active {
+  width: 44rpx;
+  height: 40rpx;
+  border: 3rpx solid #6366F1;
+  border-bottom: none;
+  border-radius: 8rpx 8rpx 0 0;
+  position: relative;
+  box-sizing: border-box;
+  background: rgba(99, 102, 241, 0.08);
+}
+.icon-home-active::before {
+  content: '';
+  position: absolute;
+  top: -14rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 14rpx solid transparent;
+  border-right: 14rpx solid transparent;
+  border-bottom: 14rpx solid #6366F1;
+}
+.icon-home-active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14rpx;
+  height: 14rpx;
+  border: 3rpx solid #6366F1;
+  border-radius: 2rpx;
+  background: rgba(99, 102, 241, 0.15);
+}
+
+/* ---- 纯CSS图标：任务（勾选框） ---- */
+.icon-task {
+  width: 42rpx;
+  height: 42rpx;
+  border: 3rpx solid #B0B0BF;
+  border-radius: 8rpx;
+  box-sizing: border-box;
+}
+.icon-task-active {
+  width: 42rpx;
+  height: 42rpx;
+  border: 3rpx solid #6366F1;
+  border-radius: 8rpx;
+  background: rgba(99, 102, 241, 0.1);
+  box-sizing: border-box;
+  position: relative;
+}
+.icon-task-active::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 26rpx;
+  color: #6366F1;
+  font-weight: bold;
+  line-height: 1;
+}
+
+/* ---- 纯CSS图标：成长（柱状图） ---- */
+.icon-growth {
+  width: 40rpx;
+  height: 38rpx;
+  display: flex;
+  align-items: flex-end;
+  gap: 5rpx;
+  padding-bottom: 0;
+}
+.icon-growth::before,
+.icon-growth::after {
+  content: '';
+  display: inline-block;
+  border-radius: 2rpx 2rpx 0 0;
+}
+.icon-growth::before {
+  width: 12rpx;
+  height: 18rpx;
+  background: #B0B0BF;
+}
+.icon-growth::after {
+  width: 12rpx;
+  height: 30rpx;
+  background: #C8C8D4;
+}
+.icon-growth-active {
+  width: 40rpx;
+  height: 38rpx;
+  display: flex;
+  align-items: flex-end;
+  gap: 5rpx;
+}
+.icon-growth-active::before,
+.icon-growth-active::after {
+  content: '';
+  display: inline-block;
+  border-radius: 2rpx 2rpx 0 0;
+}
+.icon-growth-active::before {
+  width: 12rpx;
+  height: 18rpx;
+  background: #818CF8;
+}
+.icon-growth-active::after {
+  width: 12rpx;
+  height: 30rpx;
+  background: #6366F1;
+}
+
+/* ---- 纯CSS图标：我的（人物） ---- */
+.icon-mine {
+  width: 36rpx;
+  height: 36rpx;
+  border: 3rpx solid #B0B0BF;
+  border-radius: 50%;
+  box-sizing: border-box;
+  position: relative;
+}
+.icon-mine::after {
+  content: '';
+  position: absolute;
+  bottom: -10rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20rpx;
+  height: 12rpx;
+  border: 3rpx solid #B0B0BF;
+  border-top: none;
+  border-radius: 0 0 12rpx 12rpx;
+  box-sizing: border-box;
+}
+.icon-mine-active {
+  width: 36rpx;
+  height: 36rpx;
+  border: 3rpx solid #6366F1;
+  border-radius: 50%;
+  background: rgba(99, 102, 241, 0.1);
+  box-sizing: border-box;
+  position: relative;
+}
+.icon-mine-active::after {
+  content: '';
+  position: absolute;
+  bottom: -10rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20rpx;
+  height: 12rpx;
+  border: 3rpx solid #6366F1;
+  border-top: none;
+  border-radius: 0 0 12rpx 12rpx;
+  background: rgba(99, 102, 241, 0.15);
+  box-sizing: border-box;
+}
+
+/* ---- 中间凸起 + 按钮 ---- */
+.center-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 8rpx;
+  width: 110rpx;
+  position: relative;
+  top: -28rpx;
+}
+.center-inner {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366F1, #818CF8);
+  box-shadow: 0 8rpx 24rpx rgba(99, 102, 241, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4rpx;
+}
+.plus {
+  font-size: 56rpx;
+  color: #FFFFFF;
+  font-weight: 300;
+  line-height: 1;
+  margin-top: -4rpx;
+}
+.center-label {
+  font-size: 20rpx;
+  color: #6366F1;
+  font-weight: 500;
+}

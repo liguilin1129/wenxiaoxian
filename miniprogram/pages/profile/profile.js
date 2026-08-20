@@ -8,7 +8,7 @@ Page({
     }
     this.setData({ child: app.globalData.child });
   },
-  goClassics() { wx.switchTab({ url: '/pages/classics/classics' }); },
+  goClassics() { wx.navigateTo({ url: '/pages/classics/classics' }); },
   goRewards() { wx.navigateTo({ url: '/pages/rewards/rewards' }); },
   goReport() { wx.navigateTo({ url: '/pages/report/report' }); },
   goMembers() { wx.showToast({ title: '爸爸 · 妈妈', icon: 'none' }); },

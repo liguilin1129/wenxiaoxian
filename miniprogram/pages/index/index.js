@@ -37,5 +37,5 @@ Page({
   },
   goReport() { wx.navigateTo({ url: '/pages/report/report' }); },
   goCheckin() { wx.navigateTo({ url: '/pages/checkin/checkin' }); },
-  goClassics() { wx.switchTab({ url: '/pages/classics/classics' }); }
+  goClassics() { wx.navigateTo({ url: '/pages/classics/classics' }); }
 });

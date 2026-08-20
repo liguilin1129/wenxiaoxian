@@ -27,7 +27,7 @@
     "list": [
       { "pagePath": "pages/index/index", "text": "首页" },
       { "pagePath": "pages/tasks/tasks", "text": "任务" },
-      { "pagePath": "pages/classics/classics", "text": "经典" },
+      { "pagePath": "pages/report/report", "text": "成长" },
       { "pagePath": "pages/profile/profile", "text": "我的" }
     ]
   },
