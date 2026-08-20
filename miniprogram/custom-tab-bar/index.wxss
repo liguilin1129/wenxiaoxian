@@ -1,13 +1,13 @@
-/* ===== 中间凸起+按钮底部导航 ===== */
+/* ===== 普通扁平4宫格底部导航（Light UI Kit） ===== */
 .tabbar {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 110rpx;
+  height: 100rpx;
   padding-bottom: env(safe-area-inset-bottom);
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-around;
   background: #FFFFFF;
   box-shadow: 0 -2rpx 16rpx rgba(0, 0, 0, 0.06);
@@ -15,22 +15,21 @@
 }
 
 /* ---- Tab 项 ---- */
-.tab-item {
+.tb {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 12rpx;
   color: #B0B0BF;
   transition: color 0.2s;
 }
-.tab-item.active {
+.tb.on {
   color: #6366F1;
 }
-.tab-item .label {
+.txt {
   font-size: 22rpx;
-  margin-top: 4rpx;
+  margin-top: 6rpx;
   line-height: 1.2;
 }
 
@@ -136,53 +135,43 @@
   line-height: 1;
 }
 
-/* ---- 纯CSS图标：成长（柱状图） ---- */
-.icon-growth {
-  width: 40rpx;
-  height: 38rpx;
-  display: flex;
-  align-items: flex-end;
-  gap: 5rpx;
-  padding-bottom: 0;
+/* ---- 纯CSS图标：经典（书本） ---- */
+.icon-book {
+  width: 42rpx;
+  height: 34rpx;
+  border: 3rpx solid #B0B0BF;
+  border-radius: 4rpx;
+  box-sizing: border-box;
+  position: relative;
 }
-.icon-growth::before,
-.icon-growth::after {
+.icon-book::before {
   content: '';
-  display: inline-block;
-  border-radius: 2rpx 2rpx 0 0;
-}
-.icon-growth::before {
-  width: 12rpx;
-  height: 18rpx;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2rpx;
   background: #B0B0BF;
+  transform: translateX(-50%);
 }
-.icon-growth::after {
-  width: 12rpx;
-  height: 30rpx;
-  background: #C8C8D4;
+.icon-book-active {
+  width: 42rpx;
+  height: 34rpx;
+  border: 3rpx solid #6366F1;
+  border-radius: 4rpx;
+  background: rgba(99, 102, 241, 0.1);
+  box-sizing: border-box;
+  position: relative;
 }
-.icon-growth-active {
-  width: 40rpx;
-  height: 38rpx;
-  display: flex;
-  align-items: flex-end;
-  gap: 5rpx;
-}
-.icon-growth-active::before,
-.icon-growth-active::after {
+.icon-book-active::before {
   content: '';
-  display: inline-block;
-  border-radius: 2rpx 2rpx 0 0;
-}
-.icon-growth-active::before {
-  width: 12rpx;
-  height: 18rpx;
-  background: #818CF8;
-}
-.icon-growth-active::after {
-  width: 12rpx;
-  height: 30rpx;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2rpx;
   background: #6366F1;
+  transform: translateX(-50%);
 }
 
 /* ---- 纯CSS图标：我的（人物） ---- */
@@ -229,39 +218,4 @@
   border-radius: 0 0 12rpx 12rpx;
   background: rgba(99, 102, 241, 0.15);
   box-sizing: border-box;
-}
-
-/* ---- 中间凸起 + 按钮 ---- */
-.center-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  padding-bottom: 8rpx;
-  width: 110rpx;
-  position: relative;
-  top: -12rpx;
-}
-.center-inner {
-  width: 100rpx;
-  height: 100rpx;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #6366F1, #818CF8);
-  box-shadow: 0 8rpx 24rpx rgba(99, 102, 241, 0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 4rpx;
-}
-.plus {
-  font-size: 56rpx;
-  color: #FFFFFF;
-  font-weight: 300;
-  line-height: 1;
-  margin-top: -4rpx;
-}
-.center-label {
-  font-size: 20rpx;
-  color: #6366F1;
-  font-weight: 500;
 }

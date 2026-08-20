@@ -1,40 +1,18 @@
-<!-- 自定义底部导航：中间凸起+按钮风格 -->
+<!-- 自定义底部导航（Light UI Kit · 普通扁平4宫格） -->
 <view class="tabbar">
-  <!-- 左侧：首页 / 任务 -->
   <view
-    wx:for="{{leftList}}"
-    wx:key="pagePath"
-    class="tab-item {{selected === item.idx ? 'active' : ''}}"
-    data-index="{{item.idx}}"
+    wx:for="{{list}}"
+    wx:key="idx"
+    class="tb {{selected === item.idx ? 'on' : ''}}"
+    data-path="{{item.pagePath}}"
     bindtap="switchTab"
   >
     <view class="icon-wrap">
       <view wx:if="{{item.idx === 0}}" class="icon {{selected === 0 ? 'icon-home-active' : 'icon-home'}}"></view>
       <view wx:if="{{item.idx === 1}}" class="icon {{selected === 1 ? 'icon-task-active' : 'icon-task'}}"></view>
-    </view>
-    <text class="label">{{item.text}}</text>
-  </view>
-
-  <!-- 中间：凸起 + 按钮 -->
-  <view class="center-btn" bindtap="onCenterTap">
-    <view class="center-inner">
-      <text class="plus">+</text>
-    </view>
-    <text class="center-label">打卡</text>
-  </view>
-
-  <!-- 右侧：成长 / 我的 -->
-  <view
-    wx:for="{{rightList}}"
-    wx:key="pagePath"
-    class="tab-item {{selected === item.idx ? 'active' : ''}}"
-    data-index="{{item.idx}}"
-    bindtap="switchTab"
-  >
-    <view class="icon-wrap">
-      <view wx:if="{{item.idx === 2}}" class="icon {{selected === 2 ? 'icon-growth-active' : 'icon-growth'}}"></view>
+      <view wx:if="{{item.idx === 2}}" class="icon {{selected === 2 ? 'icon-book-active' : 'icon-book'}}"></view>
       <view wx:if="{{item.idx === 3}}" class="icon {{selected === 3 ? 'icon-mine-active' : 'icon-mine'}}"></view>
     </view>
-    <text class="label">{{item.text}}</text>
+    <text class="txt">{{item.text}}</text>
   </view>
 </view>
