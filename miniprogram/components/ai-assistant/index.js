@@ -1,9 +1,10 @@
 /**
- * 全局悬浮 AI 助手（聊天型 · UI 壳阶段）
- * - 当前回复由本地规则模拟（getMockReply），不接任何执行逻辑。
- * - 接入真实大模型时：把 onSend 里的 getMockReply(text) 替换为
- *   一次云函数 / 后端对话接口调用即可（请求走服务端代理，Key 不下发前端）。
+ * 全局悬浮 AI 助手（聊天型）
+ * - AI_MODE='deepseek'：调用 DeepSeek 真实大模型（前端直连，Key 见 utils/ai-config.js）
+ * - AI_MODE='mock'：本地规则模拟（兜底/演示）
  */
+const aiConfig = require('../../utils/ai-config.js');
+
 Component({
   data: {
     showPanel: false,
@@ -64,20 +65,77 @@ Component({
       const messages = this.data.messages.concat([{ id: uid, role: 'user', content: text }]);
       this.setData({ messages, draft: '', typing: true, scrollTarget: 'msg-' + uid });
 
-      // 模拟「思考」后回复（UI 壳阶段：本地规则；后续替换为真实模型调用）
+      // 根据配置选择真实模型或本地模拟
+      if (aiConfig.AI_MODE === 'deepseek') {
+        this.callDeepSeek(text);
+      } else {
+        this.mockReply(text);
+      }
+    },
+
+    // 构造发给模型的消息数组（系统提示 + 历史对话）
+    buildApiMessages() {
+      const history = this.data.messages
+        .filter(m => m.role === 'user' || m.role === 'ai')
+        .map(m => ({ role: m.role, content: m.content }));
+      return [{ role: 'system', content: aiConfig.SYSTEM_PROMPT }].concat(history);
+    },
+
+    // 调用 DeepSeek 真实大模型
+    callDeepSeek(text) {
+      const self = this;
+      const { ENDPOINT, API_KEY, MODEL, TEMPERATURE, MAX_TOKENS } = aiConfig.DEEPSEEK;
+      const apiMessages = this.buildApiMessages();
+
+      wx.request({
+        url: ENDPOINT,
+        method: 'POST',
+        timeout: 30000,
+        header: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + API_KEY
+        },
+        data: {
+          model: MODEL,
+          messages: apiMessages,
+          temperature: TEMPERATURE,
+          max_tokens: MAX_TOKENS,
+          stream: false
+        },
+        success(res) {
+          let reply = '';
+          try {
+            reply = res.data.choices[0].message.content.trim();
+          } catch (e) {
+            reply = '抱歉，我没能理解这次的回复格式，请再试一次 🙏';
+          }
+          self.appendAiReply(reply);
+        },
+        fail(err) {
+          console.error('[AI] DeepSeek 请求失败', err);
+          // 失败兜底：退回本地模拟，保证对话不中断
+          wx.showToast({ title: '模型连接失败，已切换演示回复', icon: 'none' });
+          self.appendAiReply(self.getMockReply(text));
+        }
+      });
+    },
+
+    // 把 AI 回复追加到消息列表
+    appendAiReply(reply) {
+      const aid = ++this.data._seq;
+      const list = this.data.messages.concat([{ id: aid, role: 'ai', content: reply }]);
+      this.setData({ messages: list, typing: false, scrollTarget: 'msg-' + aid });
+    },
+
+    // 本地模拟回复（兜底/演示）
+    mockReply(text) {
       setTimeout(() => {
-        const reply = this.getMockReply(text);
-        const aid = ++this.data._seq;
-        const list = this.data.messages.concat([{ id: aid, role: 'ai', content: reply }]);
-        this.setData({ messages: list, typing: false, scrollTarget: 'msg-' + aid });
+        this.appendAiReply(this.getMockReply(text));
       }, 600);
     },
 
     /**
-     * 本地模拟大脑（占位）
-     * TODO(ui壳→真模型): 替换为云函数对话接口，例如：
-     *   const res = await wx.cloud.callFunction({ name: 'aiChat', data: { messages } });
-     *   return res.result.reply;
+     * 本地模拟大脑（占位 / 兜底）
      */
     getMockReply(text) {
       if (/打卡|完成|做了|做到/.test(text)) {
