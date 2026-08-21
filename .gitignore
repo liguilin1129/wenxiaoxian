@@ -15,3 +15,4 @@ project.private.config.json
 # ===== 密钥 / 本地配置（切勿入库） =====
 *.local
 .env
+miniprogram/utils/ai-config.secret.js

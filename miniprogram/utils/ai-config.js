@@ -14,12 +14,12 @@
  *   3. AI_MODE 设为 'deepseek' 即生效；改回 'mock' 可随时退回演示模式。
  */
 
-module.exports = {
+const config = {
   // 'deepseek' = 调用真实模型；'mock' = 本地规则模拟（兜底/演示）
   AI_MODE: 'deepseek',
 
   DEEPSEEK: {
-    // TODO: 替换为你自己的 DeepSeek API Key（https://platform.deepseek.com → API Keys）
+    // 占位 Key；真实 Key 由 ai-config.secret.js 覆盖（该文件被 .gitignore 忽略，不入库）
     API_KEY: 'sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
 
     // DeepSeek 对话接口
@@ -44,3 +44,15 @@ module.exports = {
     '如果用户的请求涉及「打卡 / 记录 / 新建任务」等需要操作小程序数据的动作，' +
     '先用自然语言确认细节，并提示「这些操作需要开发者在后台接入数据接口」。'
 };
+
+// 本地密钥覆盖（不入库）：若存在 ai-config.secret.js，则用其中的 API_KEY 覆盖占位值
+try {
+  const secret = require('./ai-config.secret.js');
+  if (secret && secret.API_KEY) {
+    config.DEEPSEEK.API_KEY = secret.API_KEY;
+  }
+} catch (e) {
+  // 无本地密钥文件时，使用占位 Key（需手动替换或放置 secret 文件）
+}
+
+module.exports = config;
