@@ -89,6 +89,8 @@ Component({
       const self = this;
       const { ENDPOINT, API_KEY, MODEL, TEMPERATURE, MAX_TOKENS } = aiConfig.DEEPSEEK;
       const apiMessages = this.buildApiMessages();
+      console.log('[AI] 发送消息数:', apiMessages.length);
+      console.log('[AI] 请求模型:', MODEL);
 
       wx.request({
         url: ENDPOINT,
@@ -106,11 +108,16 @@ Component({
           stream: false
         },
         success(res) {
+          console.log('[AI] DeepSeek 响应状态:', res.statusCode);
+          console.log('[AI] DeepSeek 响应体:', JSON.stringify(res.data));
           let reply = '';
-          try {
+          // 400 等错误也会进 success（HTTP 层面成功收到响应）
+          if (res.statusCode !== 200 || !res.data || !res.data.choices || !res.data.choices.length) {
+            const errMsg = (res.data && res.data.error) ? res.data.error.message : ('HTTP ' + res.statusCode);
+            console.error('[AI] DeepSeek 业务错误:', errMsg);
+            reply = '抱歉，模型返回了错误：' + errMsg + ' 🙏';
+          } else {
             reply = res.data.choices[0].message.content.trim();
-          } catch (e) {
-            reply = '抱歉，我没能理解这次的回复格式，请再试一次 🙏';
           }
           self.appendAiReply(reply);
         },
