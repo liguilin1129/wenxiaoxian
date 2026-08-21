@@ -130,7 +130,7 @@
   justify-content: center;
   flex-shrink: 0;
 }
-.panel-close text {
+.panel-close-x {
   font-size: 26rpx;
   color: #9A9AAE;
   line-height: 1;

@@ -21,7 +21,7 @@
           <text class="panel-sub">陪你一起养成好习惯</text>
         </view>
         <view class="panel-close" bindtap="onClose">
-          <text>✕</text>
+          <text class="panel-close-x">✕</text>
         </view>
       </view>
 
