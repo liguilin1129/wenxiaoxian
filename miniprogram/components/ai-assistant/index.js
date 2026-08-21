@@ -77,7 +77,10 @@ Component({
     buildApiMessages() {
       const history = this.data.messages
         .filter(m => m.role === 'user' || m.role === 'ai')
-        .map(m => ({ role: m.role, content: m.content }));
+        .map(m => ({
+          role: m.role === 'ai' ? 'assistant' : m.role,
+          content: m.content
+        }));
       return [{ role: 'system', content: aiConfig.SYSTEM_PROMPT }].concat(history);
     },
 
