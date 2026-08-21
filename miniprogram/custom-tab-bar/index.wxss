@@ -71,19 +71,15 @@
   align-items: center;
   justify-content: center;
 }
-/* 图标：用 SVG mask 渲染，选中态由 currentColor 自动变色（与预览图完全一致，零图标包依赖） */
+/* 图标：手绘风彩色 SVG（选中/未选中两套，background-image 切换，零图标包依赖） */
 .icon {
   position: relative;
   z-index: 1;
-  width: 46rpx;
-  height: 46rpx;
-  background-color: currentColor;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  -webkit-mask-size: contain;
-  mask-repeat: no-repeat;
-  mask-position: center;
-  mask-size: contain;
+  width: 48rpx;
+  height: 48rpx;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 
 /* 选中态小光圈：只在图标背后，不压到下方文字 */
@@ -99,26 +95,34 @@
   background: rgba(99, 102, 241, 0.16);
 }
 
-/* ---- 首页（房子 · 标准首页图标，SVG 描边） ---- */
+/* ---- 首页（房子 · 手绘风） ---- */
 .icon-home {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2724%27%20height%3D%2724%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27black%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M3%2010.5L12%203l9%207.5%27%2F%3E%3Cpath%20d%3D%27M5%209.5V20h14V9.5%27%2F%3E%3C%2Fsvg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2724%27%20height%3D%2724%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27black%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M3%2010.5L12%203l9%207.5%27%2F%3E%3Cpath%20d%3D%27M5%209.5V20h14V9.5%27%2F%3E%3C%2Fsvg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M12%203%20L3.5%2011%20L3.5%2021%20L20.5%2021%20L20.5%2011%20Z%27%20fill%3D%27%23AFA9EC%27%20stroke%3D%27%23534AB7%27%20stroke-width%3D%272.4%27%20stroke-linejoin%3D%27round%27%2F%3E%3Crect%20x%3D%279.5%27%20y%3D%2713%27%20width%3D%275%27%20height%3D%278%27%20rx%3D%271.2%27%20fill%3D%27%23fff%27%20stroke%3D%27%23534AB7%27%20stroke-width%3D%272.2%27%2F%3E%3C%2Fsvg%3E");
+}
+.tb.on .icon-home {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M12%203%20L3.5%2011%20L3.5%2021%20L20.5%2021%20L20.5%2011%20Z%27%20fill%3D%27%23534AB7%27%20stroke%3D%27%23534AB7%27%20stroke-width%3D%272.4%27%20stroke-linejoin%3D%27round%27%2F%3E%3Crect%20x%3D%279.5%27%20y%3D%2713%27%20width%3D%275%27%20height%3D%278%27%20rx%3D%271.2%27%20fill%3D%27%23534AB7%27%20stroke%3D%27%23fff%27%20stroke-width%3D%272%27%2F%3E%3C%2Fsvg%3E");
 }
 
-/* ---- 任务（勾选框） ---- */
+/* ---- 任务（勾选框 · 手绘风） ---- */
 .icon-task {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2724%27%20height%3D%2724%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27black%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Crect%20x%3D%274%27%20y%3D%274%27%20width%3D%2716%27%20height%3D%2716%27%20rx%3D%274%27%2F%3E%3Cpath%20d%3D%27M8%2012l3%203%205-6%27%2F%3E%3C%2Fsvg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2724%27%20height%3D%2724%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27black%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Crect%20x%3D%274%27%20y%3D%274%27%20width%3D%2716%27%20height%3D%2716%27%20rx%3D%274%27%2F%3E%3Cpath%20d%3D%27M8%2012l3%203%205-6%27%2F%3E%3C%2Fsvg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Crect%20x%3D%273%27%20y%3D%273%27%20width%3D%2718%27%20height%3D%2718%27%20rx%3D%276%27%20fill%3D%27%23AFA9EC%27%20stroke%3D%27%23534AB7%27%20stroke-width%3D%272.4%27%2F%3E%3Cpath%20d%3D%27M8%2012%20l3.2%203.2%20L17%208.5%27%20fill%3D%27none%27%20stroke%3D%27%23534AB7%27%20stroke-width%3D%272.4%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%2F%3E%3C%2Fsvg%3E");
+}
+.tb.on .icon-task {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Crect%20x%3D%273%27%20y%3D%273%27%20width%3D%2718%27%20height%3D%2718%27%20rx%3D%276%27%20fill%3D%27%23534AB7%27%20stroke%3D%27%23534AB7%27%20stroke-width%3D%272.4%27%2F%3E%3Cpath%20d%3D%27M8%2012%20l3.2%203.2%20L17%208.5%27%20fill%3D%27none%27%20stroke%3D%27%23fff%27%20stroke-width%3D%272.4%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%2F%3E%3C%2Fsvg%3E");
 }
 
-/* ---- 经典（书本） ---- */
+/* ---- 经典（书本 · 手绘风） ---- */
 .icon-book {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2724%27%20height%3D%2724%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27black%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M5%204h11a2%202%200%200%201%202%202v14H7a2%202%200%200%200-2%202z%27%2F%3E%3Cpath%20d%3D%27M9%204v16%27%2F%3E%3C%2Fsvg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2724%27%20height%3D%2724%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27black%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M5%204h11a2%202%200%200%201%202%202v14H7a2%202%200%200%200-2%202z%27%2F%3E%3Cpath%20d%3D%27M9%204v16%27%2F%3E%3C%2Fsvg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M3%205.5%20C3%204.5%204%204%205%204%20H11.5%20V20%20H5%20C4%2020%203%2019.5%203%2018.5%20Z%27%20fill%3D%27%23AFA9EC%27%20stroke%3D%27%23534AB7%27%20stroke-width%3D%272.4%27%20stroke-linejoin%3D%27round%27%2F%3E%3Cpath%20d%3D%27M21%205.5%20C21%204.5%2020%204%2019%204%20H12.5%20V20%20H19%20C20%2020%2021%2019.5%2021%2018.5%20Z%27%20fill%3D%27%23AFA9EC%27%20stroke%3D%27%23534AB7%27%20stroke-width%3D%272.4%27%20stroke-linejoin%3D%27round%27%2F%3E%3C%2Fsvg%3E");
+}
+.tb.on .icon-book {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M3%205.5%20C3%204.5%204%204%205%204%20H11.5%20V20%20H5%20C4%2020%203%2019.5%203%2018.5%20Z%27%20fill%3D%27%23534AB7%27%20stroke%3D%27%23534AB7%27%20stroke-width%3D%272.4%27%20stroke-linejoin%3D%27round%27%2F%3E%3Cpath%20d%3D%27M21%205.5%20C21%204.5%2020%204%2019%204%20H12.5%20V20%20H19%20C20%2020%2021%2019.5%2021%2018.5%20Z%27%20fill%3D%27%23534AB7%27%20stroke%3D%27%23534AB7%27%20stroke-width%3D%272.4%27%20stroke-linejoin%3D%27round%27%2F%3E%3C%2Fsvg%3E");
 }
 
-/* ---- 我的（人物） ---- */
+/* ---- 我的（人物 · 手绘风） ---- */
 .icon-mine {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2724%27%20height%3D%2724%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27black%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%278%27%20r%3D%273.5%27%2F%3E%3Cpath%20d%3D%27M5%2020c0-3.5%203-5.5%207-5.5s7%202%207%205.5%27%2F%3E%3C%2Fsvg%3E");
-  mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2724%27%20height%3D%2724%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27black%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%278%27%20r%3D%273.5%27%2F%3E%3Cpath%20d%3D%27M5%2020c0-3.5%203-5.5%207-5.5s7%202%207%205.5%27%2F%3E%3C%2Fsvg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%278%27%20r%3D%274.2%27%20fill%3D%27%23AFA9EC%27%20stroke%3D%27%23534AB7%27%20stroke-width%3D%272.4%27%2F%3E%3Cpath%20d%3D%27M4.5%2021%20C4.5%2016.5%208%2014.8%2012%2014.8%20C16%2014.8%2019.5%2016.5%2019.5%2021%27%20fill%3D%27%23AFA9EC%27%20stroke%3D%27%23534AB7%27%20stroke-width%3D%272.4%27%20stroke-linejoin%3D%27round%27%2F%3E%3C%2Fsvg%3E");
+}
+.tb.on .icon-mine {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%278%27%20r%3D%274.2%27%20fill%3D%27%23534AB7%27%20stroke%3D%27%23534AB7%27%20stroke-width%3D%272.4%27%2F%3E%3Cpath%20d%3D%27M4.5%2021%20C4.5%2016.5%208%2014.8%2012%2014.8%20C16%2014.8%2019.5%2016.5%2019.5%2021%27%20fill%3D%27%23534AB7%27%20stroke%3D%27%23534AB7%27%20stroke-width%3D%272.4%27%20stroke-linejoin%3D%27round%27%2F%3E%3C%2Fsvg%3E");
 }
