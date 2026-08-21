@@ -28,7 +28,7 @@
   },
   "appid": "wx3500942b3bcc79f4",
   "projectname": "wenxiaoxian",
-  "libVersion": "3.16.1",
+  "libVersion": "3.15.0",
   "compileType": "miniprogram",
   "description": "文小贤 · 家庭教养积分小程序（Light UI Kit 风格）",
   "simulatorPluginLibVersion": {},
