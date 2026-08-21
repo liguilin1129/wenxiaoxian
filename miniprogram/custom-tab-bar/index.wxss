@@ -31,9 +31,12 @@
 /* 玻璃底色晕染（品牌色，极低透明度，营造玻璃质感） */
 .glass-wash {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   border-radius: 30rpx;
-  background: linear-gradient(90deg, rgba(99, 102, 241, 0.10), rgba(99, 102, 241, 0.04));
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.12), rgba(99, 102, 241, 0.05));
   z-index: 0;
 }
 
@@ -77,6 +80,9 @@
 /* 选中态小光圈：只在图标背后，不压到下方文字 */
 .halo {
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 0;
   width: 46rpx;
   height: 46rpx;
