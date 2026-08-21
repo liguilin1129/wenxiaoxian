@@ -1,4 +1,4 @@
-<!-- 全局悬浮 AI 助手（聊天型） -->
+<!-- 全局悬浮 AI 助手（微信聊天风格） -->
 <view class="ai-wrap">
   <!-- 悬浮按钮 -->
   <view class="ai-fab" bindtap="onToggle" hover-class="fab-hover">
@@ -11,18 +11,13 @@
   <!-- 聊天面板（贴底弹层） -->
   <view wx:if="{{showPanel}}" class="ai-mask" bindtap="onClose" catchtouchmove="preventMove">
     <view class="ai-panel" style="bottom: {{kbBottom}}" catchtap="preventMove">
-      <!-- 面板头部 -->
+      <!-- 面板头部（微信导航栏风格） -->
       <view class="panel-header">
-        <view class="panel-avatar">
-          <text class="avatar-emoji">🤖</text>
+        <view class="panel-back" bindtap="onClose">
+          <text class="panel-back-x">‹</text>
         </view>
-        <view class="panel-info">
-          <text class="panel-title">小贤 AI 助手</text>
-          <text class="panel-sub">陪你一起养成好习惯</text>
-        </view>
-        <view class="panel-close" bindtap="onClose">
-          <text class="panel-close-x">✕</text>
-        </view>
+        <text class="panel-title">小贤 AI 助手</text>
+        <view class="panel-placeholder"></view>
       </view>
 
       <!-- 消息区 -->
@@ -33,9 +28,15 @@
           id="msg-{{item.id}}"
           class="msg-row {{item.role}}"
         >
+          <view class="msg-avatar">
+            <text class="avatar-emoji">{{item.role === 'user' ? '😊' : '🤖'}}</text>
+          </view>
           <view class="msg-bubble">{{item.content}}</view>
         </view>
         <view wx:if="{{typing}}" class="msg-row ai">
+          <view class="msg-avatar">
+            <text class="avatar-emoji">🤖</text>
+          </view>
           <view class="msg-bubble typing">
             <text class="dot"></text>
             <text class="dot"></text>
@@ -44,19 +45,22 @@
         </view>
       </scroll-view>
 
-      <!-- 输入栏 -->
+      <!-- 输入栏（微信风格） -->
       <view class="chat-input-bar">
-        <input
-          class="chat-input"
-          value="{{draft}}"
-          bindinput="onInput"
-          bindfocus="onFocus"
-          bindblur="onBlur"
-          placeholder="说点什么…"
-          confirm-type="send"
-          bindconfirm="onSend"
-        />
-        <view class="send-btn" bindtap="onSend">发送</view>
+        <view class="chat-input-box">
+          <input
+            class="chat-input"
+            value="{{draft}}"
+            bindinput="onInput"
+            bindfocus="onFocus"
+            bindblur="onBlur"
+            placeholder="发送消息…"
+            placeholder-class="chat-ph"
+            confirm-type="send"
+            bindconfirm="onSend"
+          />
+        </view>
+        <view class="send-btn {{draft ? 'send-on' : ''}}" bindtap="onSend">发送</view>
       </view>
     </view>
   </view>
