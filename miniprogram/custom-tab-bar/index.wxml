@@ -1,5 +1,8 @@
-<!-- 自定义底部导航（Light UI Kit · 普通扁平4宫格） -->
+<!-- 自定义底部导航（液态玻璃岛 · Floating Glass Dock） -->
 <view class="tabbar {{hidden ? 'tabbar-hidden' : ''}}">
+  <!-- 玻璃底色：淡淡的品牌色晕染，营造通透质感 -->
+  <view class="glass-wash"></view>
+
   <view
     wx:for="{{list}}"
     wx:key="idx"
@@ -8,10 +11,13 @@
     bindtap="switchTab"
   >
     <view class="icon-wrap">
-      <view wx:if="{{item.idx === 0}}" class="icon {{selected === 0 ? 'icon-home-active' : 'icon-home'}}"></view>
-      <view wx:if="{{item.idx === 1}}" class="icon {{selected === 1 ? 'icon-task-active' : 'icon-task'}}"></view>
-      <view wx:if="{{item.idx === 2}}" class="icon {{selected === 2 ? 'icon-book-active' : 'icon-book'}}"></view>
-      <view wx:if="{{item.idx === 3}}" class="icon {{selected === 3 ? 'icon-mine-active' : 'icon-mine'}}"></view>
+      <!-- 选中态：仅托在图标背后的小光圈（不压文字） -->
+      <view wx:if="{{selected === item.idx}}" class="halo"></view>
+
+      <view wx:if="{{item.idx === 0}}" class="icon icon-home"></view>
+      <view wx:if="{{item.idx === 1}}" class="icon icon-task"></view>
+      <view wx:if="{{item.idx === 2}}" class="icon icon-book"></view>
+      <view wx:if="{{item.idx === 3}}" class="icon icon-mine"></view>
     </view>
     <text class="txt">{{item.text}}</text>
   </view>

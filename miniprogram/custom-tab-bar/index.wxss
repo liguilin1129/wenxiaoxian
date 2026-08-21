@@ -1,27 +1,48 @@
-/* ===== 普通扁平4宫格底部导航（Light UI Kit） ===== */
+/* ===== 液态玻璃岛底部导航（Floating Glass Dock · Light UI Kit） ===== */
+
 .tabbar {
   position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 100rpx;
-  padding-bottom: env(safe-area-inset-bottom);
+  left: 28rpx;
+  right: 28rpx;
+  bottom: calc(18rpx + env(safe-area-inset-bottom));
+  height: 96rpx;
   display: flex;
   align-items: center;
   justify-content: space-around;
-  background: #FFFFFF;
-  box-shadow: 0 -2rpx 16rpx rgba(0, 0, 0, 0.06);
+
+  /* 玻璃岛：半透明白底 + 白色描边 + 柔和投影托起 */
+  background: rgba(255, 255, 255, 0.62);
+  border: 1rpx solid rgba(255, 255, 255, 0.9);
+  border-radius: 30rpx;
+  box-shadow: 0 10rpx 30rpx rgba(99, 102, 241, 0.18);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  overflow: hidden;
   z-index: 999;
   transition: transform 0.25s ease;
 }
-/* 聊天面板等全屏弹层打开时，把导航栏下移移出屏幕，避免遮挡输入栏 */
+
+/* 聊天面板等全屏弹层打开时，把导航栏下移移出屏幕 */
 .tabbar-hidden {
-  transform: translateY(100%);
+  transform: translateY(140%);
+}
+
+/* 玻璃底色晕染（品牌色，极低透明度，营造玻璃质感） */
+.glass-wash {
+  position: absolute;
+  inset: 0;
+  border-radius: 30rpx;
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.10), rgba(99, 102, 241, 0.04));
+  z-index: 0;
 }
 
 /* ---- Tab 项 ---- */
 .tb {
+  position: relative;
+  z-index: 1;
   flex: 1;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -38,189 +59,105 @@
   line-height: 1.2;
 }
 
+/* ---- 图标容器 ---- */
 .icon-wrap {
+  position: relative;
   width: 48rpx;
   height: 48rpx;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
-/* ---- 纯CSS图标：首页（房子） ---- */
-.icon-home {
-  width: 44rpx;
-  height: 40rpx;
-  border: 3rpx solid #B0B0BF;
-  border-bottom: none;
-  border-radius: 8rpx 8rpx 0 0;
+.icon {
   position: relative;
+  z-index: 1;
   box-sizing: border-box;
+}
+
+/* 选中态小光圈：只在图标背后，不压到下方文字 */
+.halo {
+  position: absolute;
+  z-index: 0;
+  width: 46rpx;
+  height: 46rpx;
+  border-radius: 50%;
+  background: rgba(99, 102, 241, 0.16);
+}
+
+/* ---- 首页（房子 · 正常首页图标） ---- */
+.icon-home {
+  width: 30rpx;
+  height: 26rpx;
+  border: 3rpx solid currentColor;
+  border-top: none;
+  border-radius: 0 0 4rpx 4rpx;
 }
 .icon-home::before {
   content: '';
   position: absolute;
-  top: -14rpx;
+  top: -15rpx;
   left: 50%;
   transform: translateX(-50%);
-  border-left: 14rpx solid transparent;
-  border-right: 14rpx solid transparent;
-  border-bottom: 14rpx solid #B0B0BF;
-}
-.icon-home::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 14rpx;
-  height: 14rpx;
-  border: 3rpx solid #B0B0BF;
-  border-radius: 2rpx;
-  background: #fff;
-}
-.icon-home-active {
-  width: 44rpx;
-  height: 40rpx;
-  border: 3rpx solid #6366F1;
-  border-bottom: none;
-  border-radius: 8rpx 8rpx 0 0;
-  position: relative;
-  box-sizing: border-box;
-  background: rgba(99, 102, 241, 0.08);
-}
-.icon-home-active::before {
-  content: '';
-  position: absolute;
-  top: -14rpx;
-  left: 50%;
-  transform: translateX(-50%);
-  border-left: 14rpx solid transparent;
-  border-right: 14rpx solid transparent;
-  border-bottom: 14rpx solid #6366F1;
-}
-.icon-home-active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 14rpx;
-  height: 14rpx;
-  border: 3rpx solid #6366F1;
-  border-radius: 2rpx;
-  background: rgba(99, 102, 241, 0.15);
+  width: 0;
+  height: 0;
+  border-left: 19rpx solid transparent;
+  border-right: 19rpx solid transparent;
+  border-bottom: 17rpx solid currentColor;
 }
 
-/* ---- 纯CSS图标：任务（勾选框） ---- */
+/* ---- 任务（勾选框） ---- */
 .icon-task {
-  width: 42rpx;
-  height: 42rpx;
-  border: 3rpx solid #B0B0BF;
-  border-radius: 8rpx;
-  box-sizing: border-box;
+  width: 38rpx;
+  height: 38rpx;
+  border: 3rpx solid currentColor;
+  border-radius: 10rpx;
 }
-.icon-task-active {
-  width: 42rpx;
-  height: 42rpx;
-  border: 3rpx solid #6366F1;
-  border-radius: 8rpx;
-  background: rgba(99, 102, 241, 0.1);
-  box-sizing: border-box;
-  position: relative;
-}
-.icon-task-active::after {
-  content: '✓';
+.icon-task::after {
+  content: '';
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 26rpx;
-  color: #6366F1;
-  font-weight: bold;
-  line-height: 1;
+  left: 13rpx;
+  top: 7rpx;
+  width: 9rpx;
+  height: 16rpx;
+  border: solid currentColor;
+  border-width: 0 3rpx 3rpx 0;
+  transform: rotate(45deg);
 }
 
-/* ---- 纯CSS图标：经典（书本） ---- */
+/* ---- 经典（书本） ---- */
 .icon-book {
-  width: 42rpx;
-  height: 34rpx;
-  border: 3rpx solid #B0B0BF;
+  width: 40rpx;
+  height: 32rpx;
+  border: 3rpx solid currentColor;
   border-radius: 4rpx;
-  box-sizing: border-box;
-  position: relative;
 }
-.icon-book::before {
+.icon-book::after {
   content: '';
   position: absolute;
-  top: 0;
-  bottom: 0;
   left: 50%;
+  top: 3rpx;
+  bottom: 3rpx;
   width: 2rpx;
-  background: #B0B0BF;
-  transform: translateX(-50%);
-}
-.icon-book-active {
-  width: 42rpx;
-  height: 34rpx;
-  border: 3rpx solid #6366F1;
-  border-radius: 4rpx;
-  background: rgba(99, 102, 241, 0.1);
-  box-sizing: border-box;
-  position: relative;
-}
-.icon-book-active::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 2rpx;
-  background: #6366F1;
+  background: currentColor;
   transform: translateX(-50%);
 }
 
-/* ---- 纯CSS图标：我的（人物） ---- */
+/* ---- 我的（人物） ---- */
 .icon-mine {
-  width: 36rpx;
-  height: 36rpx;
-  border: 3rpx solid #B0B0BF;
+  width: 32rpx;
+  height: 32rpx;
+  border: 3rpx solid currentColor;
   border-radius: 50%;
-  box-sizing: border-box;
-  position: relative;
 }
 .icon-mine::after {
   content: '';
   position: absolute;
-  bottom: -10rpx;
   left: 50%;
+  bottom: -13rpx;
   transform: translateX(-50%);
-  width: 20rpx;
-  height: 12rpx;
-  border: 3rpx solid #B0B0BF;
+  width: 24rpx;
+  height: 14rpx;
+  border: 3rpx solid currentColor;
   border-top: none;
-  border-radius: 0 0 12rpx 12rpx;
-  box-sizing: border-box;
-}
-.icon-mine-active {
-  width: 36rpx;
-  height: 36rpx;
-  border: 3rpx solid #6366F1;
-  border-radius: 50%;
-  background: rgba(99, 102, 241, 0.1);
-  box-sizing: border-box;
-  position: relative;
-}
-.icon-mine-active::after {
-  content: '';
-  position: absolute;
-  bottom: -10rpx;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 20rpx;
-  height: 12rpx;
-  border: 3rpx solid #6366F1;
-  border-top: none;
-  border-radius: 0 0 12rpx 12rpx;
-  background: rgba(99, 102, 241, 0.15);
-  box-sizing: border-box;
+  border-radius: 0 0 14rpx 14rpx;
 }
