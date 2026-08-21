@@ -1,5 +1,3 @@
-const app = getApp();
-
 /**
  * 全局悬浮 AI 助手（聊天型 · UI 壳阶段）
  * - 当前回复由本地规则模拟（getMockReply），不接任何执行逻辑。

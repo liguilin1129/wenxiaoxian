@@ -23,7 +23,8 @@
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
-    }
+    },
+    "useCompilerPlugins": false
   },
   "appid": "wx3500942b3bcc79f4",
   "projectname": "wenxiaoxian",
