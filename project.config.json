@@ -11,9 +11,6 @@
     "packNpmRelationList": [],
     "minifyWXSS": true,
     "minifyWXML": true,
-    "useCompilerPlugins": [
-      "typescript"
-    ],
     "disableUseStrict": false,
     "swc": false,
     "disableSWC": true,
