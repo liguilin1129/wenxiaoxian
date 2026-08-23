@@ -1,1 +1,35 @@
 /* 我的页样式复用 app.wxss */
+
+/* 编辑按钮（头部右上角胶囊） */
+.edit-btn {
+  flex: none;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--brand-700);
+  background: var(--brand-soft);
+  padding: 12rpx 28rpx;
+  border-radius: 999rpx;
+}
+
+/* 个性签名 */
+.motto {
+  margin-top: 20rpx;
+  font-size: 27rpx;
+  color: var(--ink-2);
+  font-style: italic;
+}
+
+/* 生日 / 性别 信息行 */
+.info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+  border: 1rpx solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 22rpx 28rpx;
+  margin-bottom: 18rpx;
+  box-shadow: 0 2rpx 8rpx rgba(17, 17, 26, .04);
+}
+.info-row .info-k { font-size: 28rpx; color: var(--ink-2); }
+.info-row .info-v { font-size: 28rpx; font-weight: 700; color: var(--ink-1); }

@@ -1,11 +1,13 @@
 <view class="scr-head">
   <view class="row" style="gap:28rpx;align-items:center">
     <view class="avatar lg">{{child.avatar}}</view>
-    <view>
+    <view class="flex1">
       <view class="title" style="font-size:38rpx">{{child.name}}</view>
       <view class="greet">{{child.levelName}} · Lv.{{child.levelNum}} · {{child.points}} 分</view>
     </view>
+    <view class="edit-btn" bindtap="editProfile">编辑</view>
   </view>
+  <view wx:if="{{child.motto}}" class="motto">“{{child.motto}}”</view>
 </view>
 
 <view class="scr-body">
@@ -14,6 +16,19 @@
     <view class="small">家庭会议已签约 · 四大维度权重生效中</view>
   </view>
 
+  <view wx:if="{{child.birthday}}" class="info-row">
+    <text class="info-k">🎂 生日</text>
+    <text class="info-v">{{child.birthday}}</text>
+  </view>
+  <view wx:if="{{child.gender}}" class="info-row">
+    <text class="info-k">⚧ 性别</text>
+    <text class="info-v">{{child.gender}}</text>
+  </view>
+
+  <view class="menu" bindtap="editProfile">
+    <view class="mt"><text class="mi">✏️</text>编辑资料</view>
+    <text class="mv">头像 · 昵称 · 签名 ›</text>
+  </view>
   <view class="menu" bindtap="goClassics">
     <view class="mt"><text class="mi">📖</text>经典书架</view>
     <text class="mv">17 部 ›</text>

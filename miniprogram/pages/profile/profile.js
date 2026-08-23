@@ -8,6 +8,7 @@ Page({
     }
     this.setData({ child: app.globalData.child });
   },
+  editProfile() { wx.navigateTo({ url: '/pages/profile-edit/profile-edit' }); },
   goClassics() { wx.navigateTo({ url: '/pages/classics/classics' }); },
   goRewards() { wx.navigateTo({ url: '/pages/rewards/rewards' }); },
   goReport() { wx.navigateTo({ url: '/pages/report/report' }); },

@@ -9,7 +9,8 @@
     "pages/classics/classics",
     "pages/rewards/rewards",
     "pages/report/report",
-    "pages/profile/profile"
+    "pages/profile/profile",
+    "pages/profile-edit/profile-edit"
   ],
   "window": {
     "backgroundTextStyle": "dark",

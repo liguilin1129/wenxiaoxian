@@ -1,0 +1,65 @@
+/* 编辑资料页 · Light UI Kit */
+
+.pe-head {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 92rpx; padding: 0 32rpx;
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--surface);
+  border-bottom: 1rpx solid var(--line);
+  z-index: 10;
+}
+.pe-title { font-size: 34rpx; font-weight: 700; color: var(--ink-1); }
+.pe-close { font-size: 30rpx; color: var(--ink-3); }
+.pe-save { font-size: 30rpx; color: var(--brand-700); font-weight: 700; }
+
+.pe-body {
+  height: 100vh;
+  padding: 112rpx 32rpx 60rpx;
+  box-sizing: border-box;
+  background: var(--bg);
+}
+
+.pe-sec { margin-bottom: 36rpx; }
+.pe-sec-t { font-size: 30rpx; font-weight: 700; color: var(--ink-1); margin-bottom: 20rpx; }
+
+.pe-avatars {
+  display: flex; flex-wrap: wrap; gap: 22rpx;
+}
+.pe-av {
+  width: 92rpx; height: 92rpx; border-radius: 50%;
+  background: var(--surface); border: 2rpx solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 44rpx; color: var(--ink-1);
+  box-shadow: 0 2rpx 8rpx rgba(17,17,26,.04);
+}
+.pe-av.on {
+  border-color: var(--brand);
+  background: var(--brand-soft);
+  box-shadow: 0 0 0 4rpx rgba(99,102,241,.18);
+}
+.pe-hint { font-size: 24rpx; color: var(--ink-3); margin-top: 16rpx; }
+
+.pe-field {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--surface); border: 1rpx solid var(--line);
+  border-radius: var(--radius-sm); padding: 28rpx 28rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(17,17,26,.04);
+}
+.pe-label { font-size: 29rpx; font-weight: 600; color: var(--ink-1); }
+.pe-input {
+  flex: 1; text-align: right; font-size: 29rpx; color: var(--ink-2);
+}
+.pe-picker { flex: 1; }
+.pe-picker-v { text-align: right; font-size: 29rpx; color: var(--ink-2); }
+
+.pe-textarea {
+  width: 100%; min-height: 140rpx;
+  background: var(--surface); border: 1rpx solid var(--line);
+  border-radius: var(--radius-sm); padding: 22rpx;
+  font-size: 28rpx; color: var(--ink-2); line-height: 1.5;
+  box-shadow: 0 2rpx 8rpx rgba(17,17,26,.04);
+}
+.pe-count { text-align: right; font-size: 22rpx; color: var(--ink-3); margin-top: 10rpx; }
+
+.pe-tip { font-size: 24rpx; color: var(--ink-3); text-align: center; margin-top: 20rpx; }

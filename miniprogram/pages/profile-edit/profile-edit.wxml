@@ -1,0 +1,52 @@
+<view class="pe-head">
+  <text class="pe-close" bindtap="cancel">取消</text>
+  <text class="pe-title">编辑资料</text>
+  <text class="pe-save" bindtap="save">保存</text>
+</view>
+
+<scroll-view scroll-y class="pe-body">
+
+  <!-- 头像 -->
+  <view class="pe-sec">
+    <view class="pe-sec-t">头像</view>
+    <view class="pe-avatars">
+      <view wx:for="{{avatars}}" wx:key="*this"
+            class="pe-av {{avatar===item ? 'on' : ''}}"
+            data-a="{{item}}" bindtap="pickAvatar">{{item}}</view>
+    </view>
+    <view class="pe-hint">点选喜欢的头像，保存后立即生效</view>
+  </view>
+
+  <!-- 昵称 -->
+  <view class="pe-field">
+    <text class="pe-label">昵称</text>
+    <input class="pe-input" value="{{name}}" placeholder="给小贤起个名字"
+           maxlength="8" bindinput="onName" confirm-type="done" />
+  </view>
+
+  <!-- 性别 -->
+  <view class="pe-field">
+    <text class="pe-label">性别</text>
+    <picker class="pe-picker" range="{{genders}}" value="{{genderIndex}}" bindchange="onGender">
+      <view class="pe-picker-v">{{genders[genderIndex]}} ›</view>
+    </picker>
+  </view>
+
+  <!-- 生日 -->
+  <view class="pe-field">
+    <text class="pe-label">生日</text>
+    <picker class="pe-picker" mode="date" value="{{birthday}}" end="2026-12-31" bindchange="onBirthday">
+      <view class="pe-picker-v">{{birthday || '未设置'}} ›</view>
+    </picker>
+  </view>
+
+  <!-- 个性签名 -->
+  <view class="pe-sec">
+    <view class="pe-sec-t">个性签名</view>
+    <textarea class="pe-textarea" value="{{motto}}" placeholder="写一句成长宣言吧～"
+              maxlength="30" bindinput="onMotto" auto-height />
+    <view class="pe-count">{{motto.length}}/30</view>
+  </view>
+
+  <view class="pe-tip">资料仅保存在本机，用于个性化展示。</view>
+</scroll-view>

@@ -19,5 +19,10 @@ App({
     if (signed) {
       this.globalData.signed = true;
     }
+    // 载入用户自定义资料（覆盖 mock 默认值），刷新不丢
+    const saved = wx.getStorageSync('childProfile');
+    if (saved && typeof saved === 'object') {
+      this.globalData.child = Object.assign({}, this.globalData.child, saved);
+    }
   }
 });
