@@ -3,6 +3,9 @@ const app = getApp();
 Page({
   data: {
     child: {},
+    // 会员数据为占位/mock 时先隐藏，接入真实数据后改为 true
+    showVip: false,
+    showMember: false,
     stats: [
       { num: 0, label: '我的任务', action: 'goTasks' },
       { num: 0, label: '账户(¥)', action: 'goPoints' },

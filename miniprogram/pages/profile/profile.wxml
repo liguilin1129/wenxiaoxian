@@ -9,8 +9,8 @@
     <view class="profile-edit" bindtap="editProfile">编辑</view>
   </view>
 
-  <!-- VIP 超级会员卡 -->
-  <view class="vip-card">
+  <!-- VIP 超级会员卡（无真实数据时隐藏） -->
+  <view class="vip-card" wx:if="{{showVip}}">
     <view class="vip-left">
       <view class="vip-title">VIP 超级会员</view>
       <view class="vip-desc">畅享专属成长权益</view>
@@ -18,8 +18,8 @@
     <view class="vip-btn">立即续费</view>
   </view>
 
-  <!-- 会员等级条 -->
-  <view class="level-bar" bindtap="goMembers">
+  <!-- 会员等级条（无真实数据时隐藏） -->
+  <view class="level-bar" bindtap="goMembers" wx:if="{{showMember}}">
     <view class="level-left">
       <text class="level-icon">💎</text>
       <text class="level-name">普通会员</text>
