@@ -1,35 +1,183 @@
-/* 我的页样式复用 app.wxss */
+/* 我的页 · 会员中心风格 */
+.profile-page {
+  padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
+}
 
-/* 编辑按钮（头部右上角胶囊） */
-.edit-btn {
+/* ---- 顶部用户信息 ---- */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 28rpx;
+  padding: 92rpx 32rpx 40rpx;
+  background: linear-gradient(180deg, #FFF7ED 0%, #FFEDD5 100%);
+}
+
+.profile-info { flex: 1; min-width: 0; }
+.profile-name {
+  font-size: 40rpx;
+  font-weight: 800;
+  color: #1A1A2E;
+}
+.profile-level {
+  font-size: 26rpx;
+  color: #8B6F4E;
+  margin-top: 8rpx;
+}
+
+.profile-edit {
   flex: none;
   font-size: 26rpx;
   font-weight: 600;
-  color: var(--brand-700);
-  background: var(--brand-soft);
+  color: #8B5A2B;
+  background: rgba(255, 255, 255, .65);
   padding: 12rpx 28rpx;
   border-radius: 999rpx;
+  border: 1rpx solid rgba(139, 90, 43, .12);
 }
 
-/* 个性签名 */
-.motto {
-  margin-top: 20rpx;
-  font-size: 27rpx;
-  color: var(--ink-2);
-  font-style: italic;
-}
-
-/* 生日 / 性别 信息行 */
-.info-row {
+/* ---- VIP 超级会员卡 ---- */
+.vip-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--surface);
-  border: 1rpx solid var(--line);
+  margin: 24rpx 32rpx 0;
+  padding: 32rpx 34rpx;
   border-radius: var(--radius-sm);
-  padding: 22rpx 28rpx;
-  margin-bottom: 18rpx;
-  box-shadow: 0 2rpx 8rpx rgba(17, 17, 26, .04);
+  background: linear-gradient(135deg, #5A4632 0%, #7C5E44 100%);
+  box-shadow: 0 8rpx 24rpx rgba(90, 70, 50, .25);
+  color: #fff;
 }
-.info-row .info-k { font-size: 28rpx; color: var(--ink-2); }
-.info-row .info-v { font-size: 28rpx; font-weight: 700; color: var(--ink-1); }
+
+.vip-title {
+  font-size: 32rpx;
+  font-weight: 800;
+  letter-spacing: 1rpx;
+}
+.vip-desc {
+  font-size: 24rpx;
+  opacity: .75;
+  margin-top: 8rpx;
+}
+
+.vip-btn {
+  padding: 12rpx 26rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, .92);
+  color: #5A4632;
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+/* ---- 会员等级条 ---- */
+.level-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 18rpx 32rpx 0;
+  padding: 22rpx 28rpx;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(90deg, #EEF2FF 0%, #F5F3FF 100%);
+  border: 1rpx solid #E0E7FF;
+}
+
+.level-left {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+.level-icon { font-size: 30rpx; }
+.level-name {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #4338CA;
+}
+.level-tag {
+  font-size: 20rpx;
+  color: #8B8B9E;
+  background: #fff;
+  padding: 4rpx 10rpx;
+  border-radius: 8rpx;
+}
+.level-right {
+  font-size: 24rpx;
+  color: #6366F1;
+}
+
+/* ---- 数据指标 ---- */
+.stats-card {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 24rpx 32rpx 0;
+  padding: 28rpx 0;
+  background: #fff;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 2rpx 8rpx rgba(17, 17, 26, .04);
+  border: 1px solid var(--line);
+}
+
+.stat-item {
+  width: 33.333%;
+  text-align: center;
+  padding: 16rpx 0;
+}
+.stat-num {
+  font-size: 40rpx;
+  font-weight: 800;
+  color: var(--ink-1);
+}
+.stat-label {
+  font-size: 24rpx;
+  color: var(--ink-3);
+  margin-top: 8rpx;
+}
+
+/* ---- 必备工具 ---- */
+.tools-section {
+  margin: 24rpx 32rpx 0;
+  background: #fff;
+  border-radius: var(--radius-sm);
+  padding: 28rpx;
+  box-shadow: 0 2rpx 8rpx rgba(17, 17, 26, .04);
+  border: 1px solid var(--line);
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: var(--ink-1);
+  margin-bottom: 24rpx;
+}
+
+.tools-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tool-item {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18rpx 0;
+}
+.tool-icon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 22rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+}
+.tool-name {
+  font-size: 24rpx;
+  color: var(--ink-2);
+  margin-top: 12rpx;
+}
+
+/* ---- 更多服务菜单（复用 app.wxss .menu） ---- */
+.menu {
+  margin-left: 32rpx;
+  margin-right: 32rpx;
+}
+.menu:first-of-type { margin-top: 16rpx; }

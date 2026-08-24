@@ -1,57 +1,71 @@
-<view class="scr-head">
-  <view class="row" style="gap:28rpx;align-items:center">
+<view class="profile-page">
+  <!-- 顶部用户信息 -->
+  <view class="profile-header">
     <view class="avatar lg">{{child.avatar}}</view>
-    <view class="flex1">
-      <view class="title" style="font-size:38rpx">{{child.name}}</view>
-      <view class="greet">{{child.levelName}} · Lv.{{child.levelNum}} · {{child.points}} 分</view>
+    <view class="profile-info">
+      <view class="profile-name">{{child.name}}</view>
+      <view class="profile-level">{{child.levelName}} · Lv.{{child.levelNum}}</view>
     </view>
-    <view class="edit-btn" bindtap="editProfile">编辑</view>
-  </view>
-  <view wx:if="{{child.motto}}" class="motto">“{{child.motto}}”</view>
-</view>
-
-<view class="scr-body">
-  <view class="card">
-    <view class="h3">我的合约</view>
-    <view class="small">家庭会议已签约 · 四大维度权重生效中</view>
+    <view class="profile-edit" bindtap="editProfile">编辑</view>
   </view>
 
-  <view wx:if="{{child.birthday}}" class="info-row">
-    <text class="info-k">🎂 生日</text>
-    <text class="info-v">{{child.birthday}}</text>
-  </view>
-  <view wx:if="{{child.gender}}" class="info-row">
-    <text class="info-k">⚧ 性别</text>
-    <text class="info-v">{{child.gender}}</text>
+  <!-- VIP 超级会员卡 -->
+  <view class="vip-card">
+    <view class="vip-left">
+      <view class="vip-title">VIP 超级会员</view>
+      <view class="vip-desc">畅享专属成长权益</view>
+    </view>
+    <view class="vip-btn">立即续费</view>
   </view>
 
-  <view class="menu" bindtap="editProfile">
-    <view class="mt"><text class="mi">✏️</text>编辑资料</view>
-    <text class="mv">头像 · 昵称 · 签名 ›</text>
+  <!-- 会员等级条 -->
+  <view class="level-bar" bindtap="goMembers">
+    <view class="level-left">
+      <text class="level-icon">💎</text>
+      <text class="level-name">普通会员</text>
+      <text class="level-tag">未解锁</text>
+    </view>
+    <view class="level-right">0元入会，享专属等级权益 ›</view>
   </view>
+
+  <!-- 数据指标 -->
+  <view class="stats-card">
+    <view
+      wx:for="{{stats}}"
+      wx:key="label"
+      class="stat-item"
+      bindtap="{{item.action}}"
+    >
+      <view class="stat-num">{{item.num}}</view>
+      <view class="stat-label">{{item.label}}</view>
+    </view>
+  </view>
+
+  <!-- 必备工具 -->
+  <view class="tools-section">
+    <view class="section-title">必备工具</view>
+    <view class="tools-grid">
+      <view
+        wx:for="{{tools}}"
+        wx:key="name"
+        class="tool-item"
+        bindtap="{{item.action}}"
+      >
+        <view class="tool-icon" style="background:{{item.bg}};color:{{item.color}}">{{item.icon}}</view>
+        <view class="tool-name">{{item.name}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 更多服务 -->
+  <view class="section-title" style="margin-top:8rpx">更多服务</view>
   <view class="menu" bindtap="goClassics">
     <view class="mt"><text class="mi">📖</text>经典书架</view>
     <text class="mv">17 部 ›</text>
   </view>
-  <view class="menu" bindtap="goPoints">
-    <view class="mt"><text class="mi">🧾</text>积分明细</view>
-    <text class="mv">{{child.points}} 分 ›</text>
-  </view>
-  <view class="menu" bindtap="goRewards">
-    <view class="mt"><text class="mi">🎁</text>奖励商城</view>
-    <text class="mv">4 个心愿 ›</text>
-  </view>
-  <view class="menu" bindtap="goReport">
-    <view class="mt"><text class="mi">📊</text>成长报告</view>
-    <text class="mv">每周生成 ›</text>
-  </view>
   <view class="menu" bindtap="goMembers">
     <view class="mt"><text class="mi">👨‍👩‍👦</text>家庭成员</view>
     <text class="mv">爸爸 · 妈妈 ›</text>
-  </view>
-  <view class="menu" bindtap="goSettings">
-    <view class="mt"><text class="mi">⚙️</text>设置</view>
-    <text class="mv">提醒 · 主题 ›</text>
   </view>
 
   <button class="btn soft" style="margin-top:8rpx" bindtap="logout">退出成长花园</button>
