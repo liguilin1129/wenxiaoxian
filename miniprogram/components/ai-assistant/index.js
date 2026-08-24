@@ -4,6 +4,7 @@
  * - AI_MODE='mock'：本地规则模拟（兜底/演示）
  */
 const aiConfig = require('../../utils/ai-config.js');
+const store = require('../../utils/store.js');
 
 Component({
   data: {
@@ -189,11 +190,45 @@ Component({
       });
     },
 
-    // 把 AI 回复追加到消息列表
+    // 把 AI 回复追加到消息列表，并解析可执行动作
     appendAiReply(reply) {
       const aid = ++this.data._seq;
-      const list = this.data.messages.concat([{ id: aid, role: 'ai', content: reply }]);
+      const actions = this.parseActions(reply);
+      const list = this.data.messages.concat([{ id: aid, role: 'ai', content: reply, actions: actions }]);
       this.setData({ messages: list, typing: false, scrollTarget: 'msg-' + aid });
+    },
+
+    // 从 AI 文本中提取可执行动作（积分、任务）
+    parseActions(text) {
+      const actions = [];
+      // 1) 奖励/记 X 分/积分：奖励 10 个积分、记 10 分、+10 分
+      const ptsMatch = text.match(/(?:奖励|记|加|\+)\s*(\d+)\s*(?:个)?(?:积分|分)/);
+      if (ptsMatch) {
+        const pts = parseInt(ptsMatch[1], 10);
+        actions.push({ type: 'record', points: pts, label: '确认记 ' + pts + ' 分' });
+      }
+      // 2) 添加任务：「每日小管家」、设一个“每日小管家”任务
+      const taskMatch = text.match(/[「\"']([^「\"']+?)[\"''」](?:.*任务)|(?:设一个|添加).*?([每日常][^\s，。]+)(?:任务)?/);
+      if (taskMatch) {
+        const name = taskMatch[1] || taskMatch[2];
+        if (name && name.length <= 12) {
+          actions.push({ type: 'addTask', name: name, label: '添加「' + name + '」为每日任务' });
+        }
+      }
+      return actions;
+    },
+
+    // 执行 AI 建议动作
+    handleAction(e) {
+      const act = e.currentTarget.dataset.action;
+      if (!act) return;
+      if (act.type === 'record') {
+        const res = store.aiRecordBonus('AI记录', act.points);
+        wx.showToast({ title: '已记 ' + act.points + ' 分，当前 ' + res.points + ' 分', icon: 'none' });
+      } else if (act.type === 'addTask') {
+        store.addDailyTask(act.name, act.points || 5);
+        wx.showToast({ title: '已添加「' + act.name + '」', icon: 'none' });
+      }
     },
 
     // 本地模拟回复（兜底/演示）
@@ -207,6 +242,9 @@ Component({
      * 本地模拟大脑（占位 / 兜底）
      */
     getMockReply(text) {
+      if (/打扫|卫生|整理|主动|帮忙|做了好事/.test(text)) {
+        return '哇！小贤真棒呀！自己主动打扫卫生，这可是特别好的习惯呢！🧹✨\n\n我来帮你记一下：今天小贤自己打扫了卫生，奖励 10 个积分，对不对？点下面的按钮就能真正记到小贤的账户里～\n\n对了，打扫卫生这个习惯特别好，要不要我帮你给小贤设一个「每日小管家」的任务呀？比如每天整理自己的玩具或者书桌，完成一次就能攒积分，小贤会越来越有责任感呢！☀️';
+      }
       if (/打卡|完成|做了|做到/.test(text)) {
         return '收到～（这是界面演示，接入真实模型后我可以帮你一键打卡 ✅）';
       }

@@ -39,7 +39,19 @@
           <view class="msg-avatar">
             <text class="avatar-emoji">{{item.role === 'user' ? '😊' : '🤖'}}</text>
           </view>
-          <view class="msg-bubble">{{item.content}}</view>
+          <view class="msg-main">
+            <view class="msg-bubble">{{item.content}}</view>
+            <view wx:if="{{item.actions && item.actions.length}}" class="msg-actions">
+              <view
+                wx:for="{{item.actions}}"
+                wx:for-item="act"
+                wx:key="label"
+                class="msg-action"
+                data-action="{{act}}"
+                bindtap="handleAction"
+              >{{act.label}}</view>
+            </view>
+          </view>
         </view>
         <view wx:if="{{typing}}" class="msg-row ai">
           <view class="msg-avatar">

@@ -59,6 +59,7 @@ function load() {
   if (!st.daily) st.daily = {};
   if (!st.center) st.center = {};
   if (!st.redeemed) st.redeemed = [];
+  if (!st.aiRecords) st.aiRecords = [];
   // 跨天：清空「今日习惯」打卡（任务中心为累积行为，保留）
   if (st.date !== today) {
     st.date = today;
@@ -91,6 +92,10 @@ function recompute(s, st) {
   (st.redeemed || []).forEach(r => {
     pts -= r.cost;
     hist.push({ title: '兑换：' + r.name, dim: 'taste', date: r.date, delta: -r.cost });
+  });
+  (st.aiRecords || []).forEach(r => {
+    pts += r.points;
+    hist.push({ title: 'AI记录：' + r.name, dim: 'habit', date: r.date, delta: r.points });
   });
   hist.sort((a, b) => b.date.localeCompare(a.date));
   s.child.points = pts;
@@ -202,6 +207,28 @@ function isSigned() {
   return state().signed;
 }
 
+// AI 记录积分（持久化到 aiRecords，重启不丢）
+function aiRecordBonus(name, points) {
+  ensure();
+  const s = state();
+  const st = s._ci;
+  if (!st.aiRecords) st.aiRecords = [];
+  st.aiRecords.push({ name: name, points: points, date: formatToday() });
+  recompute(s, st);
+  save(st);
+  return { points: s.child.points };
+}
+
+// AI 添加今日任务（仅当前会话有效，原型阶段）
+function addDailyTask(name, points, dim) {
+  ensure();
+  const s = state();
+  const id = 'ai_' + Date.now();
+  const task = { id: id, name: name, dim: dim || 'habit', points: points || 5, done: false };
+  s.todayTasks.push(task);
+  return task;
+}
+
 // 保留旧接口（仅累加，不持久化），避免其它页面报错
 function recordBonus(name, points) {
   const s = state();
@@ -215,5 +242,6 @@ module.exports = {
   toggleDaily, toggleCenter, toggleTodayTask: toggleDaily,
   isCenterDone, todayDoneCount, todayGain,
   redeem, signContract, isSigned, recordBonus,
+  aiRecordBonus, addDailyTask,
   getRewards, saveRewards
 };

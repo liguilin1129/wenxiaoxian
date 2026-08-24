@@ -166,9 +166,21 @@
   margin-left: 16rpx;
 }
 
+/* 消息主容器（气泡 + 操作按钮） */
+.msg-main {
+  max-width: 66%;
+  display: flex;
+  flex-direction: column;
+}
+.msg-row.ai .msg-main {
+  align-items: flex-start;
+}
+.msg-row.user .msg-main {
+  align-items: flex-end;
+}
+
 /* 气泡 */
 .msg-bubble {
-  max-width: 66%;
   padding: 20rpx 24rpx;
   border-radius: 10rpx;
   font-size: 30rpx;
@@ -231,6 +243,27 @@
 @keyframes blink {
   0%, 60%, 100% { opacity: 0.25; transform: translateY(0); }
   30% { opacity: 1; transform: translateY(-4rpx); }
+}
+
+/* ---- AI 建议操作按钮 ---- */
+.msg-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-top: 14rpx;
+}
+.msg-action {
+  padding: 12rpx 22rpx;
+  border-radius: 24rpx;
+  background: #FFFFFF;
+  color: #07C160;
+  border: 1rpx solid #07C160;
+  font-size: 26rpx;
+  font-weight: 500;
+  box-shadow: 0 1rpx 2rpx rgba(0,0,0,.04);
+}
+.msg-action:active {
+  background: #E6F7ED;
 }
 
 /* ---- 输入栏（微信风格） ---- */
