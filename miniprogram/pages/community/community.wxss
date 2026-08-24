@@ -17,10 +17,11 @@
 .act { font-size: 24rpx; color: var(--ink-3); display: flex; align-items: center; gap: 6rpx; }
 .act.liked { color: var(--c-heart-d); }
 
-/* 发布按钮 */
+/* 发布按钮（左下角，避免与右下角 AI 助手悬浮按钮重叠） */
 .fab {
   position: fixed;
-  right: 32rpx;
+  left: 32rpx;
+  right: auto;
   bottom: calc(120rpx + env(safe-area-inset-bottom));
   width: 96rpx;
   height: 96rpx;

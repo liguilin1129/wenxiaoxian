@@ -29,10 +29,11 @@
 .aread { font-size: 22rpx; color: var(--ink-3); }
 .darrow { font-size: 40rpx; color: var(--ink-3); margin-left: 10rpx; flex: none; }
 
-/* 发布按钮 */
+/* 发布按钮（左下角，避免与右下角 AI 助手悬浮按钮重叠） */
 .fab {
   position: fixed;
-  right: 32rpx;
+  left: 32rpx;
+  right: auto;
   bottom: calc(120rpx + env(safe-area-inset-bottom));
   width: 96rpx;
   height: 96rpx;
