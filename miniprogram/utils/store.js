@@ -149,6 +149,12 @@ function toggleCenter(id) {
 
 // ---------- 查询 ----------
 
+// 任务中心任务是否已打卡（读取持久化状态，含懒初始化自愈）
+function isCenterDone(id) {
+  ensure();
+  return !!state().centerTasksDone[id];
+}
+
 function todayDoneCount() {
   return state().todayTasks.filter(t => t.done).length;
 }
@@ -195,6 +201,6 @@ function recordBonus(name, points) {
 module.exports = {
   state, dimMeta, initCheckIns,
   toggleDaily, toggleCenter, toggleTodayTask: toggleDaily,
-  todayDoneCount, todayGain,
+  isCenterDone, todayDoneCount, todayGain,
   redeem, signContract, isSigned, recordBonus
 };

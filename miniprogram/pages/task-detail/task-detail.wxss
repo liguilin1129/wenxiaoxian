@@ -1,1 +1,7 @@
 /* 任务详情样式复用 app.wxss */
+
+/* 已打卡态：浅绿底深绿字，与未打卡主色按钮明显区分 */
+.btn-done {
+  background: #E7F7EE;
+  color: #0F9D6B;
+}
