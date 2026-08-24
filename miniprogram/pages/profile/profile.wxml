@@ -33,6 +33,10 @@
     <view class="mt"><text class="mi">📖</text>经典书架</view>
     <text class="mv">17 部 ›</text>
   </view>
+  <view class="menu" bindtap="goPoints">
+    <view class="mt"><text class="mi">🧾</text>积分明细</view>
+    <text class="mv">{{child.points}} 分 ›</text>
+  </view>
   <view class="menu" bindtap="goRewards">
     <view class="mt"><text class="mi">🎁</text>奖励商城</view>
     <text class="mv">4 个心愿 ›</text>

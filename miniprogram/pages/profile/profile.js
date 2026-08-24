@@ -12,6 +12,7 @@ Page({
   goClassics() { wx.navigateTo({ url: '/pages/classics/classics' }); },
   goRewards() { wx.navigateTo({ url: '/pages/rewards/rewards' }); },
   goReport() { wx.navigateTo({ url: '/pages/report/report' }); },
+  goPoints() { wx.navigateTo({ url: '/pages/points/points' }); },
   goMembers() { wx.showToast({ title: '爸爸 · 妈妈', icon: 'none' }); },
   goSettings() { wx.showToast({ title: '提醒 · 主题', icon: 'none' }); },
   logout() {
