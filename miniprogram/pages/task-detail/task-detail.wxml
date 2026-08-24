@@ -33,7 +33,7 @@
   </view>
 
   <button class="btn {{done ? 'btn-done' : ''}}" style="margin-top:8rpx" bindtap="checkin">
-    <block wx:if="{{done}}">今日已打卡 ✓ 点击取消</block>
+    <block wx:if="{{done}}">今日已打卡 ✓</block>
     <block wx:else>今日打卡 +{{points}}</block>
   </button>
 </view>
