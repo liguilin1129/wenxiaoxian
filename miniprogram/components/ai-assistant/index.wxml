@@ -10,7 +10,7 @@
 
   <!-- 聊天面板（贴底弹层） -->
   <view wx:if="{{showPanel}}" class="ai-mask" bindtap="onClose" catchtouchmove="preventMove">
-    <view class="ai-panel" style="bottom: {{kbBottom}}" catchtap="preventMove">
+    <view class="ai-panel" style="bottom: {{kbBottom}}" catchtap="preventMove" catchtouchmove="preventMove">
       <!-- 面板头部（微信导航栏风格） -->
       <view class="panel-header">
         <view class="panel-back" bindtap="onClose">
@@ -21,7 +21,7 @@
       </view>
 
       <!-- 消息区 -->
-      <scroll-view class="chat-body" style="height: {{bodyHeight}}px" scroll-y scroll-into-view="{{scrollTarget}}" scroll-with-animation>
+      <scroll-view class="chat-body" style="height: {{bodyHeight}}px" scroll-y scroll-into-view="{{scrollTarget}}" scroll-with-animation catchtouchmove="preventMove">
         <view
           wx:for="{{messages}}"
           wx:key="id"
@@ -46,7 +46,7 @@
       </scroll-view>
 
       <!-- 输入栏（微信风格） -->
-      <view class="chat-input-bar">
+      <view class="chat-input-bar" catchtouchmove="preventMove">
         <view class="chat-input-box">
           <input
             class="chat-input"
