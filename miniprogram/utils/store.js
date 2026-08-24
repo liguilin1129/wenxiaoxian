@@ -102,9 +102,17 @@ function initCheckIns() {
   s._ci = st;
 }
 
+// 自愈：开发者工具热重载 app.js 时 onLaunch 不一定重跑，
+// 首次打卡/兑换前若发现状态未初始化，则惰性初始化一次，避免访问 undefined。
+function ensure() {
+  const s = state();
+  if (!s._ci || !s.centerTasksDone) initCheckIns();
+}
+
 // ---------- 打卡 ----------
 
 function toggleDaily(index) {
+  ensure();
   const s = state();
   const t = s.todayTasks[index];
   if (!t) return null;
@@ -118,6 +126,7 @@ function toggleDaily(index) {
 }
 
 function toggleCenter(id) {
+  ensure();
   const s = state();
   const m = centerMap[id];
   if (!m) return null;
@@ -143,6 +152,7 @@ function todayGain() {
 // ---------- 兑换 / 签约 / 奖励 ----------
 
 function redeem(reward) {
+  ensure();
   const s = state();
   const have = s.child.points;
   if (have < reward.cost) {
