@@ -22,8 +22,14 @@ mock.tasks.forEach(g => {
   });
 });
 
+// app 实例缓存：onLaunch 阶段 getApp() 可能尚未就绪，
+// 用 this 注入后缓存下来，后续页面里 getApp() 正常时也照常刷新。
+let _app = null;
 function state() {
-  return getApp().globalData;
+  if (_app) return _app.globalData;
+  const app = getApp();
+  if (app) { _app = app; return app.globalData; }
+  return {};
 }
 
 function dimMeta(key) {
@@ -91,9 +97,11 @@ function recompute(s, st) {
   s.pointsHistory = hist;
 }
 
-// 在 app.js onLaunch 中调用：恢复打卡状态 + 重建积分/历史
-function initCheckIns() {
-  const s = state();
+// 在 app.js onLaunch 中调用：恢复打卡状态 + 重建积分/历史。
+// 必须传入 app 实例（this），因为 onLaunch 阶段 getApp() 尚未就绪。
+function initCheckIns(appInstance) {
+  const s = (appInstance && appInstance.globalData) ? appInstance.globalData : state();
+  _app = getApp() || appInstance || null;
   const st = load();
   s.todayTasks.forEach(t => { t.done = !!st.daily[t.id]; });
   s.centerTasksDone = {};
