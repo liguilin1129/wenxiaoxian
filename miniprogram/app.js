@@ -1,4 +1,5 @@
 const mock = require('./utils/mock.js');
+const store = require('./utils/store.js');
 
 App({
   globalData: {
@@ -24,5 +25,7 @@ App({
     if (saved && typeof saved === 'object') {
       this.globalData.child = Object.assign({}, this.globalData.child, saved);
     }
+    // 恢复打卡状态并重建积分/历史（必须在 childProfile 之后，points 由其确定性重建）
+    store.initCheckIns();
   }
 });

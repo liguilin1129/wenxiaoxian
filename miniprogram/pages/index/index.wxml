@@ -53,9 +53,9 @@
   <!-- 今日待打卡 -->
   <view class="row between" style="margin:32rpx 4rpx 16rpx">
     <view class="h3" style="margin:0">今日待打卡</view>
-    <text class="small" style="color:var(--ink-3)">{{doneCount}} / {{total}} 已完成</text>
+    <text class="small" style="color:var(--brand-700);font-weight:600" bindtap="goCheckin">查看全部 ›</text>
   </view>
-  <view wx:for="{{today}}" wx:key="id" class="task" bindtap="goCheckin">
+  <view wx:for="{{today}}" wx:key="id" class="task" data-id="{{item.id}}" bindtap="toggleToday">
     <view class="row between">
       <text class="tn">{{item.name}}</text>
       <view class="check {{item.done ? 'on' : ''}}">{{item.done ? '✓' : ''}}</view>

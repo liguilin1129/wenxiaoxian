@@ -1,1 +1,13 @@
 /* 今日打卡样式复用 app.wxss */
+
+.all-done {
+  background: linear-gradient(135deg, #ECFDF5, #EEEDFE);
+  border: 1px solid var(--brand-soft);
+  color: var(--brand-700);
+  font-size: 27rpx;
+  font-weight: 600;
+  text-align: center;
+  padding: 24rpx;
+  border-radius: var(--radius-sm);
+  margin-bottom: 24rpx;
+}

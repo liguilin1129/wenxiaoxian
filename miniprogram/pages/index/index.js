@@ -37,5 +37,16 @@ Page({
   },
   goReport() { wx.navigateTo({ url: '/pages/report/report' }); },
   goCheckin() { wx.navigateTo({ url: '/pages/checkin/checkin' }); },
-  goClassics() { wx.navigateTo({ url: '/pages/classics/classics' }); }
+  goClassics() { wx.navigateTo({ url: '/pages/classics/classics' }); },
+  toggleToday(e) {
+    const id = e.currentTarget.dataset.id;
+    const g = app.globalData;
+    const idx = g.todayTasks.findIndex(t => t.id === id);
+    if (idx < 0) return;
+    const res = store.toggleDaily(idx);
+    if (res) {
+      wx.showToast({ title: res.delta > 0 ? '打卡 +' + res.delta + ' 分' : '已取消打卡', icon: 'none' });
+      this.refresh();
+    }
+  }
 });

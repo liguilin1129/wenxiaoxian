@@ -9,8 +9,15 @@
     <view class="num">+{{gain}}</view>
     <view class="row between" style="margin-top:8rpx">
       <text class="lv">已完成 {{done}} / {{total}}</text>
-      <text style="font-size:22rpx;opacity:.9">继续加油</text>
+      <text style="font-size:22rpx;opacity:.9">{{done === total ? '今日圆满 🎉' : '继续加油'}}</text>
     </view>
+    <view class="bar" style="margin-top:18rpx">
+      <view class="fill" style="width:{{total ? (done / total * 100) : 0}}%"></view>
+    </view>
+  </view>
+
+  <view wx:if="{{done === total && total > 0}}" class="all-done">
+    ✨ 全部完成！好习惯正在悄悄长成 🌱
   </view>
 
   <view wx:for="{{tasks}}" wx:key="id" class="task" data-index="{{index}}" bindtap="toggle">

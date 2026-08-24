@@ -12,15 +12,25 @@
     <text class="pill {{filter==='taste'?'pill-taste':''}}" data-f="taste" bindtap="setFilter">好品味</text>
   </view>
 
+  <view class="done-summary">
+    已打卡 <text class="num">{{doneCount}}</text> / {{total}} 个任务
+  </view>
+
   <block wx:for="{{groups}}" wx:key="dim">
     <view class="h3" style="color:{{dimColor[item.dim]}}">{{item.dimName}}</view>
-    <view wx:for="{{item.list}}" wx:for-item="t" wx:key="id" class="task" data-id="{{t.id}}" bindtap="goDetail">
-      <view class="tn">{{t.name}}</view>
-      <view class="chips">
-        <text wx:for="{{t.tags}}" wx:for-item="tag" wx:key="*this" class="pill">{{tag}}</text>
+    <view wx:for="{{item.list}}" wx:for-item="t" wx:key="id" class="task {{t.done ? 'task-done' : ''}}" data-id="{{t.id}}" bindtap="goDetail">
+      <view class="task-main">
+        <view class="tn">{{t.name}}</view>
+        <view class="chips">
+          <text wx:for="{{t.tags}}" wx:for-item="tag" wx:key="*this" class="pill">{{tag}}</text>
+        </view>
+        <view wx:for="{{t.rewards}}" wx:for-item="r" wx:key="name" class="reward">
+          <text>{{r.name}}</text><text class="pts-pos">+{{r.points}}</text>
+        </view>
       </view>
-      <view wx:for="{{t.rewards}}" wx:for-item="r" wx:key="name" class="reward">
-        <text>{{r.name}}</text><text class="pts-pos">+{{r.points}}</text>
+      <view class="check-btn {{t.done ? 'on' : ''}}" data-id="{{t.id}}" catchtap="toggleCenter">
+        <text wx:if="{{t.done}}">✓</text>
+        <text wx:else>打卡</text>
       </view>
     </view>
   </block>

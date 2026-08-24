@@ -1,1 +1,51 @@
-/* 任务中心样式复用 app.wxss */
+/* 任务中心打卡样式（覆盖全局 .task 为「内容 + 圆形打卡按钮」布局） */
+.done-summary {
+  font-size: 26rpx;
+  color: var(--ink-2);
+  margin-bottom: 22rpx;
+}
+.done-summary .num {
+  color: var(--brand-700);
+  font-weight: 800;
+  font-size: 34rpx;
+  margin: 0 4rpx;
+}
+
+.task {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+.task-main {
+  flex: 1;
+  min-width: 0;
+}
+.task-done {
+  background:
+    linear-gradient(0deg, rgba(99, 102, 241, .05), rgba(99, 102, 241, .05)),
+    var(--surface);
+  border-color: var(--brand-soft);
+}
+.task-done .tn { color: var(--brand-700); }
+
+.check-btn {
+  flex: none;
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  border: 2rpx solid var(--brand);
+  background: var(--brand-soft);
+  color: var(--brand-700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26rpx;
+  font-weight: 700;
+  box-shadow: 0 4rpx 14rpx rgba(99, 102, 241, .18);
+}
+.check-btn.on {
+  background: var(--brand);
+  color: #fff;
+  border-color: var(--brand);
+}
+.check-btn:active { transform: scale(.94); }
