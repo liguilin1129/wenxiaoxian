@@ -22,7 +22,6 @@
     </view>
   </view>
 
-  <view class="muted" style="margin-top:24rpx;text-align:center">三个板块，点开即看</view>
 </view>
 
 <ai-assistant />
