@@ -180,6 +180,18 @@ function redeem(reward) {
   return { ok: true, points: s.child.points };
 }
 
+// 家长自定义奖品：整张列表持久化（覆盖 mock 默认值）
+const REWARDS_KEY = 'parentRewards';
+function getRewards() {
+  const s = state();
+  return s.rewards || [];
+}
+function saveRewards(list) {
+  const s = state();
+  s.rewards = list;
+  wx.setStorageSync(REWARDS_KEY, list);
+}
+
 function signContract() {
   const s = state();
   s.signed = true;
@@ -202,5 +214,6 @@ module.exports = {
   state, dimMeta, initCheckIns,
   toggleDaily, toggleCenter, toggleTodayTask: toggleDaily,
   isCenterDone, todayDoneCount, todayGain,
-  redeem, signContract, isSigned, recordBonus
+  redeem, signContract, isSigned, recordBonus,
+  getRewards, saveRewards
 };

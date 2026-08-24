@@ -1,1 +1,23 @@
 /* 奖励商城样式复用 app.wxss */
+
+/* 管理按钮 */
+.mg-btn {
+  font-size: 26rpx; font-weight: 600; color: var(--brand-700);
+  background: var(--brand-soft); padding: 12rpx 30rpx; border-radius: 999rpx; flex: none;
+}
+
+/* 管理模式下每张卡的编辑/删除 */
+.mg-actions { display: flex; gap: 18rpx; margin-top: 18rpx; }
+.mg-act {
+  flex: 1; text-align: center; padding: 16rpx;
+  border-radius: var(--radius-xs); font-size: 26rpx; font-weight: 600;
+  background: var(--surface-2); border: 1px solid var(--line); color: var(--ink-2);
+}
+.mg-act.del { color: var(--c-heart-d); background: var(--c-heart-bg); border-color: transparent; }
+
+/* 新增心愿按钮 */
+.add-btn {
+  margin-top: 26rpx; text-align: center; padding: 28rpx;
+  background: var(--brand); color: #fff; font-weight: 600; font-size: 30rpx;
+  border-radius: var(--radius-sm); box-shadow: 0 6rpx 20rpx rgba(99,102,241,.25);
+}

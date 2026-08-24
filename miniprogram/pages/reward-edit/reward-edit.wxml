@@ -1,0 +1,33 @@
+<view class="scr-body">
+  <view class="form-card">
+    <view class="field">
+      <view class="label">心愿名称</view>
+      <input class="input" placeholder="如：周末去公园放风" value="{{name}}" bindinput="onName" maxlength="20" />
+    </view>
+    <view class="field">
+      <view class="label">所需积分</view>
+      <input class="input" type="number" placeholder="如：50" value="{{cost}}" bindinput="onCost" />
+    </view>
+    <view class="field">
+      <view class="label">描述（选填）</view>
+      <textarea class="textarea" placeholder="简单说明这个心愿" value="{{desc}}" bindinput="onDesc" maxlength="40" />
+    </view>
+    <view class="field noborder">
+      <view class="label">分类标签</view>
+      <picker mode="selector" range="{{dims}}" range-key="name" value="{{dimIndex}}" bindchange="onDim">
+        <view class="picker">
+          <text class="dot" style="background:{{dims[dimIndex].color}}"></text>
+          <text class="pname">{{dims[dimIndex].name}}</text>
+          <text class="ar">›</text>
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <button class="btn" disabled="{{saveDisabled}}" bindtap="save">保存心愿</button>
+  <view wx:if="{{mode==='edit'}}" class="del-link" bindtap="remove">删除该心愿</view>
+
+  <view class="muted" style="text-align:center;margin-top:20rpx">保存后，这个心愿会立即出现在孩子的积分商城里</view>
+</view>
+
+<ai-assistant />

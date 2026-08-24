@@ -1,6 +1,11 @@
 <view class="scr-head">
-  <view class="greet" style="color:var(--c-taste-d);font-weight:600">奖励商城</view>
-  <view class="title">用积分换心愿</view>
+  <view class="row between" style="align-items:flex-end">
+    <view>
+      <view class="greet" style="color:var(--c-taste-d);font-weight:600">奖励商城</view>
+      <view class="title">用积分换心愿</view>
+    </view>
+    <view class="mg-btn" bindtap="toggleManage">{{manage ? '完成' : '管理'}}</view>
+  </view>
 </view>
 
 <view class="scr-body">
@@ -16,10 +21,18 @@
         <view class="tn">{{item.name}}</view>
         <view class="muted">{{item.desc}}</view>
       </view>
-      <text class="pill pill-taste">{{item.cost}} 分</text>
+      <text class="pill pill-{{item.dim}}">{{item.cost}} 分</text>
     </view>
-    <button class="btn soft" style="margin-top:16rpx" data-id="{{item.id}}" bindtap="redeem">兑换</button>
+
+    <view wx:if="{{manage}}" class="mg-actions">
+      <view class="mg-act" data-id="{{item.id}}" bindtap="editReward">✎ 编辑</view>
+      <view class="mg-act del" data-id="{{item.id}}" bindtap="deleteReward">🗑 删除</view>
+    </view>
+    <button wx:else class="btn soft" style="margin-top:16rpx" data-id="{{item.id}}" bindtap="redeem">兑换</button>
   </view>
+
+  <view wx:if="{{manage}}" class="add-btn" bindtap="addReward">＋ 新增心愿</view>
+  <view wx:else class="muted" style="text-align:center;margin-top:24rpx">兑换后将从积分余额扣除，可在「积分明细」查看</view>
 </view>
 
 <ai-assistant />

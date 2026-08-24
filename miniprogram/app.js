@@ -25,6 +25,11 @@ App({
     if (saved && typeof saved === 'object') {
       this.globalData.child = Object.assign({}, this.globalData.child, saved);
     }
+    // 恢复家长自定义奖品列表（覆盖 mock 默认 4 项），重启不丢
+    const pr = wx.getStorageSync('parentRewards');
+    if (Array.isArray(pr) && pr.length) {
+      this.globalData.rewards = pr;
+    }
     // 恢复打卡状态并重建积分/历史（必须在 childProfile 之后，points 由其确定性重建）
     store.initCheckIns(this);
 

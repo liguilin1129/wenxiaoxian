@@ -11,6 +11,7 @@
     "pages/discover/discover",
     "pages/community/community",
     "pages/rewards/rewards",
+    "pages/reward-edit/reward-edit",
     "pages/report/report",
     "pages/profile/profile",
     "pages/profile-edit/profile-edit"
