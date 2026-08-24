@@ -1,4 +1,5 @@
 const app = getApp();
+const store = require('../../utils/store');
 
 Page({
   data: { task: {}, detail: {}, meta: {} },

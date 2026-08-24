@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文小贤 · 自定义资料预览</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+  :root {
+    --brand: #6366F1; --brand-600: #4F46E5; --brand-700: #4338CA;
+    --brand-soft: #EEEDFE; --bg: #F5F5F7; --surface: #FFFFFF; --surface-2: #FAFAFB;
+    --ink-1: #1A1A2E; --ink-2: #444456; --ink-3: #8B8B9E; --line: #ECECF1; --line-2: #F0F0F4;
+    --radius-sm: 24px; --radius-xs: 20px;
+  }
+  .phone { width: 375px; height: 812px; background: var(--bg); border-radius: 44px; border: 10px solid #111;
+    position: relative; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,.5); }
+  .phone::before { content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
+    width:150px; height:26px; background:#111; border-radius:0 0 16px 16px; z-index:20; }
+  .screen { position:absolute; inset:0; overflow-y:auto; padding-top:26px; display:none; }
+  .screen.active { display:block; }
+
+  /* 我的页 */
+  .scr-head { padding: 70px 16px 12px; background: var(--surface); }
+  .row { display:flex; align-items:center; }
+  .flex1 { flex:1; }
+  .avatar { width:54px; height:54px; border-radius:50%; background:linear-gradient(135deg,#6366F1,#8B5CF6);
+    color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:20px; }
+  .avatar.lg { width:68px; height:68px; font-size:24px; }
+  .title { font-size:19px; font-weight:700; margin-top:3px; }
+  .greet { font-size:13px; color:var(--ink-3); margin-top:2px; }
+  .edit-btn { flex:none; font-size:13px; font-weight:600; color:var(--brand-700); background:var(--brand-soft);
+    padding:6px 14px; border-radius:999px; cursor:pointer; }
+  .motto { margin-top:10px; font-size:14px; color:var(--ink-2); font-style:italic; }
+  .scr-body { padding:12px 16px 80px; }
+  .card { background:var(--surface); border-radius:var(--radius-sm); padding:14px; border:1px solid var(--line);
+    margin-bottom:12px; box-shadow:0 1px 4px rgba(17,17,26,.04); }
+  .h3 { font-size:16px; font-weight:700; margin:4px 2px 10px; }
+  .small { font-size:13px; color:var(--ink-2); }
+  .info-row { display:flex; align-items:center; justify-content:space-between; background:var(--surface);
+    border:1px solid var(--line); border-radius:var(--radius-sm); padding:11px 14px; margin-bottom:9px;
+    box-shadow:0 1px 4px rgba(17,17,26,.04); }
+  .info-k { font-size:14px; color:var(--ink-2); } .info-v { font-size:14px; font-weight:700; color:var(--ink-1); }
+  .menu { display:flex; align-items:center; justify-content:space-between; background:var(--surface);
+    border:1px solid var(--line); border-radius:var(--radius-sm); padding:14px; margin-bottom:10px;
+    box-shadow:0 1px 4px rgba(17,17,26,.04); cursor:pointer; }
+  .menu .mt { font-size:15px; font-weight:600; color:var(--ink-1); display:flex; align-items:center; gap:11px; }
+  .menu .mi { width:34px; height:34px; border-radius:10px; background:var(--brand-soft); color:var(--brand-700);
+    display:flex; align-items:center; justify-content:center; font-size:16px; flex:none; }
+  .menu .mv { font-size:13px; color:var(--ink-3); }
+  .btn { display:block; width:100%; text-align:center; background:var(--brand); color:#fff; font-weight:600;
+    font-size:15px; padding:13px; border-radius:var(--radius-xs); border:none; }
+  .btn.soft { background:var(--brand-soft); color:var(--brand-700); }
+
+  /* 编辑页 */
+  .pe-head { position:fixed; top:26px; left:0; right:0; height:46px; padding:0 16px; display:flex;
+    align-items:center; justify-content:space-between; background:var(--surface); border-bottom:1px solid var(--line); z-index:10; }
+  .pe-title { font-size:17px; font-weight:700; } .pe-close { font-size:15px; color:var(--ink-3); cursor:pointer; }
+  .pe-save { font-size:15px; color:var(--brand-700); font-weight:700; cursor:pointer; }
+  .pe-body { padding:80px 16px 30px; }
+  .pe-sec { margin-bottom:18px; } .pe-sec-t { font-size:15px; font-weight:700; margin-bottom:10px; }
+  .pe-avatars { display:flex; flex-wrap:wrap; gap:11px; }
+  .pe-av { width:46px; height:46px; border-radius:50%; background:var(--surface); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; font-size:22px; cursor:pointer;
+    box-shadow:0 1px 4px rgba(17,17,26,.04); }
+  .pe-av.on { border-color:var(--brand); background:var(--brand-soft); box-shadow:0 0 0 2px rgba(99,102,241,.18); }
+  .pe-hint { font-size:12px; color:var(--ink-3); margin-top:8px; }
+  .pe-field { display:flex; align-items:center; justify-content:space-between; background:var(--surface);
+    border:1px solid var(--line); border-radius:var(--radius-sm); padding:14px; margin-bottom:10px;
+    box-shadow:0 1px 4px rgba(17,17,26,.04); }
+  .pe-label { font-size:15px; font-weight:600; }
+  .pe-input, .pe-picker-v { flex:1; text-align:right; font-size:15px; color:var(--ink-2); }
+  .pe-textarea { width:100%; min-height:70px; background:var(--surface); border:1px solid var(--line);
+    border-radius:var(--radius-sm); padding:11px; font-size:14px; color:var(--ink-2); }
+  .pe-count { text-align:right; font-size:11px; color:var(--ink-3); margin-top:5px; }
+  .pe-tip { font-size:12px; color:var(--ink-3); text-align:center; margin-top:10px; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <!-- 我的页 -->
+  <div class="screen active" id="s-profile">
+    <div class="scr-head">
+      <div class="row" style="gap:14px;align-items:center">
+        <div class="avatar lg" id="p-avatar">贤</div>
+        <div class="flex1">
+          <div class="title" id="p-name">文小贤</div>
+          <div class="greet">君子少年 · Lv.5 · 1280 分</div>
+        </div>
+        <div class="edit-btn" onclick="openEdit()">编辑</div>
+      </div>
+      <div class="motto" id="p-motto">“每天进步一点点”</div>
+    </div>
+    <div class="scr-body">
+      <div class="card"><div class="h3">我的合约</div><div class="small">家庭会议已签约 · 四大维度权重生效中</div></div>
+      <div class="info-row"><span class="info-k">🎂 生日</span><span class="info-v" id="p-birthday">2018-06-01</span></div>
+      <div class="info-row"><span class="info-k">⚧ 性别</span><span class="info-v" id="p-gender">男</span></div>
+      <div class="menu" onclick="openEdit()"><div class="mt"><span class="mi">✏️</span>编辑资料</div><div class="mv">头像 · 昵称 · 签名 ›</div></div>
+      <div class="menu"><div class="mt"><span class="mi">📖</span>经典书架</div><div class="mv">17 部 ›</div></div>
+      <div class="menu"><div class="mt"><span class="mi">🎁</span>奖励商城</div><div class="mv">4 个心愿 ›</div></div>
+      <div class="menu"><div class="mt"><span class="mi">📊</span>成长报告</div><div class="mv">每周生成 ›</div></div>
+      <button class="btn soft" style="margin-top:4px">退出成长花园</button>
+    </div>
+  </div>
+
+  <!-- 编辑页 -->
+  <div class="screen" id="s-edit">
+    <div class="pe-head">
+      <span class="pe-close" onclick="closeEdit()">取消</span>
+      <span class="pe-title">编辑资料</span>
+      <span class="pe-save" onclick="saveEdit()">保存</span>
+    </div>
+    <div class="pe-body">
+      <div class="pe-sec">
+        <div class="pe-sec-t">头像</div>
+        <div class="pe-avatars" id="av-grid"></div>
+        <div class="pe-hint">点选喜欢的头像，保存后立即生效</div>
+      </div>
+      <div class="pe-field"><span class="pe-label">昵称</span><input class="pe-input" id="e-name" value="文小贤" maxlength="8" style="border:none;outline:none"></div>
+      <div class="pe-field"><span class="pe-label">性别</span>
+        <select class="pe-picker-v" id="e-gender" style="border:none;background:transparent">
+          <option>男</option><option>女</option><option>保密</option>
+        </select></div>
+      <div class="pe-field"><span class="pe-label">生日</span><input class="pe-input" id="e-birthday" type="date" value="2018-06-01" style="border:none;outline:none"></div>
+      <div class="pe-sec">
+        <div class="pe-sec-t">个性签名</div>
+        <textarea class="pe-textarea" id="e-motto" maxlength="30">每天进步一点点</textarea>
+        <div class="pe-count"><span id="m-count">7</span>/30</div>
+      </div>
+      <div class="pe-tip">资料仅保存在本机，用于个性化展示。</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const avatars = ['贤','🦊','🐱','🐰','🐻','🦁','🐼','🐯','🐶','🐸','🦄','🌟','🍎'];
+  let curAvatar = '贤';
+  const grid = document.getElementById('av-grid');
+  avatars.forEach(a => {
+    const d = document.createElement('div');
+    d.className = 'pe-av' + (a===curAvatar?' on':'');
+    d.textContent = a; d.dataset.a = a;
+    d.onclick = () => { curAvatar = a; [...grid.children].forEach(c=>c.classList.toggle('on', c.dataset.a===a)); };
+    grid.appendChild(d);
+  });
+  document.getElementById('e-motto').addEventListener('input', e => {
+    document.getElementById('m-count').textContent = e.target.value.length;
+  });
+  function openEdit(){ document.getElementById('s-profile').classList.remove('active'); document.getElementById('s-edit').classList.add('active'); }
+  function closeEdit(){ document.getElementById('s-edit').classList.remove('active'); document.getElementById('s-profile').classList.add('active'); }
+  function saveEdit(){
+    document.getElementById('p-avatar').textContent = curAvatar;
+    document.getElementById('p-name').textContent = document.getElementById('e-name').value || '文小贤';
+    document.getElementById('p-gender').textContent = document.getElementById('e-gender').value;
+    document.getElementById('p-birthday').textContent = document.getElementById('e-birthday').value;
+    const m = document.getElementById('e-motto').value;
+    document.getElementById('p-motto').textContent = m ? '“'+m+'”' : '';
+    closeEdit();
+  }
+</script>
+</body>
+</html>

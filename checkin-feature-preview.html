@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文小贤 · 任务打卡功能预览</title>
+<style>
+  :root{
+    --brand:#6366F1; --brand-600:#4F46E5; --brand-700:#4338CA;
+    --brand-soft:#EEEDFE; --bg:#F5F5F7; --surface:#FFFFFF; --surface-2:#FAFAFB;
+    --ink-1:#1A1A2E; --ink-2:#444456; --ink-3:#8B8B9E;
+    --line:#ECECF1; --line-2:#F0F0F4; --radius:32rpx; --radius-sm:24rpx; --radius-xs:20rpx;
+    --c-heart:#FB7185; --c-heart-bg:#FFF1F3; --c-heart-d:#E11D6F;
+    --c-body:#34D399; --c-body-bg:#ECFDF5; --c-body-d:#0F9D6B;
+    --c-habit:#6366F1; --c-habit-bg:#EEEDFE; --c-habit-d:#4F46E5;
+    --c-taste:#FBBF24; --c-taste-bg:#FFFBEB; --c-taste-d:#B7791F;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:#e9e9f0; color:var(--ink-1);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    display:flex; gap:40px; justify-content:center; align-items:flex-start;
+    padding:40px; flex-wrap:wrap;
+  }
+  .phone{
+    width:375px; background:var(--bg); border-radius:44px; padding:14px;
+    box-shadow:0 30px 80px rgba(20,20,40,.25); border:2px solid #d8d8e2;
+    position:relative;
+  }
+  .screen{
+    background:var(--bg); border-radius:34px; overflow:hidden; min-height:760px;
+  }
+  .scr-head{ padding:60px 22px 16px; background:var(--surface); }
+  .scr-head .greet{ font-size:14px; color:var(--ink-3); }
+  .scr-head .title{ font-size:24px; font-weight:700; margin-top:4px; }
+  .scr-body{ padding:16px 22px 90px; }
+  .h3{ font-size:17px; font-weight:700; margin:6px 3px 12px; }
+  .tn{ font-size:16px; font-weight:700; }
+  .pill{ font-size:12px; padding:3px 10px; border-radius:999px; background:var(--surface-2); color:var(--ink-2); font-weight:600; }
+  .pill-heart{ background:var(--c-heart-bg); color:var(--c-heart-d); }
+  .pill-body{ background:var(--c-body-bg); color:var(--c-body-d); }
+  .pill-habit{ background:var(--c-habit-bg); color:var(--c-habit-d); }
+  .pill-taste{ background:var(--c-taste-bg); color:var(--c-taste-d); }
+  .chips{ display:flex; flex-wrap:wrap; gap:7px; margin-top:9px; }
+  .points-hero{
+    background:linear-gradient(135deg,#6366F1,#8B5CF6); color:#fff; border-radius:var(--radius);
+    padding:20px; margin-bottom:16px;
+  }
+  .points-hero .lbl{ font-size:13px; opacity:.9; }
+  .points-hero .num{ font-size:38px; font-weight:800; line-height:1; margin:3px 0; }
+  .points-hero .lv{ display:inline-block; background:rgba(255,255,255,.2); padding:3px 11px; border-radius:999px; font-size:13px; font-weight:600; }
+  .bar{ height:8px; border-radius:999px; background:var(--line-2); overflow:hidden; margin-top:6px; }
+  .bar>.fill{ display:block; height:100%; border-radius:999px; background:var(--brand); transition:width .35s ease; }
+  .all-done{
+    background:linear-gradient(135deg,#ECFDF5,#EEEDFE); border:1px solid var(--brand-soft);
+    color:var(--brand-700); font-size:14px; font-weight:600; text-align:center;
+    padding:13px; border-radius:var(--radius-sm); margin-bottom:14px;
+  }
+  .task{
+    background:var(--surface); border-radius:var(--radius-sm); padding:15px;
+    border:1px solid var(--line); margin-bottom:12px; box-shadow:0 2px 8px rgba(17,17,26,.04);
+  }
+  .row{ display:flex; align-items:center; }
+  .between{ justify-content:space-between; }
+  .check{
+    width:26px; height:26px; border-radius:9px; border:2px solid var(--line);
+    background:var(--surface); display:flex; align-items:center; justify-content:center;
+    flex:none; color:#fff; font-size:15px; font-weight:700;
+  }
+  .check.on{ background:var(--brand); border-color:var(--brand); }
+  /* 任务中心打卡按钮 */
+  .task.center{ display:flex; align-items:center; gap:12px; }
+  .task-main{ flex:1; min-width:0; }
+  .task-done{ background:linear-gradient(0deg,rgba(99,102,241,.05),rgba(99,102,241,.05)),var(--surface); border-color:var(--brand-soft); }
+  .task-done .tn{ color:var(--brand-700); }
+  .check-btn{
+    flex:none; width:58px; height:58px; border-radius:50%; border:2px solid var(--brand);
+    background:var(--brand-soft); color:var(--brand-700); display:flex; align-items:center;
+    justify-content:center; font-size:14px; font-weight:700; cursor:pointer; user-select:none;
+    box-shadow:0 3px 10px rgba(99,102,241,.18); transition:transform .1s;
+  }
+  .check-btn.on{ background:var(--brand); color:#fff; border-color:var(--brand); }
+  .check-btn:active{ transform:scale(.92); }
+  .reward{ display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px dashed var(--line); font-size:14px; color:var(--ink-2); }
+  .reward:last-child{ border-bottom:none; }
+  .pts-pos{ color:var(--brand-600); font-weight:700; }
+  .done-summary{ font-size:14px; color:var(--ink-2); margin-bottom:12px; }
+  .done-summary .num{ color:var(--brand-700); font-weight:800; font-size:18px; margin:0 2px; }
+  .cap{ text-align:center; font-size:13px; color:#666; margin-top:14px; font-weight:600; }
+  /* 模拟底部玻璃导航 */
+  .tabbar{
+    position:absolute; left:14px; right:14px; bottom:16px; height:62px;
+    background:rgba(255,255,255,.62); border:1px solid rgba(255,255,255,.9);
+    border-radius:30px; backdrop-filter:blur(10px);
+    box-shadow:0 12px 30px rgba(99,102,241,.18);
+    display:flex; align-items:center; justify-content:space-around; padding:0 18px;
+  }
+  .tab{ display:flex; flex-direction:column; align-items:center; gap:3px; font-size:10px; color:#999; }
+  .tab.on{ color:var(--brand); }
+  .tab .ic{ width:22px; height:22px; background:currentColor; -webkit-mask-size:contain; mask-size:contain; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat; }
+</style>
+</head>
+<body>
+
+<!-- 今日打卡 -->
+<div class="phone">
+  <div class="screen">
+    <div class="scr-head">
+      <div class="greet" id="ck-today">2026-08-24 周一</div>
+      <div class="title">今日打卡</div>
+    </div>
+    <div class="scr-body">
+      <div class="points-hero">
+        <div class="lbl">今日已得</div>
+        <div class="num" id="ck-gain">+24</div>
+        <div class="row between" style="margin-top:6px">
+          <span class="lv" id="ck-count">已完成 3 / 6</span>
+          <span style="font-size:12px;opacity:.9" id="ck-tip">继续加油</span>
+        </div>
+        <div class="bar" style="margin-top:11px"><div class="fill" id="ck-fill" style="width:50%"></div></div>
+      </div>
+      <div class="all-done" id="ck-alldone" style="display:none">✨ 全部完成！好习惯正在悄悄长成 🌱</div>
+      <div id="ck-list"></div>
+    </div>
+    <div class="tabbar">
+      <div class="tab"><div class="ic" style="-webkit-mask-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M12 3 4 10v10h6v-6h4v6h6V10z%22 fill=%22black%22/%3E%3C/svg%3E')"></div>首页</div>
+      <div class="tab on"><div class="ic" style="-webkit-mask-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Ccircle cx=%2212%22 cy=%2212%22 r=%229%22 fill=%22black%22/%3E%3Cpath d=%22M8 12l2.5 2.5L16 9%22 stroke=%22white%22 fill=%22none%22/%3E%3C/svg%3E')"></div>任务</div>
+      <div class="tab"><div class="ic" style="-webkit-mask-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M5 4h5.5v16H5.5C4.7 20 4 19.3 4 18.5V5.5C4 4.7 4.7 4 5 4z%22 fill=%22black%22/%3E%3Cpath d=%22M19 4h-5.5v16H18.5C19.3 20 20 19.3 20 18.5V5.5C20 4.7 19.3 4 19 4z%22 fill=%22black%22/%3E%3C/svg%3E')"></div>经典</div>
+      <div class="tab"><div class="ic" style="-webkit-mask-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Ccircle cx=%2212%22 cy=%227.5%22 r=%224%22 fill=%22black%22/%3E%3Cpath d=%22M4.5 21c0-4 3.5-6.5 7.5-6.5s7.5 2.5 7.5 6.5%22 fill=%22black%22/%3E%3C/svg%3E')"></div>我的</div>
+    </div>
+  </div>
+  <div class="cap">今日打卡（任务 Tab 即此页）</div>
+</div>
+
+<!-- 任务中心 -->
+<div class="phone">
+  <div class="screen">
+    <div class="scr-head">
+      <div class="greet">鼓励中心</div>
+      <div class="title">任务与行为</div>
+    </div>
+    <div class="scr-body">
+      <div class="done-summary">已打卡 <span class="num" id="ts-done">0</span> / <span id="ts-total">11</span> 个任务</div>
+      <div id="ts-list"></div>
+    </div>
+    <div class="tabbar">
+      <div class="tab"><div class="ic" style="-webkit-mask-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M12 3 4 10v10h6v-6h4v6h6V10z%22 fill=%22black%22/%3E%3C/svg%3E')"></div>首页</div>
+      <div class="tab on"><div class="ic" style="-webkit-mask-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Ccircle cx=%2212%22 cy=%2212%22 r=%229%22 fill=%22black%22/%3E%3Cpath d=%22M8 12l2.5 2.5L16 9%22 stroke=%22white%22 fill=%22none%22/%3E%3C/svg%3E')"></div>任务</div>
+      <div class="tab"><div class="ic" style="-webkit-mask-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Cpath d=%22M5 4h5.5v16H5.5C4.7 20 4 19.3 4 18.5V5.5C4 4.7 4.7 4 5 4z%22 fill=%22black%22/%3E%3Cpath d=%22M19 4h-5.5v16H18.5C19.3 20 20 19.3 20 18.5V5.5C20 4.7 19.3 4 19 4z%22 fill=%22black%22/%3E%3C/svg%3E')"></div>经典</div>
+      <div class="tab"><div class="ic" style="-webkit-mask-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22%3E%3Ccircle cx=%2212%22 cy=%227.5%22 r=%224%22 fill=%22black%22/%3E%3Cpath d=%22M4.5 21c0-4 3.5-6.5 7.5-6.5s7.5 2.5 7.5 6.5%22 fill=%22black%22/%3E%3C/svg%3E')"></div>我的</div>
+    </div>
+  </div>
+  <div class="cap">任务中心（一键打卡）</div>
+</div>
+
+<script>
+/* ===== 今日打卡 ===== */
+const daily = [
+  { id:'t1', name:'准时吃饭不挑食', dim:'body', dimName:'好身体', points:6, done:true },
+  { id:'t2', name:'准时睡觉', dim:'body', dimName:'好身体', points:8, done:true },
+  { id:'t3', name:'整理书包', dim:'habit', dimName:'好习惯', points:5, done:true },
+  { id:'t4', name:'坚持锻炼（武术）', dim:'body', dimName:'好身体', points:10, done:false },
+  { id:'t5', name:'诵读《论语》', dim:'heart', dimName:'好身心', points:10, done:false },
+  { id:'t6', name:'自由绘画创作', dim:'taste', dimName:'好品味', points:6, done:false },
+];
+function renderDaily(){
+  const gain = daily.filter(t=>t.done).reduce((s,t)=>s+t.points,0);
+  const done = daily.filter(t=>t.done).length;
+  document.getElementById('ck-gain').textContent = '+'+gain;
+  document.getElementById('ck-count').textContent = `已完成 ${done} / ${daily.length}`;
+  document.getElementById('ck-fill').style.width = (done/daily.length*100)+'%';
+  const all = done===daily.length && daily.length>0;
+  document.getElementById('ck-tip').textContent = all ? '今日圆满 🎉' : '继续加油';
+  document.getElementById('ck-alldone').style.display = all ? 'block':'none';
+  const list = document.getElementById('ck-list'); list.innerHTML='';
+  daily.forEach((t,i)=>{
+    const el=document.createElement('div'); el.className='task';
+    el.innerHTML=`<div class="row between"><span class="tn">${t.name}</span>
+      <div class="check ${t.done?'on':''}">${t.done?'✓':''}</div></div>
+      <div class="chips"><span class="pill pill-${t.dim}">${t.dimName}</span><span class="pill">+${t.points}</span></div>`;
+    el.style.cursor='pointer';
+    el.onclick=()=>{ t.done=!t.done; renderDaily(); };
+    list.appendChild(el);
+  });
+}
+renderDaily();
+
+/* ===== 任务中心 ===== */
+const center = [
+  { dim:'heart', dimName:'好身心 · 德育', color:'var(--c-heart-d)', list:[
+    { id:'h1', name:'正其心', tags:['愿力 / 内驱力','经典《论语》'], points:40, done:false },
+    { id:'h2', name:'善其行', tags:['不杀 · 不盗 · 不邪淫'], points:16, done:false },
+    { id:'h3', name:'诚其意', tags:['定力 / 专注力'], points:16, done:false },
+  ]},
+  { dim:'body', dimName:'好身体 · 健康', color:'var(--c-body-d)', list:[
+    { id:'b1', name:'健康饮食', tags:['不挑食 · 均衡'], points:12, done:false },
+    { id:'b2', name:'坚持锻炼', tags:['武术 · 太极'], points:16, done:false },
+    { id:'b3', name:'准时睡觉', tags:['作息规律'], points:8, done:false },
+  ]},
+  { dim:'habit', dimName:'好习惯 · 习惯', color:'var(--c-habit-d)', list:[
+    { id:'ha1', name:'整理书包', tags:['独立'], points:5, done:false },
+    { id:'ha2', name:'勤洗手', tags:['讲卫生'], points:6, done:false },
+    { id:'ha3', name:'规划时间', tags:['自省'], points:7, done:false },
+  ]},
+  { dim:'taste', dimName:'好品味 · 审美', color:'var(--c-taste-d)', list:[
+    { id:'ta1', name:'自由绘画', tags:['创造'], points:6, done:false },
+    { id:'ta2', name:'挑选绘本', tags:['审美'], points:8, done:false },
+  ]},
+];
+function renderCenter(){
+  let done=0,total=0;
+  const list=document.getElementById('ts-list'); list.innerHTML='';
+  center.forEach(g=>{
+    const h=document.createElement('div'); h.className='h3'; h.style.color=g.color; h.textContent=g.dimName; list.appendChild(h);
+    g.list.forEach(t=>{
+      total++; if(t.done) done++;
+      const el=document.createElement('div'); el.className='task center'+(t.done?' task-done':'');
+      el.innerHTML=`<div class="task-main">
+        <div class="tn">${t.name}</div>
+        <div class="chips">${t.tags.map(tg=>`<span class="pill">${tg}</span>`).join('')}</div>
+        <div class="reward"><span>奖励合计</span><span class="pts-pos">+${t.points}</span></div>
+      </div>
+      <div class="check-btn ${t.done?'on':''}">${t.done?'✓':'打卡'}</div>`;
+      el.querySelector('.check-btn').onclick=(e)=>{ e.stopPropagation(); t.done=!t.done; renderCenter(); };
+      list.appendChild(el);
+    });
+  });
+  document.getElementById('ts-done').textContent=done;
+  document.getElementById('ts-total').textContent=total;
+}
+renderCenter();
+</script>
+</body>
+</html>
