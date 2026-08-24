@@ -1,0 +1,12 @@
+<view class="top-tabs">
+  <view
+    wx:for="{{tabs}}"
+    wx:key="key"
+    class="tt-tab {{current === item.key ? 'on' : ''}}"
+    data-key="{{item.key}}"
+    bindtap="onTap"
+  >
+    <text class="tt-label">{{item.label}}</text>
+    <view class="tt-bar"></view>
+  </view>
+</view>

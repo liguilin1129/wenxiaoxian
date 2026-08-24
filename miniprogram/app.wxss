@@ -204,3 +204,5 @@ button::after { border: none; }
   font-weight: 700; font-size: 32rpx; flex: none;
 }
 .avatar.lg { width: 108rpx; height: 108rpx; font-size: 40rpx; }
+.avatar.sm { width: 64rpx; height: 64rpx; font-size: 26rpx; }
+.avatar.sm { width: 64rpx; height: 64rpx; font-size: 26rpx; }

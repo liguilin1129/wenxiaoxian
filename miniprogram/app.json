@@ -10,6 +10,8 @@
     "pages/classic-read/classic-read",
     "pages/discover/discover",
     "pages/community/community",
+    "pages/community/articles",
+    "pages/community/rank",
     "pages/rewards/rewards",
     "pages/reward-edit/reward-edit",
     "pages/report/report",

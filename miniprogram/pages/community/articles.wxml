@@ -1,0 +1,26 @@
+<top-tabs tabs="{{tabs}}" current="articles" bind:change="onTabChange" />
+
+<view class="scr-body">
+  <view class="articles">
+    <view
+      wx:for="{{articles}}"
+      wx:key="id"
+      class="art"
+      data-title="{{item.title}}"
+      bindtap="openArticle"
+      hover-class="art-hover"
+    >
+      <view class="acover">{{item.cover}}</view>
+      <view class="atext">
+        <view class="atitle">{{item.title}}</view>
+        <view class="ameta">
+          <text class="pill pill-habit">{{item.tag}}</text>
+          <text class="aread">{{item.read}} 阅读</text>
+        </view>
+      </view>
+      <view class="darrow">›</view>
+    </view>
+  </view>
+</view>
+
+<ai-assistant />

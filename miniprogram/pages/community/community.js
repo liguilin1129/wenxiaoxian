@@ -1,7 +1,19 @@
 const app = getApp();
 
+const TABS = [
+  { key: 'feed', label: '成长圈' },
+  { key: 'articles', label: '育儿干货' },
+  { key: 'rank', label: '邻里榜' }
+];
+const URLS = {
+  feed: '/pages/community/community',
+  articles: '/pages/community/articles',
+  rank: '/pages/community/rank'
+};
+
 Page({
   data: {
+    tabs: TABS,
     feed: [
       {
         id: 1,
@@ -33,21 +45,12 @@ Page({
         comments: 6,
         liked: false
       }
-    ],
-    articles: [
-      { id: 1, title: '如何培养孩子的时间感知力', tag: '习惯养成', read: '2.3万', cover: '⏰' },
-      { id: 2, title: '经典诵读对专注力的 4 个好处', tag: '经典学习', read: '1.8万', cover: '📜' },
-      { id: 3, title: '积分制激励，怎么设才不翻车', tag: '家庭教育', read: '3.1万', cover: '🪙' }
-    ],
-    ranks: [
-      { id: 1, name: '小贤', avatar: '小', days: 21, me: true },
-      { id: 2, name: '乐乐', avatar: '乐', days: 19, me: false },
-      { id: 3, name: '糖糖', avatar: '糖', days: 17, me: false },
-      { id: 4, name: '安安', avatar: '安', days: 15, me: false },
-      { id: 5, name: '豆豆', avatar: '豆', days: 12, me: false }
     ]
   },
-  onShow() {},
+  onTabChange(e) {
+    const url = URLS[e.detail.key];
+    if (url) wx.redirectTo({ url });
+  },
   toggleLike(e) {
     const id = e.currentTarget.dataset.id;
     const feed = this.data.feed.map(f => {
@@ -56,9 +59,5 @@ Page({
       return Object.assign({}, f, { liked: liked, likes: f.likes + (liked ? 1 : -1) });
     });
     this.setData({ feed: feed });
-  },
-  openArticle(e) {
-    const title = e.currentTarget.dataset.title;
-    wx.showToast({ title: '打开《' + title + '》', icon: 'none' });
   }
 });

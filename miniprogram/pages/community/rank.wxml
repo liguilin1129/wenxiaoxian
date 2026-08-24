@@ -1,0 +1,14 @@
+<top-tabs tabs="{{tabs}}" current="rank" bind:change="onTabChange" />
+
+<view class="scr-body">
+  <view class="ranks">
+    <view wx:for="{{ranks}}" wx:key="id" class="rank {{item.me ? 'me' : ''}}">
+      <view class="rno rno-{{item.id}}">{{item.id}}</view>
+      <view class="avatar sm">{{item.avatar}}</view>
+      <view class="rname">{{item.name}}{{item.me ? '（我）' : ''}}</view>
+      <view class="rdays">连续 <text class="rnum">{{item.days}}</text> 天</view>
+    </view>
+  </view>
+</view>
+
+<ai-assistant />

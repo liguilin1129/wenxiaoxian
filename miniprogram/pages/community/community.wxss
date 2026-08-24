@@ -8,8 +8,6 @@
 }
 .feed .post:last-child { border-bottom: none; }
 
-.avatar.sm { width: 64rpx; height: 64rpx; font-size: 26rpx; }
-
 .pbody { flex: 1; margin-left: 18rpx; min-width: 0; }
 .phead { display: flex; justify-content: space-between; align-items: center; }
 .pname { font-size: 28rpx; font-weight: 700; color: var(--ink-1); }
@@ -18,69 +16,3 @@
 .pactions { display: flex; gap: 40rpx; margin-top: 16rpx; }
 .act { font-size: 24rpx; color: var(--ink-3); display: flex; align-items: center; gap: 6rpx; }
 .act.liked { color: var(--c-heart-d); }
-
-/* ---- 育儿干货精选 ---- */
-.articles .art {
-  display: flex;
-  align-items: center;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  padding: 22rpx 24rpx;
-  margin-bottom: 18rpx;
-  box-shadow: 0 2rpx 8rpx rgba(17, 17, 26, .04);
-}
-.art-hover { background: var(--surface-2); }
-.acover {
-  width: 72rpx;
-  height: 72rpx;
-  border-radius: 18rpx;
-  flex: none;
-  margin-right: 20rpx;
-  background: var(--brand-soft);
-  color: var(--brand-700);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 34rpx;
-}
-.atext { flex: 1; min-width: 0; }
-.atitle { font-size: 28rpx; font-weight: 700; color: var(--ink-1); }
-.ameta { display: flex; align-items: center; gap: 14rpx; margin-top: 10rpx; }
-.aread { font-size: 22rpx; color: var(--ink-3); }
-.darrow { font-size: 40rpx; color: var(--ink-3); margin-left: 10rpx; flex: none; }
-
-/* ---- 邻里打卡榜 ---- */
-.ranks .rank {
-  display: flex;
-  align-items: center;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  padding: 20rpx 24rpx;
-  margin-bottom: 16rpx;
-  box-shadow: 0 2rpx 8rpx rgba(17, 17, 26, .04);
-}
-.ranks .rank.me { border-color: var(--brand); background: var(--brand-soft); }
-
-.rno {
-  width: 44rpx;
-  height: 44rpx;
-  border-radius: 50%;
-  flex: none;
-  margin-right: 16rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24rpx;
-  font-weight: 800;
-  color: #fff;
-  background: var(--ink-3);
-}
-.rno-1 { background: linear-gradient(135deg, #FB7185, #F43F5E); }
-.rno-2 { background: linear-gradient(135deg, #FBBF24, #F59E0B); }
-.rno-3 { background: linear-gradient(135deg, #34D399, #10B981); }
-
-.rname { flex: 1; font-size: 28rpx; font-weight: 700; color: var(--ink-1); }
-.rdays { font-size: 24rpx; color: var(--ink-3); }
-.rdays .rnum { font-size: 30rpx; font-weight: 800; color: var(--brand-700); margin: 0 4rpx; }

@@ -1,0 +1,37 @@
+.top-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  background: var(--surface);
+  border-bottom: 1rpx solid var(--line);
+  box-shadow: 0 2rpx 10rpx rgba(17, 17, 26, .03);
+}
+.tt-tab {
+  position: relative;
+  flex: 1;
+  text-align: center;
+  padding: 28rpx 0 22rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--ink-3);
+  transition: color .15s;
+}
+.tt-tab.on {
+  color: var(--brand-700);
+  font-weight: 700;
+}
+.tt-label { position: relative; z-index: 1; }
+.tt-bar {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 48rpx;
+  height: 6rpx;
+  border-radius: 6rpx;
+  background: var(--brand);
+  opacity: 0;
+  transition: opacity .15s;
+}
+.tt-tab.on .tt-bar { opacity: 1; }
