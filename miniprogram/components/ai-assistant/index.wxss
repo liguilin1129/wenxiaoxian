@@ -18,6 +18,10 @@
   z-index: 998;
   transition: transform 0.2s ease;
 }
+.ai-fab.moving {
+  transition: none;
+  opacity: 0.95;
+}
 .ai-fab.fab-hover {
   transform: scale(0.92);
 }

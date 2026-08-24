@@ -13,6 +13,8 @@ Component({
     scrollTarget: '',
     kbBottom: '0px',
     bodyHeight: 0,
+    fabOffset: { x: 0, y: 0 },
+    fabMoving: false,
     messages: [
       {
         id: 1,
@@ -31,6 +33,38 @@ Component({
       if (show) {
         // 面板渲染后再算消息区高度，避免 scroll-view 被内容撑开
         setTimeout(() => this.computeBodyHeight(), 50);
+      }
+    },
+
+    // ---- 悬浮按钮拖动（位置不持久化，跨页/重启重置）----
+    onFabTouchStart(e) {
+      const t = e.touches[0];
+      this._touchStart = { x: t.clientX, y: t.clientY };
+      this._touchBase = this.data.fabOffset;
+      this._touchMoved = false;
+      this.setData({ fabMoving: true });
+    },
+
+    onFabTouchMove(e) {
+      if (!this._touchStart) return;
+      const t = e.touches[0];
+      const dx = t.clientX - this._touchStart.x;
+      const dy = t.clientY - this._touchStart.y;
+      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+        this._touchMoved = true;
+      }
+      const base = this._touchBase || { x: 0, y: 0 };
+      this.setData({ fabOffset: { x: base.x + dx, y: base.y + dy } });
+    },
+
+    onFabTouchEnd() {
+      const moved = this._touchMoved;
+      this._touchStart = null;
+      this._touchBase = null;
+      this.setData({ fabMoving: false });
+      // 几乎没移动，当作点击打开面板
+      if (!moved) {
+        this.onToggle();
       }
     },
 

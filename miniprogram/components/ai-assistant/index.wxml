@@ -1,7 +1,15 @@
 <!-- 全局悬浮 AI 助手（微信聊天风格） -->
 <view class="ai-wrap">
-  <!-- 悬浮按钮 -->
-  <view class="ai-fab" bindtap="onToggle" hover-class="fab-hover">
+  <!-- 悬浮按钮（可拖动，位置不持久化） -->
+  <view
+    class="ai-fab {{fabMoving ? 'moving' : ''}}"
+    style="transform: translate({{fabOffset.x}}px, {{fabOffset.y}}px);"
+    hover-class="{{fabMoving ? '' : 'fab-hover'}}"
+    catchtouchstart="onFabTouchStart"
+    catchtouchmove="onFabTouchMove"
+    catchtouchend="onFabTouchEnd"
+    catchtouchcancel="onFabTouchEnd"
+  >
     <view class="fab-ring"></view>
     <view class="fab-icon">
       <text class="fab-text">AI</text>
