@@ -1,0 +1,60 @@
+/* 社区发布页 */
+.scr-body { padding-bottom: 120rpx; }
+
+.pub-hint {
+  font-size: 26rpx;
+  color: var(--ink-3);
+  margin-bottom: 24rpx;
+  line-height: 1.5;
+}
+
+.field {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 2rpx 8rpx rgba(17, 17, 26, .04);
+}
+
+.title-input {
+  width: 100%;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: var(--ink-1);
+}
+.title-input::placeholder { color: var(--ink-3); font-weight: 400; }
+
+.content-input {
+  width: 100%;
+  min-height: 280rpx;
+  font-size: 30rpx;
+  color: var(--ink-2);
+  line-height: 1.6;
+}
+.content-input::placeholder { color: var(--ink-3); }
+
+.counter {
+  text-align: right;
+  font-size: 22rpx;
+  color: var(--ink-3);
+  margin-top: 12rpx;
+}
+
+.label {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: var(--ink-1);
+  margin-bottom: 16rpx;
+}
+
+.picker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.p-arrow { color: var(--ink-3); font-size: 32rpx; }
+
+.btn {
+  margin-top: 12rpx;
+}

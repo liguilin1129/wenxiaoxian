@@ -12,6 +12,7 @@
     "pages/community/community",
     "pages/community/articles",
     "pages/community/rank",
+    "pages/community-publish/community-publish",
     "pages/rewards/rewards",
     "pages/reward-edit/reward-edit",
     "pages/report/report",

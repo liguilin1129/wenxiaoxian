@@ -1,0 +1,42 @@
+<view class="scr-body">
+  <view class="pub-hint">
+    {{mode === 'article' ? '分享你的育儿经验，帮助更多家长' : '记录孩子日常，和邻里一起成长'}}
+  </view>
+
+  <!-- 经验标题 -->
+  <view wx:if="{{mode === 'article'}}" class="field">
+    <input
+      class="title-input"
+      placeholder="请输入标题"
+      value="{{title}}"
+      bindinput="onTitleInput"
+      maxlength="30"
+    />
+  </view>
+
+  <!-- 正文 -->
+  <view class="field">
+    <textarea
+      class="content-input"
+      placeholder="{{mode === 'article' ? '写下你的经验正文…' : '分享今天孩子的成长点滴…'}}"
+      value="{{content}}"
+      bindinput="onContentInput"
+      maxlength="{{maxContent}}"
+      show-confirm-bar="{{false}}"
+    />
+    <view class="counter">{{content.length}}/{{maxContent}}</view>
+  </view>
+
+  <!-- 标签 -->
+  <view class="field">
+    <view class="label">选择标签</view>
+    <picker mode="selector" range="{{tags}}" value="{{tagIndex}}" bindchange="onTagChange">
+      <view class="picker">
+        <text class="pill pill-habit">{{tags[tagIndex]}}</text>
+        <text class="p-arrow">›</text>
+      </view>
+    </picker>
+  </view>
+
+  <button class="btn" bindtap="submit">发布</button>
+</view>

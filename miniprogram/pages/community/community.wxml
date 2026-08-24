@@ -21,4 +21,6 @@
   </view>
 </view>
 
+<view class="fab" bindtap="goPublish">+</view>
+
 <ai-assistant />

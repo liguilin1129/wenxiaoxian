@@ -16,3 +16,22 @@
 .pactions { display: flex; gap: 40rpx; margin-top: 16rpx; }
 .act { font-size: 24rpx; color: var(--ink-3); display: flex; align-items: center; gap: 6rpx; }
 .act.liked { color: var(--c-heart-d); }
+
+/* 发布按钮 */
+.fab {
+  position: fixed;
+  right: 32rpx;
+  bottom: calc(120rpx + env(safe-area-inset-bottom));
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  background: var(--brand);
+  color: #fff;
+  font-size: 52rpx;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 24rpx rgba(99, 102, 241, .35);
+  z-index: 30;
+}
