@@ -25,6 +25,13 @@ Component({
     _seq: 1
   },
 
+  // 页面重新显示时把 AI 按钮复位（位置不持久化）
+  pageLifetimes: {
+    show() {
+      this.setData({ fabOffset: { x: 0, y: 0 }, fabMoving: false });
+    }
+  },
+
   methods: {
     onToggle() {
       const show = !this.data.showPanel;
