@@ -7,6 +7,8 @@
     "pages/checkin/checkin",
     "pages/points/points",
     "pages/classics/classics",
+    "pages/discover/discover",
+    "pages/community/community",
     "pages/rewards/rewards",
     "pages/report/report",
     "pages/profile/profile",
@@ -28,7 +30,7 @@
     "list": [
       { "pagePath": "pages/index/index", "text": "首页" },
       { "pagePath": "pages/tasks/tasks", "text": "任务" },
-      { "pagePath": "pages/classics/classics", "text": "经典" },
+      { "pagePath": "pages/discover/discover", "text": "发现" },
       { "pagePath": "pages/profile/profile", "text": "我的" }
     ]
   },

@@ -16,7 +16,7 @@
 
       <view wx:if="{{item.idx === 0}}" class="icon icon-home"></view>
       <view wx:if="{{item.idx === 1}}" class="icon icon-task"></view>
-      <view wx:if="{{item.idx === 2}}" class="icon icon-book"></view>
+      <view wx:if="{{item.idx === 2}}" class="icon icon-discover"></view>
       <view wx:if="{{item.idx === 3}}" class="icon icon-mine"></view>
     </view>
     <text class="txt">{{item.text}}</text>

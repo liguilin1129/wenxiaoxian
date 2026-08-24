@@ -1,0 +1,28 @@
+<view class="scr-head">
+  <view class="greet">发现</view>
+  <view class="title">一起来探索</view>
+</view>
+
+<view class="scr-body">
+  <view class="dlist">
+    <view
+      wx:for="{{entries}}"
+      wx:key="key"
+      class="dentry"
+      data-url="{{item.url}}"
+      bindtap="go"
+      hover-class="dentry-hover"
+    >
+      <view class="di">{{item.icon}}</view>
+      <view class="dtext">
+        <view class="dt">{{item.title}}</view>
+        <view class="dd">{{item.desc}}</view>
+      </view>
+      <view class="darrow">›</view>
+    </view>
+  </view>
+
+  <view class="muted" style="margin-top:24rpx;text-align:center">三个板块，点开即看</view>
+</view>
+
+<ai-assistant />

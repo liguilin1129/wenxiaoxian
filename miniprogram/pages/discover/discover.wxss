@@ -1,0 +1,45 @@
+/* 发现页样式（复用 app.wxss 的 scr-head / scr-body） */
+
+.dlist { margin-top: 8rpx; }
+
+.dentry {
+  display: flex;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 30rpx 28rpx;
+  margin-bottom: 22rpx;
+  box-shadow: 0 2rpx 8rpx rgba(17, 17, 26, .04);
+}
+.dentry-hover { background: var(--surface-2); }
+
+.dentry .di {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 22rpx;
+  background: var(--brand-soft);
+  color: var(--brand-700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38rpx;
+  flex: none;
+  margin-right: 24rpx;
+}
+.dentry .dtext { flex: 1; min-width: 0; }
+.dentry .dt { font-size: 32rpx; font-weight: 700; color: var(--ink-1); }
+.dentry .dd {
+  font-size: 24rpx;
+  color: var(--ink-3);
+  margin-top: 8rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dentry .darrow {
+  font-size: 44rpx;
+  color: var(--ink-3);
+  margin-left: 12rpx;
+  flex: none;
+}

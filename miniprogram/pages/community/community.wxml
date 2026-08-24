@@ -1,0 +1,65 @@
+<view class="scr-head">
+  <view class="greet">社区</view>
+  <view class="title">成长社区</view>
+</view>
+
+<view class="scr-body">
+
+  <!-- 板块一：成长圈 · 家长动态 -->
+  <view class="h3">成长圈 · 家长动态</view>
+  <view class="feed">
+    <view wx:for="{{feed}}" wx:key="id" class="post">
+      <view class="avatar sm">{{item.avatar}}</view>
+      <view class="pbody">
+        <view class="phead">
+          <text class="pname">{{item.name}}</text>
+          <text class="ptime">{{item.time}}</text>
+        </view>
+        <view class="ptext">{{item.text}}</view>
+        <view class="pactions">
+          <view class="act {{item.liked ? 'liked' : ''}}" data-id="{{item.id}}" bindtap="toggleLike">
+            {{item.liked ? '❤️' : '🤍'}} {{item.likes}}
+          </view>
+          <view class="act">💬 {{item.comments}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 板块二：育儿干货精选 -->
+  <view class="h3" style="margin-top:36rpx">育儿干货精选</view>
+  <view class="articles">
+    <view
+      wx:for="{{articles}}"
+      wx:key="id"
+      class="art"
+      data-title="{{item.title}}"
+      bindtap="openArticle"
+      hover-class="art-hover"
+    >
+      <view class="acover">{{item.cover}}</view>
+      <view class="atext">
+        <view class="atitle">{{item.title}}</view>
+        <view class="ameta">
+          <text class="pill pill-habit">{{item.tag}}</text>
+          <text class="aread">{{item.read}} 阅读</text>
+        </view>
+      </view>
+      <view class="darrow">›</view>
+    </view>
+  </view>
+
+  <!-- 板块三：邻里打卡榜 -->
+  <view class="h3" style="margin-top:36rpx">邻里打卡榜</view>
+  <view class="ranks">
+    <view wx:for="{{ranks}}" wx:key="id" class="rank {{item.me ? 'me' : ''}}">
+      <view class="rno rno-{{item.id}}">{{item.id}}</view>
+      <view class="avatar sm">{{item.avatar}}</view>
+      <view class="rname">{{item.name}}{{item.me ? '（我）' : ''}}</view>
+      <view class="rdays">连续 <text class="rnum">{{item.days}}</text> 天</view>
+    </view>
+  </view>
+
+</view>
+
+<ai-assistant />
