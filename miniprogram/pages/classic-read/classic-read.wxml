@@ -1,0 +1,45 @@
+<view class="scr-head">
+  <view class="greet">经典诵读</view>
+  <view class="title">《{{name}}》</view>
+  <view class="prog">
+    <view class="pbar"><view class="pfill" style="width:{{pct}}%;background:{{book.color}}"></view></view>
+    <view class="ptxt">已读 {{book.read}} / {{book.total}} 章</view>
+  </view>
+</view>
+
+<view class="scr-body">
+  <!-- 目录 -->
+  <block wx:if="{{view==='dir'}}">
+    <view class="h3">目录</view>
+    <view wx:for="{{chapters}}" wx:key="no" class="ch" data-no="{{item.no}}" bindtap="openChapter">
+      <view class="ch-l">
+        <view class="ch-no">{{item.no}}</view>
+        <view class="ch-t">{{item.title}}</view>
+      </view>
+      <view class="ch-r">
+        <text wx:if="{{item.sample}}" class="tag">示例</text>
+        <text wx:if="{{item.done}}" class="ck">✓</text>
+        <text wx:else class="ar">›</text>
+      </view>
+    </view>
+    <view class="muted" style="text-align:center;margin-top:24rpx">点击章节开始诵读，读过即计入已读进度</view>
+  </block>
+
+  <!-- 阅读器 -->
+  <block wx:elif="{{view==='reader'}}">
+    <view class="ch-head">
+      <text class="ch-no2">第{{current.no}}章</text>
+      <text class="ch-title2">{{current.title}}</text>
+    </view>
+    <view class="reader">{{current.body}}</view>
+    <view wx:if="{{current.sample}}" class="sample-note">（本章为原型示例内容，正式校勘文本后续版本补全）</view>
+
+    <view class="nav">
+      <view class="navbtn {{curIndex>0?'':'dis'}}" bindtap="goPrev">‹ 上一章</view>
+      <view class="navbtn mid" bindtap="backToDir">目录</view>
+      <view class="navbtn {{curIndex<chapters.length-1?'':'dis'}}" bindtap="goNext">下一章 ›</view>
+    </view>
+  </block>
+</view>
+
+<ai-assistant />

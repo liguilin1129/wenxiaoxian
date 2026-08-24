@@ -7,6 +7,7 @@
     "pages/checkin/checkin",
     "pages/points/points",
     "pages/classics/classics",
+    "pages/classic-read/classic-read",
     "pages/discover/discover",
     "pages/community/community",
     "pages/rewards/rewards",

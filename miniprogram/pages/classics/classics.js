@@ -10,6 +10,7 @@ Page({
     this.setData({ classics: classics });
   },
   goDetail(e) {
-    wx.showToast({ title: '开始诵读《' + e.currentTarget.dataset.name + '》', icon: 'none' });
+    const name = e.currentTarget.dataset.name;
+    wx.navigateTo({ url: '/pages/classic-read/classic-read?name=' + encodeURIComponent(name) });
   }
 });

@@ -1,0 +1,56 @@
+/* 经典阅读页 */
+.scr-head { padding: 92rpx 32rpx 24rpx; background: var(--surface); }
+.scr-head .greet { font-size: 26rpx; color: var(--ink-3); }
+.scr-head .title { font-size: 44rpx; font-weight: 700; margin-top: 6rpx; letter-spacing: -1rpx; }
+.scr-head .prog { display: flex; align-items: center; gap: 20rpx; margin-top: 22rpx; }
+.scr-head .pbar { flex: 1; height: 14rpx; border-radius: 999rpx; background: var(--line-2); overflow: hidden; }
+.scr-head .pfill { display: block; height: 100%; border-radius: 999rpx; }
+.scr-head .ptxt { font-size: 24rpx; color: var(--ink-3); flex: none; }
+
+.scr-body { padding: 24rpx 32rpx 160rpx; }
+
+/* 目录 */
+.ch {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius-sm); padding: 26rpx 28rpx;
+  margin-bottom: 18rpx; box-shadow: 0 2rpx 8rpx rgba(17, 17, 26, .04);
+}
+.ch-l { display: flex; align-items: center; gap: 22rpx; min-width: 0; }
+.ch-no {
+  width: 56rpx; height: 56rpx; border-radius: 16rpx; flex: none;
+  background: var(--brand-soft); color: var(--brand-700);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26rpx; font-weight: 700;
+}
+.ch-t { font-size: 29rpx; font-weight: 600; color: var(--ink-1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ch-r { display: flex; align-items: center; gap: 14rpx; flex: none; }
+.ch .tag {
+  font-size: 20rpx; padding: 4rpx 14rpx; border-radius: 999rpx;
+  background: var(--c-taste-bg); color: var(--c-taste-d); font-weight: 600;
+}
+.ch .ck { color: var(--c-body-d); font-weight: 800; font-size: 30rpx; }
+.ch .ar { color: var(--ink-3); font-size: 36rpx; }
+
+/* 阅读器 */
+.ch-head { display: flex; align-items: baseline; gap: 18rpx; margin-bottom: 22rpx; }
+.ch-no2 { font-size: 24rpx; color: var(--brand-700); font-weight: 700; flex: none; }
+.ch-title2 { font-size: 36rpx; font-weight: 700; color: var(--ink-1); }
+.reader {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius-sm); padding: 36rpx 34rpx;
+  font-size: 33rpx; line-height: 2.0; color: var(--ink-1);
+  white-space: pre-wrap; word-break: break-all;
+  letter-spacing: 1rpx;
+  box-shadow: 0 2rpx 8rpx rgba(17, 17, 26, .04);
+}
+.sample-note { font-size: 22rpx; color: var(--ink-3); margin-top: 16rpx; text-align: center; }
+
+.nav { display: flex; gap: 18rpx; margin-top: 30rpx; }
+.navbtn {
+  flex: 1; text-align: center; padding: 22rpx;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius-xs); font-size: 27rpx; font-weight: 600; color: var(--brand-700);
+}
+.navbtn.mid { flex: 0 0 160rpx; background: var(--brand-soft); }
+.navbtn.dis { color: var(--ink-3); background: var(--surface-2); }

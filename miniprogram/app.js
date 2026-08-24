@@ -27,5 +27,15 @@ App({
     }
     // 恢复打卡状态并重建积分/历史（必须在 childProfile 之后，points 由其确定性重建）
     store.initCheckIns(this);
+
+    // 同步经典阅读进度：已读章节集合 → 已读章数；统一 total 为可读章节数（重启不丢）
+    const visited = wx.getStorageSync('classicVisited') || {};
+    this.globalData.classicVisited = visited;
+    this.globalData.classics.forEach(c => {
+      const chs = mock.classicChapters[c.name] || [];
+      if (chs.length) c.total = chs.length;
+      const set = visited[c.name] || [];
+      c.read = Math.min(set.length, c.total);
+    });
   }
 });
