@@ -12,6 +12,7 @@ Component({
     typing: false,
     scrollTarget: '',
     kbBottom: '0px',
+    bodyHeight: 0,
     messages: [
       {
         id: 1,
@@ -27,6 +28,25 @@ Component({
       const show = !this.data.showPanel;
       this.setData({ showPanel: show });
       this.setTabBarHidden(show);
+      if (show) {
+        // 面板渲染后再算消息区高度，避免 scroll-view 被内容撑开
+        setTimeout(() => this.computeBodyHeight(), 50);
+      }
+    },
+
+    // 动态计算消息区高度 = 面板高 - 头部 - 输入栏
+    computeBodyHeight() {
+      const query = wx.createSelectorQuery().in(this);
+      query.select('.ai-panel').boundingClientRect();
+      query.select('.panel-header').boundingClientRect();
+      query.select('.chat-input-bar').boundingClientRect();
+      query.exec((res) => {
+        const panel = res[0], header = res[1], input = res[2];
+        if (panel && header && input) {
+          const h = panel.height - header.height - input.height;
+          this.setData({ bodyHeight: Math.max(h, 100) });
+        }
+      });
     },
 
     onClose() {
@@ -52,9 +72,12 @@ Component({
     onFocus(e) {
       const h = (e.detail && e.detail.height) ? e.detail.height : 0;
       this.setData({ kbBottom: h + 'px' });
+      // 键盘高度变化后面板可用高度改变，重新计算
+      setTimeout(() => this.computeBodyHeight(), 50);
     },
     onBlur() {
       this.setData({ kbBottom: '0px' });
+      setTimeout(() => this.computeBodyHeight(), 50);
     },
 
     onSend() {

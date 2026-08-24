@@ -21,7 +21,7 @@
       </view>
 
       <!-- 消息区 -->
-      <scroll-view class="chat-body" scroll-y scroll-into-view="{{scrollTarget}}" scroll-with-animation>
+      <scroll-view class="chat-body" style="height: {{bodyHeight}}px" scroll-y scroll-into-view="{{scrollTarget}}" scroll-with-animation>
         <view
           wx:for="{{messages}}"
           wx:key="id"
