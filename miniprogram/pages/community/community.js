@@ -74,5 +74,15 @@ Page({
       return Object.assign({}, f, { liked: liked, likes: f.likes + (liked ? 1 : -1) });
     });
     this.setData({ feed: feed });
+  },
+  previewMedia(e) {
+    const list = e.currentTarget.dataset.list || [];
+    const idx = parseInt(e.currentTarget.dataset.index, 10) || 0;
+    const sources = list.map(m => ({
+      url: m.path,
+      type: m.type,
+      poster: m.thumb
+    }));
+    wx.previewMedia({ sources: sources, current: idx });
   }
 });

@@ -17,6 +17,43 @@
 .act { font-size: 24rpx; color: var(--ink-3); display: flex; align-items: center; gap: 6rpx; }
 .act.liked { color: var(--c-heart-d); }
 
+/* ---- 动态图片/视频 ---- */
+.pmedia {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-top: 16rpx;
+}
+.pm-item {
+  position: relative;
+  width: calc((100% - 24rpx) / 3);
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--surface-2);
+}
+.pm-item.pm-one {
+  width: 60%;
+  aspect-ratio: 16 / 10;
+}
+.pm-thumb { width: 100%; height: 100%; }
+.pm-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .55);
+  color: #fff;
+  font-size: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 4rpx;
+}
+
 /* 发布按钮（左下角，避免与右下角 AI 助手悬浮按钮重叠） */
 .fab {
   position: fixed;

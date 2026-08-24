@@ -10,6 +10,24 @@
           <text class="ptime">{{item.time}}</text>
         </view>
         <view class="ptext">{{item.text}}</view>
+
+        <!-- 图片/视频 -->
+        <view wx:if="{{item.media && item.media.length}}" class="pmedia">
+          <view
+            wx:for="{{item.media}}"
+            wx:for-item="m"
+            wx:for-index="mi"
+            wx:key="mi"
+            class="pm-item {{item.media.length === 1 ? 'pm-one' : ''}}"
+            data-list="{{item.media}}"
+            data-index="{{mi}}"
+            bindtap="previewMedia"
+          >
+            <image class="pm-thumb" src="{{m.thumb}}" mode="aspectFill" />
+            <view wx:if="{{m.type === 'video'}}" class="pm-play">▶</view>
+          </view>
+        </view>
+
         <view class="pactions">
           <view class="act {{item.liked ? 'liked' : ''}}" data-id="{{item.id}}" bindtap="toggleLike">
             {{item.liked ? '❤️' : '🤍'}} {{item.likes}}
