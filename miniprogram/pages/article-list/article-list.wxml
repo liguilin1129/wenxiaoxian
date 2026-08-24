@@ -1,0 +1,44 @@
+<view class="scr-head">
+  <view class="greet">精选文章</view>
+  <view class="title">优秀文章 · 报道 · 采访</view>
+</view>
+
+<view class="tabs">
+  <view
+    wx:for="{{categories}}"
+    wx:key="*this"
+    class="tab {{current === item ? 'on' : ''}}"
+    data-cat="{{item}}"
+    bindtap="switchCategory"
+  >{{item}}</view>
+</view>
+
+<view class="scr-body" style="padding-top:0">
+  <view class="alist">
+    <view
+      wx:for="{{articles}}"
+      wx:key="id"
+      wx:if="{{current === '全部' || item.category === current}}"
+      class="acard"
+      data-id="{{item.id}}"
+      bindtap="goDetail"
+      hover-class="acard-hover"
+    >
+      <view class="acover">{{item.cover}}</view>
+      <view class="ainfo">
+        <view class="acat">{{item.category}}</view>
+        <view class="atitle">{{item.title}}</view>
+        <view class="asummary">{{item.summary}}</view>
+        <view class="ameta">
+          <text class="aauthor">{{item.author}}</text>
+          <text class="adot">·</text>
+          <text class="adate">{{item.date}}</text>
+          <text class="adot">·</text>
+          <text class="aread">{{item.read}} 阅读</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<ai-assistant />

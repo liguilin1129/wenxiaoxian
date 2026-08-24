@@ -1,0 +1,63 @@
+/* 发现页 · 文章详情 */
+.page {
+  background: #fff;
+  min-height: 100vh;
+  padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
+}
+
+.aheader {
+  padding: 40rpx 32rpx;
+  border-bottom: 1px solid var(--line);
+}
+
+.acover.big {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 24rpx;
+  background: var(--brand-soft);
+  color: var(--brand-700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 72rpx;
+  margin-bottom: 24rpx;
+}
+
+.acat {
+  display: inline-flex;
+  padding: 6rpx 16rpx;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+  color: var(--brand-700);
+  background: var(--brand-soft);
+  margin-bottom: 16rpx;
+}
+
+.atitle {
+  font-size: 40rpx;
+  font-weight: 800;
+  color: var(--ink-1);
+  line-height: 1.4;
+}
+
+.ameta {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-top: 20rpx;
+  font-size: 24rpx;
+  color: var(--ink-3);
+}
+.adot { color: var(--ink-4); }
+
+.abody {
+  padding: 32rpx;
+}
+
+.paragraph {
+  font-size: 30rpx;
+  color: var(--ink-2);
+  line-height: 1.9;
+  margin-bottom: 28rpx;
+  text-align: justify;
+}

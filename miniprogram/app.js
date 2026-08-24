@@ -12,7 +12,8 @@ App({
     taskDetail: mock.taskDetail,
     classics: mock.classics,
     pointsHistory: mock.pointsHistory.map(p => Object.assign({}, p)),
-    rewards: mock.rewards
+    rewards: mock.rewards,
+    discoverArticles: mock.discoverArticles
   },
 
   onLaunch() {

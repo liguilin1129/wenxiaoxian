@@ -1,0 +1,20 @@
+<view wx:if="{{article}}" class="page">
+  <view class="aheader">
+    <view class="acover big">{{article.cover}}</view>
+    <view class="acat">{{article.category}}</view>
+    <view class="atitle">{{article.title}}</view>
+    <view class="ameta">
+      <text class="aauthor">{{article.author}}</text>
+      <text class="adot">·</text>
+      <text class="adate">{{article.date}}</text>
+      <text class="adot">·</text>
+      <text class="aread">{{article.read}} 阅读</text>
+    </view>
+  </view>
+
+  <view class="abody">
+    <view class="paragraph" wx:for="{{article.content.split('\\n')}}" wx:key="index">{{item}}</view>
+  </view>
+</view>
+
+<ai-assistant />

@@ -23,6 +23,13 @@ Page({
         title: '社区',
         desc: '成长圈 · 育儿干货 · 邻里打卡榜',
         url: '/pages/community/community'
+      },
+      {
+        key: 'articles',
+        icon: '📰',
+        title: '文章',
+        desc: '优秀文章 · 报道 · 采访',
+        url: '/pages/article-list/article-list'
       }
     ]
   },

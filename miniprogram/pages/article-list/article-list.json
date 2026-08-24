@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "ai-assistant": "/components/ai-assistant/index"
+  },
+  "navigationBarTitleText": "精选文章"
+}
