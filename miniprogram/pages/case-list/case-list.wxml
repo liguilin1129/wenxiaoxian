@@ -1,0 +1,80 @@
+<view class="scr-head case-head">
+  <view class="title">学员案例</view>
+  <!-- 搜索栏 -->
+  <view class="case-search">
+    <text class="case-search-label">课程案例</text>
+    <view class="case-search-input-wrap">
+      <text class="case-search-icon">🔍</text>
+      <input class="case-search-input" placeholder="搜索想了解的案例" value="{{keyword}}" bindinput="onSearch" confirm-type="search" bindconfirm="doSearch" />
+    </view>
+  </view>
+</view>
+
+<view class="scr-body">
+  <!-- 课程分类横向滚动 -->
+  <scroll-view scroll-x class="course-scroll" enable-flex>
+    <view class="course-list">
+      <view class="course-card" wx:for="{{courses}}" wx:key="id" style="background:{{item.bg}}" bindtap="filterCourse" data-id="{{item.id}}">
+        <view class="course-name">{{item.name}}</view>
+        <view class="course-sub">{{item.sub}}</view>
+        <view class="course-action" style="color:{{item.color}}">查看案例</view>
+        <image wx:if="{{item.cover}}" class="course-cover" src="{{item.cover}}" mode="aspectFill" />
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 案例分享 Tab -->
+  <view class="case-share-header">
+    <view class="case-share-title">案例分享</view>
+    <view class="case-tabs">
+      <view class="case-tab {{tab === 'selected' ? 'active' : ''}}" data-tab="selected" bindtap="switchTab">精选</view>
+      <view class="case-tab {{tab === 'latest' ? 'active' : ''}}" data-tab="latest" bindtap="switchTab">最新</view>
+      <view class="case-tab {{tab === 'fav' ? 'active' : ''}}" data-tab="fav" bindtap="switchTab">收藏</view>
+    </view>
+  </view>
+
+  <!-- 案例列表 -->
+  <view class="case-list">
+    <view class="case-card" wx:for="{{displayCases}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="case-header">
+        <view class="case-avatar">{{item.avatar}}</view>
+        <view class="case-meta">
+          <view class="case-nick">{{item.nick}} <text wx:if="{{item.selected}}" class="case-selected-tag">精选</text></view>
+          <view class="case-date">{{item.date}}</view>
+        </view>
+      </view>
+      <view class="case-title">{{item.title}}</view>
+      <view class="case-summary">
+        <text>{{expanded[item.id] ? item.content : item.summary}}</text>
+        <text class="case-more" data-id="{{item.id}}" catchtap="toggleExpand">{{expanded[item.id] ? '收起' : '全文'}}</text>
+      </view>
+      <!-- 配图网格 -->
+      <view class="case-images" wx:if="{{item.images.length}}">
+        <view class="case-img-wrap case-img-count-{{item.images.length > 3 ? 3 : item.images.length}}" wx:for="{{item.images}}" wx:for-item="img" wx:key="*this" wx:for-index="imgIdx">
+          <image class="case-img" src="{{img}}" mode="aspectFill" />
+          <view wx:if="{{imgIdx === 2 && item.images.length > 3}}" class="case-img-more">+{{item.images.length - 3}}</view>
+        </view>
+      </view>
+      <!-- 互动数据 -->
+      <view class="case-actions">
+        <view class="case-act" catchtap="likeCase" data-id="{{item.id}}">
+          <text class="case-act-icon">{{item.liked ? '❤️' : '🤍'}}</text>
+          <text>{{item.likeCount}}</text>
+        </view>
+        <view class="case-act" catchtap="favCase" data-id="{{item.id}}">
+          <text class="case-act-icon">{{item.faved ? '⭐' : '☆'}}</text>
+          <text>{{item.favCount}}</text>
+        </view>
+        <view class="case-act">
+          <text class="case-act-icon">↗️</text>
+          <text>{{item.shareCount}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{!displayCases.length}}" class="empty">
+    <view class="empty-icon">🌟</view>
+    <view class="empty-title">暂无案例</view>
+  </view>
+</view>

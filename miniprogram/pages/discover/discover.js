@@ -30,6 +30,13 @@ Page({
         title: '文章',
         desc: '优秀文章 · 报道 · 采访',
         url: '/pages/article-list/article-list'
+      },
+      {
+        key: 'cases',
+        icon: '🌟',
+        title: '学员案例',
+        desc: '家庭教育真实蜕变故事',
+        url: '/pages/case-list/case-list'
       }
     ]
   },

@@ -21,7 +21,9 @@
     "pages/profile/profile",
     "pages/profile-edit/profile-edit",
     "pages/family/family",
-    "pages/family/meeting"
+    "pages/family/meeting",
+    "pages/case-list/case-list",
+    "pages/case-detail/case-detail"
   ],
   "window": {
     "backgroundTextStyle": "dark",

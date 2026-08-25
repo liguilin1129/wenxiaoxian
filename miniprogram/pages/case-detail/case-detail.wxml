@@ -1,0 +1,32 @@
+<view class="scr-body" style="padding-top:24rpx">
+  <view class="case-card">
+    <view class="case-header">
+      <view class="case-avatar">{{case.avatar}}</view>
+      <view class="case-meta">
+        <view class="case-nick">{{case.nick}} <text wx:if="{{case.selected}}" class="case-selected-tag">精选</text></view>
+        <view class="case-date">{{case.date}}</view>
+      </view>
+    </view>
+    <view class="case-title">{{case.title}}</view>
+    <view class="case-content">{{case.content}}</view>
+    <view class="case-images" wx:if="{{case.images.length}}">
+      <view class="case-img-wrap case-img-count-{{case.images.length > 3 ? 3 : case.images.length}}" wx:for="{{case.images}}" wx:for-item="img" wx:key="*this">
+        <image class="case-img" src="{{img}}" mode="aspectFill" />
+      </view>
+    </view>
+    <view class="case-actions" style="margin-top:28rpx">
+      <view class="case-act" bindtap="likeCase">
+        <text class="case-act-icon">{{case.liked ? '❤️' : '🤍'}}</text>
+        <text>{{case.likeCount}}</text>
+      </view>
+      <view class="case-act" bindtap="favCase">
+        <text class="case-act-icon">{{case.faved ? '⭐' : '☆'}}</text>
+        <text>{{case.favCount}}</text>
+      </view>
+      <view class="case-act">
+        <text class="case-act-icon">↗️</text>
+        <text>{{case.shareCount}}</text>
+      </view>
+    </view>
+  </view>
+</view>

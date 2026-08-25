@@ -14,7 +14,9 @@ App({
     pointsHistory: mock.pointsHistory.map(p => Object.assign({}, p)),
     rewards: mock.rewards,
     discoverArticles: mock.discoverArticles,
-    meetings: []
+    meetings: [],
+    courses: mock.courses,
+    cases: mock.cases
   },
 
   onLaunch() {

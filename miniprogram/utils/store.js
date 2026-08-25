@@ -361,6 +361,36 @@ function closeMeeting(id, summary) {
   return true;
 }
 
+// ---------- 学员案例点赞/收藏 ----------
+
+const CASE_LIKE_KEY = 'caseLikes';
+const CASE_FAV_KEY = 'caseFavs';
+
+function getCaseSet(key) {
+  const raw = wx.getStorageSync(key);
+  return new Set(Array.isArray(raw) ? raw : []);
+}
+function saveCaseSet(key, set) {
+  wx.setStorageSync(key, Array.from(set));
+}
+
+function isCaseLiked(id) {
+  return getCaseSet(CASE_LIKE_KEY).has(id);
+}
+function isCaseFaved(id) {
+  return getCaseSet(CASE_FAV_KEY).has(id);
+}
+function toggleCaseLike(id) {
+  const set = getCaseSet(CASE_LIKE_KEY);
+  if (set.has(id)) set.delete(id); else set.add(id);
+  saveCaseSet(CASE_LIKE_KEY, set);
+}
+function toggleCaseFav(id) {
+  const set = getCaseSet(CASE_FAV_KEY);
+  if (set.has(id)) set.delete(id); else set.add(id);
+  saveCaseSet(CASE_FAV_KEY, set);
+}
+
 module.exports = {
   state, dimMeta, initCheckIns,
   toggleDaily, toggleCenter, toggleTodayTask: toggleDaily,
@@ -368,5 +398,6 @@ module.exports = {
   redeem, signContract, isSigned, recordBonus,
   aiRecordBonus, addDailyTask,
   getRewards, saveRewards,
-  getMeetings, createMeeting, updateMeeting, closeMeeting
+  getMeetings, createMeeting, updateMeeting, closeMeeting,
+  isCaseLiked, isCaseFaved, toggleCaseLike, toggleCaseFav
 };
