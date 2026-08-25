@@ -1,14 +1,35 @@
 <view class="scr-head">
   <view class="row between" style="align-items:flex-start">
     <view>
-      <view class="greet">早上好，文小贤 👋</view>
+      <view class="greet">{{signed ? '早上好，文小贤 👋' : '欢迎来到成长花园 👋'}}</view>
       <view class="title">你的成长花园</view>
     </view>
-    <view class="avatar">{{child.avatar}}</view>
+    <view class="avatar" wx:if="{{signed}}">{{child.avatar}}</view>
   </view>
 </view>
 
 <view class="scr-body">
+  <!-- 未登录：游客态（无用户信息） -->
+  <block wx:if="{{!signed}}">
+    <view class="guest-hero">
+      <view class="guest-emoji">🌱</view>
+      <view class="guest-title">和孩子一起，种下成长的种子</view>
+      <view class="guest-desc">登录后开启积分成长、任务打卡、家庭会议与更多功能</view>
+      <button class="btn" style="margin-top:32rpx" bindtap="goLogin">登录 · 签订成长合约</button>
+    </view>
+
+    <view class="h3" style="margin:32rpx 4rpx 16rpx">功能介绍</view>
+    <view class="guest-feat" wx:for="{{guestFeats}}" wx:key="icon">
+      <text class="guest-feat-icon">{{item.icon}}</text>
+      <view class="flex1">
+        <view class="tn" style="font-size:28rpx">{{item.name}}</view>
+        <view class="muted" style="margin-top:6rpx">{{item.desc}}</view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 已登录：正常内容 -->
+  <block wx:else>
   <!-- 积分等级卡 -->
   <view class="card" style="padding:36rpx">
     <view class="row between" style="align-items:flex-end">
@@ -77,6 +98,7 @@
       <text class="btn sm" style="margin:0">诵读</text>
     </view>
   </view>
+  </block>
 </view>
 
 <ai-assistant />

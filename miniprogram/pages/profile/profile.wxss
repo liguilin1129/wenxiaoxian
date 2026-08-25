@@ -3,6 +3,37 @@
   padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
 }
 
+/* ---- 未登录引导 ---- */
+.guest-login {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  padding: 56rpx 32rpx;
+  background: linear-gradient(135deg, #EEEDFE, #F5F3FF);
+}
+.guest-login-avatar {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+  flex: none;
+  box-shadow: 0 2rpx 8rpx rgba(17, 17, 26, .05);
+}
+.guest-login-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: var(--ink-1);
+}
+.guest-login-arrow {
+  font-size: 44rpx;
+  color: var(--ink-3);
+  flex: none;
+}
+
 /* ---- 顶部用户信息 ---- */
 .profile-header {
   display: flex;

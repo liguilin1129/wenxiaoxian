@@ -1,6 +1,6 @@
 <view class="profile-page">
-  <!-- 顶部用户信息 -->
-  <view class="profile-header">
+  <!-- 顶部用户信息：已登录 -->
+  <view class="profile-header" wx:if="{{signed}}">
     <view class="avatar lg">{{child.avatar}}</view>
     <view class="profile-info">
       <view class="profile-name">{{child.name}}</view>
@@ -9,6 +9,18 @@
     <view class="profile-edit" bindtap="editProfile">编辑</view>
   </view>
 
+  <!-- 未登录：登录引导 -->
+  <view class="guest-login" wx:else bindtap="goLogin">
+    <view class="guest-login-avatar">👤</view>
+    <view class="flex1">
+      <view class="guest-login-title">登录 · 签订成长合约</view>
+      <view class="muted" style="font-size:24rpx;margin-top:6rpx">登录后查看我的任务、积分与成长记录</view>
+    </view>
+    <view class="guest-login-arrow">›</view>
+  </view>
+
+  <!-- 已登录：其余模块 -->
+  <block wx:if="{{signed}}">
   <!-- VIP 超级会员卡（无真实数据时隐藏） -->
   <view class="vip-card" wx:if="{{showVip}}">
     <view class="vip-left">
@@ -69,6 +81,7 @@
   </view>
 
   <button class="btn soft" style="margin-top:8rpx" bindtap="logout">退出成长花园</button>
+  </block>
 </view>
 
 <ai-assistant />

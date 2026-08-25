@@ -1,7 +1,9 @@
 const app = getApp();
+const store = require('../../utils/store.js');
 
 Page({
   data: {
+    signed: false,
     child: {},
     // 会员数据为占位/mock 时先隐藏，接入真实数据后改为 true
     showVip: false,
@@ -27,14 +29,22 @@ Page({
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 3 });
     }
+    const signed = !!store.isSigned();
+    if (!signed) {
+      // 未登录：不展示任何用户信息
+      const stats = this.data.stats.map(s => Object.assign({}, s, { num: 0 }));
+      this.setData({ signed: false, child: {}, stats: stats });
+      return;
+    }
     const child = app.globalData.child || {};
     const stats = this.data.stats.slice();
     // 把实际积分和今日已完成任务数展示出来
     stats[3].num = child.points || 0;
     const todayDone = (app.globalData.todayTasks || []).filter(t => t.done).length;
     stats[0].num = todayDone;
-    this.setData({ child: child, stats: stats });
+    this.setData({ signed: true, child: child, stats: stats });
   },
+  goLogin() { wx.navigateTo({ url: '/pages/guide/guide' }); },
   editProfile() { wx.navigateTo({ url: '/pages/profile-edit/profile-edit' }); },
   goClassics() { wx.navigateTo({ url: '/pages/classics/classics' }); },
   goRewards() { wx.navigateTo({ url: '/pages/rewards/rewards' }); },
@@ -46,12 +56,12 @@ Page({
   logout() {
     wx.showModal({
       title: '退出成长花园',
-      content: '确定要退出吗？下次打开需重新签订合约。',
+      content: '确定要退出吗？退出后回到游客状态。',
       success: (res) => {
         if (res.confirm) {
           app.globalData.signed = false;
           wx.removeStorageSync('signed');
-          wx.reLaunch({ url: '/pages/guide/guide' });
+          wx.reLaunch({ url: '/pages/index/index' });
         }
       }
     });
