@@ -64,8 +64,8 @@
     <text class="mv">17 部 ›</text>
   </view>
   <view class="menu" bindtap="goMembers">
-    <view class="mt"><text class="mi">👨‍👩‍👦</text>家庭成员</view>
-    <text class="mv">爸爸 · 妈妈 ›</text>
+    <view class="mt"><text class="mi">👨‍👩‍👦</text>我的家庭</view>
+    <text class="mv">家庭会议 · 公约 ›</text>
   </view>
 
   <button class="btn soft" style="margin-top:8rpx" bindtap="logout">退出成长花园</button>

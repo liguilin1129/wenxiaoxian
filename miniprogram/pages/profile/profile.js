@@ -41,7 +41,7 @@ Page({
   goReport() { wx.navigateTo({ url: '/pages/report/report' }); },
   goPoints() { wx.navigateTo({ url: '/pages/points/points' }); },
   goTasks() { wx.switchTab({ url: '/pages/tasks/tasks' }); },
-  goMembers() { wx.showToast({ title: '爸爸 · 妈妈', icon: 'none' }); },
+  goMembers() { wx.navigateTo({ url: '/pages/family/family' }); },
   goSettings() { wx.showToast({ title: '提醒 · 主题', icon: 'none' }); },
   logout() {
     wx.showModal({

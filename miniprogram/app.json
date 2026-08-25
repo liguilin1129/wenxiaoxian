@@ -19,7 +19,9 @@
     "pages/article-detail/article-detail",
     "pages/report/report",
     "pages/profile/profile",
-    "pages/profile-edit/profile-edit"
+    "pages/profile-edit/profile-edit",
+    "pages/family/family",
+    "pages/family/meeting"
   ],
   "window": {
     "backgroundTextStyle": "dark",

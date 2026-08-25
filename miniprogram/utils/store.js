@@ -10,6 +10,9 @@ const KEY = 'checkInState';
 const DEFAULT_DONE_POINTS = mock.todayTasks.filter(t => t.done).reduce((s, t) => s + t.points, 0);
 const BASE_POINTS = mock.child.points - DEFAULT_DONE_POINTS;
 
+const MEETINGS_KEY = 'familyMeetings';
+const MEETING_TASKS_KEY = 'meetingTasks'; // 今日任务中来自会议的新增项
+
 // 任务中心扁平表：id -> { points(奖励总和), dim, name }
 const centerMap = {};
 mock.tasks.forEach(g => {
@@ -68,6 +71,24 @@ function load() {
   return st;
 }
 
+function loadMeetings() {
+  const list = wx.getStorageSync(MEETINGS_KEY);
+  return Array.isArray(list) ? list : [];
+}
+
+function saveMeetings(list) {
+  wx.setStorageSync(MEETINGS_KEY, list);
+}
+
+function loadMeetingTasks() {
+  const list = wx.getStorageSync(MEETING_TASKS_KEY);
+  return Array.isArray(list) ? list : [];
+}
+
+function saveMeetingTasks(list) {
+  wx.setStorageSync(MEETING_TASKS_KEY, list);
+}
+
 function save(st) {
   wx.setStorageSync(KEY, st);
 }
@@ -113,6 +134,17 @@ function initCheckIns(appInstance) {
   Object.keys(st.center).forEach(id => { s.centerTasksDone[id] = st.center[id]; });
   recompute(s, st);
   s._ci = st;
+  // 恢复家庭会议列表
+  s.meetings = loadMeetings();
+  // 恢复由会议新增的今日任务（跨天时只保留非过期的会议任务，简单策略：全部清空重按日期重建）
+  const today = todayStr();
+  const mtList = loadMeetingTasks();
+  const validMt = mtList.filter(t => t.date === today);
+  validMt.forEach(t => {
+    const exists = s.todayTasks.find(x => x.id === t.id);
+    if (!exists) s.todayTasks.push(t);
+  });
+  if (validMt.length !== mtList.length) saveMeetingTasks(validMt);
 }
 
 // 自愈：开发者工具热重载 app.js 时 onLaunch 不一定重跑，
@@ -237,11 +269,104 @@ function recordBonus(name, points) {
   return { points: s.child.points };
 }
 
+// ---------- 家庭会议 ----------
+
+function getMeetings() {
+  ensure();
+  const s = state();
+  if (!s.meetings) s.meetings = loadMeetings();
+  return s.meetings;
+}
+
+function syncMeetingsToStorage() {
+  const s = state();
+  if (s.meetings) saveMeetings(s.meetings);
+}
+
+function createMeeting(meeting) {
+  ensure();
+  const s = state();
+  if (!s.meetings) s.meetings = loadMeetings();
+  s.meetings.unshift(meeting);
+  syncMeetingsToStorage();
+  return meeting;
+}
+
+function updateMeeting(meeting) {
+  ensure();
+  const s = state();
+  if (!s.meetings) s.meetings = loadMeetings();
+  const idx = s.meetings.findIndex(m => m.id === meeting.id);
+  if (idx >= 0) {
+    s.meetings[idx] = meeting;
+    syncMeetingsToStorage();
+    return true;
+  }
+  return false;
+}
+
+function closeMeeting(id, summary) {
+  ensure();
+  const s = state();
+  if (!s.meetings) s.meetings = loadMeetings();
+  const meeting = s.meetings.find(m => m.id === id);
+  if (!meeting || meeting.status === 'done') return false;
+
+  const today = todayStr();
+  const todayShort = formatToday();
+  const mtList = loadMeetingTasks();
+
+  meeting.status = 'done';
+  meeting.summary = summary || '';
+
+  meeting.topics.forEach(t => {
+    if (!t.approved) return;
+    const pts = Number(t.target.points) || 0;
+    if (t.type === 'task' && t.target.name) {
+      const task = {
+        id: 'mt_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+        name: t.target.name,
+        dim: 'habit',
+        points: pts || 5,
+        done: false,
+        fromMeeting: true
+      };
+      s.todayTasks.push(task);
+      mtList.push(Object.assign({}, task, { date: today }));
+    } else if (t.type === 'reward' && t.target.name) {
+      const reward = {
+        id: 'mr_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+        name: t.target.name,
+        desc: '家庭会议新增心愿',
+        cost: pts || 50,
+        dim: 'taste',
+        fromMeeting: true
+      };
+      s.rewards.push(reward);
+      // 同步家长自定义奖品存储
+      wx.setStorageSync(REWARDS_KEY, s.rewards);
+    } else if (t.type === 'rule' && t.target.name) {
+      // 积分规则调整：仅作为历史记录，暂不改动全局权重
+      s.pointsHistory.unshift({
+        title: '会议规则：' + t.target.name,
+        dim: 'habit',
+        date: todayShort,
+        delta: 0
+      });
+    }
+  });
+
+  saveMeetingTasks(mtList);
+  syncMeetingsToStorage();
+  return true;
+}
+
 module.exports = {
   state, dimMeta, initCheckIns,
   toggleDaily, toggleCenter, toggleTodayTask: toggleDaily,
   isCenterDone, todayDoneCount, todayGain,
   redeem, signContract, isSigned, recordBonus,
   aiRecordBonus, addDailyTask,
-  getRewards, saveRewards
+  getRewards, saveRewards,
+  getMeetings, createMeeting, updateMeeting, closeMeeting
 };
