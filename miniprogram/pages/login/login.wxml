@@ -29,6 +29,4 @@
   </view>
 
   <button class="enter-btn" bindtap="enter">进入成长花园</button>
-
-  <view class="tip">家庭会议是可选功能：需要制定任务或决定愿望清单时，可在「我的 → 我的家庭」召开，产出决议会同步到任务中心和商城。</view>
 </view>
