@@ -1,5 +1,6 @@
 const app = getApp();
 const store = require('../../utils/store.js');
+const mock = require('../../utils/mock.js');
 
 function buildDimName() {
   const m = {};
@@ -16,7 +17,7 @@ Page({
       { icon: '✅', name: '任务打卡', desc: '每日任务 · 好习惯养成' },
       { icon: '⭐', name: '积分成长', desc: '积分明细 · 四维成长报告' },
       { icon: '🎁', name: '奖励兑换', desc: '积分商城 · 心愿兑换' },
-      { icon: '🪑', name: '家庭会议', desc: '全家商议 · 共同签订成长合约' }
+      { icon: '🪑', name: '家庭会议', desc: '全家商议 · 调整任务与心愿' }
     ]
   },
   onShow() {
@@ -46,7 +47,8 @@ Page({
       dimName: buildDimName(),
       levelPct: levelPct,
       nextLevel: child.levelNum + 1,
-      need: need
+      need: need,
+      classicToday: mock.classicToday
     });
   },
   goLogin() {

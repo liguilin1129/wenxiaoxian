@@ -231,6 +231,13 @@ function buildClassicChapters() {
 }
 const classicChapters = buildClassicChapters();
 
+// 经典今日推荐：取正在阅读中（已读>0 且未读完）的第一本，否则取第一本
+const classicToday = (() => {
+  const reading = classics.filter(b => b.read > 0 && b.read < b.total);
+  const pick = reading[0] || classics[0];
+  return { name: pick.name, read: pick.read, total: pick.total, color: pick.color };
+})();
+
 // 积分明细
 const pointsHistory = [
   { title: '诚实守信（信）', dim: 'heart', date: '08-20', delta: 10 },
@@ -426,5 +433,5 @@ const neigong = [
 ];
 
 module.exports = {
-  dimensions, child, todayTasks, tasks, taskDetail, classics, classicChapters, pointsHistory, rewards, neigong, discoverArticles, courses, cases
+  dimensions, child, todayTasks, tasks, taskDetail, classics, classicChapters, classicToday, pointsHistory, rewards, neigong, discoverArticles, courses, cases
 };
