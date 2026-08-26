@@ -229,7 +229,8 @@ function saveRewards(list) {
   wx.setStorageSync(REWARDS_KEY, list);
 }
 
-function signContract() {
+// 轻量登录：仅标记已登录，与家庭会议解耦
+function login() {
   const s = state();
   s.signed = true;
   wx.setStorageSync('signed', true);
@@ -395,7 +396,7 @@ module.exports = {
   state, dimMeta, initCheckIns,
   toggleDaily, toggleCenter, toggleTodayTask: toggleDaily,
   isCenterDone, todayDoneCount, todayGain,
-  redeem, signContract, isSigned, recordBonus,
+  redeem, login, isSigned, recordBonus,
   aiRecordBonus, addDailyTask,
   getRewards, saveRewards,
   getMeetings, createMeeting, updateMeeting, closeMeeting,

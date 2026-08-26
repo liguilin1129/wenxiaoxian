@@ -1,0 +1,34 @@
+<view class="login-page">
+  <view class="hero">
+    <view class="logo">🌱</view>
+    <view class="hero-title">文小贤 · 成长花园</view>
+    <view class="hero-sub">先给自己起个名字，开启成长之旅</view>
+  </view>
+
+  <view class="card">
+    <view class="label">选择头像</view>
+    <view class="avatars">
+      <view
+        wx:for="{{avatars}}"
+        wx:key="*this"
+        class="avatar-opt {{avatar === item ? 'on' : ''}}"
+        data-a="{{item}}"
+        bindtap="pickAvatar"
+      >{{item}}</view>
+    </view>
+
+    <view class="label" style="margin-top:36rpx">昵称</view>
+    <input
+      class="nick-input"
+      placeholder="例如：文小贤"
+      placeholder-class="ph"
+      value="{{name}}"
+      maxlength="12"
+      bindinput="onName"
+    />
+  </view>
+
+  <button class="enter-btn" bindtap="enter">进入成长花园</button>
+
+  <view class="tip">家庭会议是可选功能：需要制定任务或决定愿望清单时，可在「我的 → 我的家庭」召开，产出决议会同步到任务中心和商城。</view>
+</view>

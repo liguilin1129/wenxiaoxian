@@ -44,7 +44,7 @@ Page({
     stats[0].num = todayDone;
     this.setData({ signed: true, child: child, stats: stats });
   },
-  goLogin() { wx.navigateTo({ url: '/pages/guide/guide' }); },
+  goLogin() { wx.navigateTo({ url: '/pages/login/login' }); },
   editProfile() { wx.navigateTo({ url: '/pages/profile-edit/profile-edit' }); },
   goClassics() { wx.navigateTo({ url: '/pages/classics/classics' }); },
   goRewards() { wx.navigateTo({ url: '/pages/rewards/rewards' }); },

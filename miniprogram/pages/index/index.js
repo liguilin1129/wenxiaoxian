@@ -50,8 +50,8 @@ Page({
     });
   },
   goLogin() {
-    // 未登录 → 进入家庭会议三步签约流程（guide）
-    wx.navigateTo({ url: '/pages/guide/guide' });
+    // 未登录 → 轻量资料设置（与家庭会议解耦，不再强制签约）
+    wx.navigateTo({ url: '/pages/login/login' });
   },
   goReport() { wx.navigateTo({ url: '/pages/report/report' }); },
   goCheckin() { wx.navigateTo({ url: '/pages/checkin/checkin' }); },
