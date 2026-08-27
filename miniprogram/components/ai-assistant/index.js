@@ -33,12 +33,12 @@ Component({
     }
   },
 
-  // 把悬浮按钮复位到默认位置（位置不持久化，仅当前会话/页面有效）
-  resetFab() {
-    this.setData({ fabOffset: { x: 0, y: 0 }, fabMoving: false });
-  },
-
   methods: {
+    // 把悬浮按钮复位到默认位置（位置不持久化，仅当前会话/页面有效）
+    resetFab() {
+      this.setData({ fabOffset: { x: 0, y: 0 }, fabMoving: false });
+    },
+
     onToggle() {
       const show = !this.data.showPanel;
       this.setData({ showPanel: show });
