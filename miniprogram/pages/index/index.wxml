@@ -134,4 +134,4 @@
   </block>
 </view>
 
-<ai-assistant />
+<ai-assistant id="aiAssistant" />

@@ -47,6 +47,11 @@ Page({
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 0 });
     }
+    // 每次回到首页都强制把 AI 悬浮按钮复位到默认位置
+    const fab = this.selectComponent('#aiAssistant');
+    if (fab && typeof fab.resetFab === 'function') {
+      fab.resetFab();
+    }
     this.refresh();
   },
   refresh() {

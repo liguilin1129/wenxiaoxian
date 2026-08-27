@@ -29,8 +29,13 @@ Component({
   // 页面重新显示时把 AI 按钮复位（位置不持久化）
   pageLifetimes: {
     show() {
-      this.setData({ fabOffset: { x: 0, y: 0 }, fabMoving: false });
+      this.resetFab();
     }
+  },
+
+  // 把悬浮按钮复位到默认位置（位置不持久化，仅当前会话/页面有效）
+  resetFab() {
+    this.setData({ fabOffset: { x: 0, y: 0 }, fabMoving: false });
   },
 
   methods: {
