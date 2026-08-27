@@ -4,7 +4,11 @@
       <view class="greet">{{signed ? '早上好，文小贤 👋' : '欢迎来到成长花园 👋'}}</view>
       <view class="title">你的成长花园</view>
     </view>
-    <view class="avatar" wx:if="{{signed}}">{{child.avatar}}</view>
+    <view class="head-right" wx:if="{{signed}}">
+      <view class="head-ic" bindtap="onSearch">🔍</view>
+      <view class="head-ic" bindtap="goSettings">⚙️</view>
+      <view class="avatar">{{child.avatar}}</view>
+    </view>
   </view>
 </view>
 
@@ -30,74 +34,103 @@
 
   <!-- 已登录：正常内容 -->
   <block wx:else>
-  <!-- 积分等级卡 -->
-  <view class="card" style="padding:36rpx">
-    <view class="row between" style="align-items:flex-end">
-      <view>
-        <view class="muted">当前积分</view>
-        <view style="font-size:64rpx;font-weight:800;color:var(--ink-1);line-height:1;margin-top:4rpx">{{child.points}}</view>
-      </view>
-      <text class="pill pill-habit">{{child.levelName}} · Lv.{{child.levelNum}}</text>
-    </view>
-    <view class="bar" style="margin-top:24rpx"><view class="fill" style="width:{{levelPct}}%"></view></view>
-    <view class="row between" style="margin-top:16rpx;font-size:22rpx;color:var(--ink-2)">
-      <text>距 Lv.{{nextLevel}} 还差 {{need}} 分</text>
-      <text>本周 +{{child.weekGain}}</text>
-    </view>
-  </view>
-
-  <!-- 连续打卡 -->
-  <view class="card row between" style="margin-top:24rpx">
-    <view class="row" style="gap:22rpx">
-      <text style="font-size:44rpx">🔥</text>
-      <view>
-        <view class="tn" style="font-size:28rpx">连续打卡 {{child.streak}} 天</view>
-        <view class="muted">坚持，是成长最美的样子</view>
+    <!-- 快捷入口宫格 -->
+    <view class="quick-grid">
+      <view
+        class="quick-item"
+        wx:for="{{quickEntries}}"
+        wx:key="name"
+        data-url="{{item.url}}"
+        data-tab="{{item.tab}}"
+        bindtap="goQuick"
+      >
+        <view class="quick-ic" style="background:{{item.bg}};color:{{item.color}}">{{item.icon}}</view>
+        <view class="quick-name">{{item.name}}</view>
       </view>
     </view>
-    <text class="pill pill-habit">习惯+</text>
-  </view>
 
-  <!-- 四维成长 -->
-  <view class="row between" style="margin:32rpx 4rpx 16rpx">
-    <view class="h3" style="margin:0">四维成长</view>
-    <text class="small" style="color:var(--brand-700);font-weight:600" bindtap="goReport">查看报告 ›</text>
-  </view>
-  <view class="quad">
-    <view wx:for="{{dims}}" wx:key="key" class="q">
-      <view class="qn"><text class="dot" style="background:{{item.color}}"></text>{{item.name}}</view>
-      <view class="qpct" style="color:{{item.dark}}">{{item.pct}}%</view>
-      <view class="bar"><view class="fill" style="width:{{item.pct}}%;background:{{item.color}}"></view></view>
-    </view>
-  </view>
-
-  <!-- 今日待打卡 -->
-  <view class="row between" style="margin:32rpx 4rpx 16rpx">
-    <view class="h3" style="margin:0">今日待打卡</view>
-    <text class="small" style="color:var(--brand-700);font-weight:600" bindtap="goCheckin">查看全部 ›</text>
-  </view>
-  <view wx:for="{{today}}" wx:key="id" class="task" data-id="{{item.id}}" bindtap="toggleToday">
-    <view class="row between">
-      <text class="tn">{{item.name}}</text>
-      <view class="check {{item.done ? 'on' : ''}}">{{item.done ? '✓' : ''}}</view>
-    </view>
-    <view class="chips">
-      <text class="pill pill-{{item.dim}}">{{dimName[item.dim]}}</text>
-      <text class="pill">+{{item.points}}</text>
-    </view>
-  </view>
-
-  <!-- 经典今日推荐 -->
-  <view class="h3" style="margin:32rpx 4rpx 16rpx">经典今日推荐</view>
-  <view class="card" style="background:var(--c-heart-bg);border:none" bindtap="goClassics">
-    <view class="row between">
-      <view>
-        <view class="tn" style="font-size:28rpx;color:{{classicToday.color}}">《{{classicToday.name}}》</view>
-        <view class="muted" style="margin-top:6rpx">已读 {{classicToday.read}} / {{classicToday.total}} 章 · 继续诵读</view>
+    <!-- 智能提醒 -->
+    <view class="reminder" wx:if="{{reminders.length}}">
+      <view class="reminder-head">
+        <text class="reminder-title">智能提醒</text>
+        <text class="reminder-count">{{reminders.length}} 条</text>
       </view>
-      <text class="btn sm" style="margin:0">诵读</text>
+      <view class="reminder-item" wx:for="{{reminders}}" wx:key="text">
+        <text class="reminder-ic">{{item.icon}}</text>
+        <text class="reminder-txt">{{item.text}}</text>
+      </view>
     </view>
-  </view>
+
+    <!-- 今日概览 -->
+    <view class="ov-card">
+      <view class="ov-head">
+        <text class="h3" style="margin:0">今日概览</text>
+        <text class="small" style="color:var(--brand-700);font-weight:600" bindtap="goCheckin">查看全部 ›</text>
+      </view>
+      <view class="ov-body">
+        <view class="ring" style="background: conic-gradient(var(--brand) {{ovPct}}%, var(--line) 0)">
+          <view class="ring-inner">
+            <view class="ring-pct">{{ovPct}}%</view>
+            <view class="ring-sub">今日完成</view>
+          </view>
+        </view>
+        <view class="ov-stats">
+          <view class="ov-stat">
+            <view class="ov-stat-num">{{doneCount}}<text class="ov-stat-unit">/{{total}}</text></view>
+            <view class="ov-stat-label">任务打卡</view>
+          </view>
+          <view class="ov-stat">
+            <view class="ov-stat-num">🔥 {{child.streak}}</view>
+            <view class="ov-stat-label">连续打卡(天)</view>
+          </view>
+          <view class="ov-stat">
+            <view class="ov-stat-num">+{{child.weekGain}}</view>
+            <view class="ov-stat-label">本周积分</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 四维成长 -->
+    <view class="row between" style="margin:32rpx 4rpx 16rpx">
+      <view class="h3" style="margin:0">四维成长</view>
+      <text class="small" style="color:var(--brand-700);font-weight:600" bindtap="goReport">查看报告 ›</text>
+    </view>
+    <view class="quad">
+      <view wx:for="{{dims}}" wx:key="key" class="q">
+        <view class="qn"><text class="dot" style="background:{{item.color}}"></text>{{item.name}}</view>
+        <view class="qpct" style="color:{{item.dark}}">{{item.pct}}%</view>
+        <view class="bar"><view class="fill" style="width:{{item.pct}}%;background:{{item.color}}"></view></view>
+      </view>
+    </view>
+
+    <!-- 今日待打卡 -->
+    <view class="row between" style="margin:32rpx 4rpx 16rpx">
+      <view class="h3" style="margin:0">今日待打卡</view>
+      <text class="small" style="color:var(--brand-700);font-weight:600" bindtap="goCheckin">去打卡 ›</text>
+    </view>
+    <view wx:for="{{today}}" wx:key="id" class="task" data-id="{{item.id}}" bindtap="toggleToday">
+      <view class="row between">
+        <text class="tn">{{item.name}}</text>
+        <view class="check {{item.done ? 'on' : ''}}">{{item.done ? '✓' : ''}}</view>
+      </view>
+      <view class="chips">
+        <text class="pill pill-{{item.dim}}">{{dimName[item.dim]}}</text>
+        <text class="pill">+{{item.points}}</text>
+      </view>
+    </view>
+
+    <!-- 经典今日推荐 -->
+    <view class="h3" style="margin:32rpx 4rpx 16rpx">经典今日推荐</view>
+    <view class="card" style="background:var(--c-heart-bg);border:none" bindtap="goClassics">
+      <view class="row between">
+        <view>
+          <view class="tn" style="font-size:28rpx;color:{{classicToday.color}}">《{{classicToday.name}}》</view>
+          <view class="muted" style="margin-top:6rpx">已读 {{classicToday.read}} / {{classicToday.total}} 章 · 继续诵读</view>
+        </view>
+        <text class="btn sm" style="margin:0">诵读</text>
+      </view>
+    </view>
   </block>
 </view>
 
