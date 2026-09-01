@@ -30,12 +30,12 @@
     "navigationBarBackgroundColor": "#FFFFFF",
     "navigationBarTitleText": "文小贤 · 成长花园",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#F5F5F7"
+    "backgroundColor": "#F2F2F7"
   },
   "tabBar": {
     "custom": true,
-    "color": "#8B8B9E",
-    "selectedColor": "#6366F1",
+    "color": "#8E8E93",
+    "selectedColor": "#5E5CE6",
     "backgroundColor": "#FFFFFF",
     "borderStyle": "white",
     "list": [

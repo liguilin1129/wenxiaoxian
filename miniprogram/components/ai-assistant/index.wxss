@@ -8,10 +8,10 @@
   width: 108rpx;
   height: 108rpx;
   border-radius: 50%;
-  background: linear-gradient(135deg, #07C160, #16D06A);
+  background: linear-gradient(135deg, #6E6CF0, #5E5CE6);
   box-shadow:
-    0 8rpx 28rpx rgba(7, 193, 96, 0.4),
-    0 2rpx 8rpx rgba(7, 193, 96, 0.25);
+    0 8rpx 28rpx rgba(94, 92, 230, 0.4),
+    0 2rpx 8rpx rgba(94, 92, 230, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,9 +73,10 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 76vh;
-  max-height: 76vh;
-  background: #EDEDED;
+  /* top 由 JS 动态设置（导航栏底部），不可超出系统导航栏 */
+  background: rgba(245, 245, 247, 0.82);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -207,10 +208,10 @@
   border-color: transparent #FFFFFF transparent transparent;
 }
 
-/* 用户气泡：微信绿 + 右尖角 */
+/* 用户气泡：品牌紫 + 右尖角 */
 .msg-row.user .msg-bubble {
-  background: #95EC69;
-  color: #181818;
+  background: #5E5CE6;
+  color: #fff;
 }
 .msg-row.user .msg-bubble::after {
   content: '';
@@ -256,8 +257,8 @@
   padding: 12rpx 22rpx;
   border-radius: 24rpx;
   background: #FFFFFF;
-  color: #07C160;
-  border: 1rpx solid #07C160;
+  color: #5E5CE6;
+  border: 1rpx solid #5E5CE6;
   font-size: 26rpx;
   font-weight: 500;
   box-shadow: 0 1rpx 2rpx rgba(0,0,0,.04);
@@ -309,7 +310,7 @@
   transition: all 0.15s ease;
 }
 .send-btn.send-on {
-  background: #07C160;
+  background: #5E5CE6;
   color: #FFFFFF;
 }
 .send-btn.send-on:active { opacity: 0.85; }

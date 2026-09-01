@@ -16,6 +16,7 @@ Component({
     bodyHeight: 0,
     fabOffset: { x: 0, y: 0 },
     fabMoving: false,
+    navTop: '0px',          // 导航栏底部位置（面板 top 不可超过此值）
     messages: [
       {
         id: 1,
@@ -24,6 +25,18 @@ Component({
       }
     ],
     _seq: 1
+  },
+
+  lifetimes: {
+    attached() {
+      // 面板顶部紧贴系统导航栏底部：直接用胶囊按钮底部（去掉额外偏移）
+      try {
+        const menu = wx.getMenuButtonBoundingClientRect();
+        this.setData({ navTop: menu.bottom + 'px' });
+      } catch (e) {
+        this.setData({ navTop: '80px' });
+      }
+    }
   },
 
   // 页面重新显示时把 AI 按钮复位（位置不持久化）
@@ -115,16 +128,26 @@ Component({
       this.setData({ draft: e.detail.value });
     },
 
-    // 键盘避让：聚焦时把面板抬到键盘上方，失焦时还原
-    onFocus(e) {
-      const h = (e.detail && e.detail.height) ? e.detail.height : 0;
+    // 键盘避让：focus 事件 100% 触发，用 detail.height 抬升面板 + 滚到底部
+    onKbFocus(e) {
+      const h = (e.detail && e.detail.height) ? e.detail.height : 300;
       this.setData({ kbBottom: h + 'px' });
-      // 键盘高度变化后面板可用高度改变，重新计算
-      setTimeout(() => this.computeBodyHeight(), 50);
+      // 等面板位置更新后：重算高度 + 强制滚到最后一条消息（模拟微信效果）
+      setTimeout(() => {
+        this.computeBodyHeight();
+        const msgs = this.data.messages;
+        if (msgs.length > 0) {
+          const lastId = msgs[msgs.length - 1].id;
+          // 先清空再设置，确保 scroll-into-view 每次都触发
+          this.setData({ scrollTarget: '' });
+          setTimeout(() => this.setData({ scrollTarget: 'msg-' + lastId }), 50);
+        }
+      }, 150);
     },
-    onBlur() {
+    // 键盘收起：归位 + 重算高度
+    onKbBlur() {
       this.setData({ kbBottom: '0px' });
-      setTimeout(() => this.computeBodyHeight(), 50);
+      setTimeout(() => this.computeBodyHeight(), 80);
     },
 
     onSend() {

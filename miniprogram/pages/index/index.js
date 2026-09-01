@@ -10,14 +10,14 @@ function buildDimName() {
 
 // 首页快捷入口（对齐思维导图「快捷入口」规格）
 const QUICK_ENTRIES = [
-  { icon: '✅', name: '任务打卡', url: '/pages/checkin/checkin', bg: '#EEEDFE', color: '#4F46E5' },
-  { icon: '⭐', name: '积分明细', url: '/pages/points/points', bg: '#FFF7E6', color: '#B7791F' },
-  { icon: '📚', name: '经典学习', url: '/pages/classics/classics', bg: '#FFF1F3', color: '#E11D6F' },
-  { icon: '🪑', name: '家庭会议', url: '/pages/family/family', bg: '#ECFDF5', color: '#0F9D6B' },
-  { icon: '🎁', name: '积分商城', url: '/pages/rewards/rewards', bg: '#EEF2FF', color: '#4338CA' },
-  { icon: '👨‍👩‍👦', name: '我的家庭', url: '/pages/family/family', bg: '#F0FDFA', color: '#0D9488' },
-  { icon: '💬', name: '成长社区', url: '/pages/community/community', bg: '#F5F3FF', color: '#7C3AED' },
-  { icon: '📰', name: '发现文章', url: '/pages/article-list/article-list', bg: '#FFF1F3', color: '#DB2777' }
+  { icon: '✅', name: '任务打卡', url: '/pages/checkin/checkin' },
+  { icon: '⭐', name: '积分明细', url: '/pages/points/points' },
+  { icon: '📚', name: '经典学习', url: '/pages/classics/classics' },
+  { icon: '🪑', name: '家庭会议', url: '/pages/family/family' },
+  { icon: '🎁', name: '积分商城', url: '/pages/rewards/rewards' },
+  { icon: '👨‍👩‍👦', name: '我的家庭', url: '/pages/family/family' },
+  { icon: '💬', name: '成长社区', url: '/pages/community/community' },
+  { icon: '📰', name: '发现文章', url: '/pages/article-list/article-list' }
 ];
 
 Page({
@@ -36,12 +36,23 @@ Page({
     classicToday: {},
     quickEntries: QUICK_ENTRIES,
     reminders: [],
+    searchKey: '',
+    searchResults: [],
+    badges: [],
+    badgeGot: 0,
+    badgeTotal: 0,
     guestFeats: [
       { icon: '✅', name: '任务打卡', desc: '每日任务 · 好习惯养成' },
       { icon: '⭐', name: '积分成长', desc: '积分明细 · 四维成长报告' },
       { icon: '🎁', name: '奖励兑换', desc: '积分商城 · 心愿兑换' },
       { icon: '🪑', name: '家庭会议', desc: '全家商议 · 调整任务与心愿' }
-    ]
+    ],
+    dateText: ''
+  },
+  onLoad() {
+    const d = new Date();
+    const wk = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][d.getDay()];
+    this.setData({ dateText: wk + ' · ' + (d.getMonth() + 1) + '月' + d.getDate() + '日' });
   },
   onShow() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
@@ -99,7 +110,11 @@ Page({
       nextLevel: child.levelNum + 1,
       need: need,
       classicToday: mock.classicToday,
-      reminders: reminders
+      reminders: reminders,
+      // 荣誉墙：加载成就勋章 + 已点亮数量
+      badges: mock.badges,
+      badgeGot: mock.badges.filter(b => b.got).length,
+      badgeTotal: mock.badges.length
     });
   },
   goLogin() {
@@ -113,8 +128,63 @@ Page({
     // 轻量设置：暂用「我的」页承载（会员/资料/退出入口齐全）
     wx.switchTab({ url: '/pages/profile/profile' });
   },
-  onSearch() {
-    wx.showToast({ title: '搜索即将上线', icon: 'none' });
+  // 顶部搜索：实时过滤本地 mock 数据（任务 / 经典 / 商城 / 文章 / 案例）
+  onSearchInput(e) {
+    const key = (e.detail.value || '').trim();
+    this.setData({ searchKey: key });
+    this.runSearch(key);
+  },
+  clearSearch() {
+    this.setData({ searchKey: '', searchResults: [] });
+  },
+  runSearch(key) {
+    if (!key) {
+      this.setData({ searchResults: [] });
+      return;
+    }
+    const res = [];
+    // 任务（任务中心）
+    mock.tasks.forEach(g => {
+      g.list.forEach(t => {
+        if (t.name.indexOf(key) > -1) {
+          res.push({ key: 'task-' + t.id, type: '任务', icon: '✅', name: t.name, sub: g.dimName, url: '/pages/tasks/tasks' });
+        }
+      });
+    });
+    // 经典
+    mock.classics.forEach(c => {
+      if (c.name.indexOf(key) > -1) {
+        res.push({ key: 'classic-' + c.name, type: '经典', icon: '📚', name: '《' + c.name + '》', sub: '已读 ' + c.read + '/' + c.total, url: '/pages/classics/classics' });
+      }
+    });
+    // 商城（奖励）
+    mock.rewards.forEach(r => {
+      if (r.name.indexOf(key) > -1) {
+        res.push({ key: 'reward-' + r.id, type: '商城', icon: '🎁', name: r.name, sub: '消耗 ' + r.cost + ' 分', url: '/pages/rewards/rewards' });
+      }
+    });
+    // 文章
+    mock.discoverArticles.forEach(a => {
+      if (a.title.indexOf(key) > -1 || a.summary.indexOf(key) > -1) {
+        res.push({ key: 'article-' + a.id, type: '文章', icon: '📰', name: a.title, sub: a.category, url: '/pages/article-list/article-list' });
+      }
+    });
+    // 案例
+    mock.cases.forEach(c => {
+      if (c.title.indexOf(key) > -1 || c.summary.indexOf(key) > -1) {
+        res.push({ key: 'case-' + c.id, type: '案例', icon: '💬', name: c.title, sub: c.course, url: '/pages/case-list/case-list' });
+      }
+    });
+    this.setData({ searchResults: res });
+  },
+  goSearchItem(e) {
+    const url = e.currentTarget.dataset.url;
+    const tabs = ['/pages/index/index', '/pages/tasks/tasks', '/pages/discover/discover', '/pages/profile/profile'];
+    if (tabs.indexOf(url) > -1) {
+      wx.switchTab({ url });
+    } else {
+      wx.navigateTo({ url });
+    }
   },
   goQuick(e) {
     const { url, tab } = e.currentTarget.dataset;

@@ -1,14 +1,41 @@
 <view class="scr-head">
-  <view class="row between" style="align-items:flex-start">
-    <view>
-      <view class="greet">{{signed ? '早上好，文小贤 👋' : '欢迎来到成长花园 👋'}}</view>
-      <view class="title">你的成长花园</view>
-    </view>
-    <view class="head-right" wx:if="{{signed}}">
-      <view class="head-ic" bindtap="onSearch">🔍</view>
-      <view class="head-ic" bindtap="goSettings">⚙️</view>
-      <view class="avatar">{{child.avatar}}</view>
-    </view>
+  <!-- iOS 大标题 -->
+  <view class="title">成长花园</view>
+  <view class="greet">{{dateText}}</view>
+
+  <!-- 搜索栏（iOS 灰底风格） -->
+  <view class="search-bar">
+    <text class="search-ic">🔍</text>
+    <input
+      class="search-input"
+      placeholder="搜索任务 / 经典 / 商城 / 文章"
+      placeholder-class="search-ph"
+      value="{{searchKey}}"
+      bindinput="onSearchInput"
+      confirm-type="search"
+    />
+    <text wx:if="{{searchKey}}" class="search-clear" bindtap="clearSearch">✕</text>
+  </view>
+
+  <!-- 实时搜索结果 -->
+  <view wx:if="{{searchKey}}" class="search-panel">
+    <block wx:if="{{searchResults.length}}">
+      <view
+        wx:for="{{searchResults}}"
+        wx:key="key"
+        class="search-item"
+        data-url="{{item.url}}"
+        bindtap="goSearchItem"
+      >
+        <text class="search-item-ic">{{item.icon}}</text>
+        <view class="flex1">
+          <view class="search-item-name">{{item.name}}</view>
+          <view class="search-item-sub">{{item.sub}}</view>
+        </view>
+        <text class="search-item-tag">{{item.type}}</text>
+      </view>
+    </block>
+    <view wx:else class="search-empty">未找到相关内容</view>
   </view>
 </view>
 
@@ -22,113 +49,140 @@
       <button class="btn" style="margin-top:32rpx" bindtap="goLogin">登录 · 开启成长花园</button>
     </view>
 
-    <view class="h3" style="margin:32rpx 4rpx 16rpx">功能介绍</view>
-    <view class="guest-feat" wx:for="{{guestFeats}}" wx:key="icon">
-      <text class="guest-feat-icon">{{item.icon}}</text>
-      <view class="flex1">
-        <view class="tn" style="font-size:28rpx">{{item.name}}</view>
-        <view class="muted" style="margin-top:6rpx">{{item.desc}}</view>
+    <view class="igroup">
+      <view class="igroup-title">功能介绍</view>
+      <view class="igroup-card">
+        <view class="irow" wx:for="{{guestFeats}}" wx:key="name">
+          <view class="ic">{{item.icon}}</view>
+          <view class="tx">
+            <view class="tn" style="font-size:28rpx">{{item.name}}</view>
+            <view class="muted" style="margin-top:4rpx">{{item.desc}}</view>
+          </view>
+        </view>
       </view>
     </view>
   </block>
 
-  <!-- 已登录：正常内容 -->
+  <!-- 已登录：正常内容（iOS 分组列表） -->
   <block wx:else>
-    <!-- 快捷入口宫格 -->
-    <view class="quick-grid">
-      <view
-        class="quick-item"
-        wx:for="{{quickEntries}}"
-        wx:key="name"
-        data-url="{{item.url}}"
-        data-tab="{{item.tab}}"
-        bindtap="goQuick"
-      >
-        <view class="quick-ic" style="background:{{item.bg}};color:{{item.color}}">{{item.icon}}</view>
-        <view class="quick-name">{{item.name}}</view>
+    <!-- 荣誉墙 -->
+    <view class="igroup">
+      <view class="igroup-title">荣誉墙</view>
+      <view class="igroup-card">
+        <view class="badge-user">
+          <view class="avatar">{{child.avatar}}</view>
+          <view class="top-bar-info">
+            <view class="top-bar-name">{{child.name}}</view>
+            <view class="top-bar-sub">积分 {{child.points}} · 已点亮 {{badgeGot}}/{{badgeTotal}}</view>
+          </view>
+        </view>
+        <view class="badge-grid">
+          <view wx:for="{{badges}}" wx:key="id" class="badge {{item.got ? '' : 'off'}}">
+            <view class="badge-ic">{{item.got ? item.icon : '🔒'}}</view>
+            <view class="badge-name">{{item.name}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 快捷入口 -->
+    <view class="igroup">
+      <view class="igroup-title">快捷入口</view>
+      <view class="igroup-card quick-grid">
+        <view
+          class="quick-item"
+          wx:for="{{quickEntries}}"
+          wx:key="name"
+          data-url="{{item.url}}"
+          data-tab="{{item.tab}}"
+          bindtap="goQuick"
+        >
+          <view class="quick-ic">{{item.icon}}</view>
+          <view class="quick-name">{{item.name}}</view>
+        </view>
       </view>
     </view>
 
     <!-- 智能提醒 -->
-    <view class="reminder" wx:if="{{reminders.length}}">
-      <view class="reminder-head">
-        <text class="reminder-title">智能提醒</text>
-        <text class="reminder-count">{{reminders.length}} 条</text>
-      </view>
-      <view class="reminder-item" wx:for="{{reminders}}" wx:key="text">
-        <text class="reminder-ic">{{item.icon}}</text>
-        <text class="reminder-txt">{{item.text}}</text>
+    <view class="igroup" wx:if="{{reminders.length}}">
+      <view class="igroup-title">智能提醒</view>
+      <view class="igroup-card">
+        <view class="reminder-item" wx:for="{{reminders}}" wx:key="text">
+          <text class="reminder-ic">{{item.icon}}</text>
+          <text class="reminder-txt">{{item.text}}</text>
+        </view>
       </view>
     </view>
 
     <!-- 今日概览 -->
-    <view class="ov-card">
-      <view class="ov-head">
-        <text class="h3" style="margin:0">今日概览</text>
-        <text class="small" style="color:var(--brand-700);font-weight:600" bindtap="goCheckin">查看全部 ›</text>
-      </view>
-      <view class="ov-body">
-        <view class="ring" style="background: conic-gradient(var(--brand) {{ovPct}}%, var(--line) 0)">
-          <view class="ring-inner">
-            <view class="ring-pct">{{ovPct}}%</view>
-            <view class="ring-sub">今日完成</view>
-          </view>
+    <view class="igroup">
+      <view class="igroup-title">今日概览</view>
+      <view class="igroup-card ov-card">
+        <view class="ov-head">
+          <text class="tn" style="font-size:30rpx">今日完成</text>
+          <text class="small" style="color:var(--brand-700);font-weight:600" bindtap="goCheckin">查看全部 ›</text>
         </view>
-        <view class="ov-stats">
-          <view class="ov-stat">
-            <view class="ov-stat-num">{{doneCount}}<text class="ov-stat-unit">/{{total}}</text></view>
-            <view class="ov-stat-label">任务打卡</view>
+        <view class="ov-body">
+          <view class="ring" style="background: conic-gradient(var(--brand) {{ovPct}}%, var(--line) 0)">
+            <view class="ring-inner">
+              <view class="ring-pct">{{ovPct}}%</view>
+              <view class="ring-sub">今日完成</view>
+            </view>
           </view>
-          <view class="ov-stat">
-            <view class="ov-stat-num">🔥 {{child.streak}}</view>
-            <view class="ov-stat-label">连续打卡(天)</view>
-          </view>
-          <view class="ov-stat">
-            <view class="ov-stat-num">+{{child.weekGain}}</view>
-            <view class="ov-stat-label">本周积分</view>
+          <view class="ov-stats">
+            <view class="ov-stat">
+              <view class="ov-stat-num">{{doneCount}}<text class="ov-stat-unit">/{{total}}</text></view>
+              <view class="ov-stat-label">任务打卡</view>
+            </view>
+            <view class="ov-stat">
+              <view class="ov-stat-num">🔥 {{child.streak}}</view>
+              <view class="ov-stat-label">连续打卡(天)</view>
+            </view>
+            <view class="ov-stat">
+              <view class="ov-stat-num">+{{child.weekGain}}</view>
+              <view class="ov-stat-label">本周积分</view>
+            </view>
           </view>
         </view>
       </view>
     </view>
 
     <!-- 四维成长 -->
-    <view class="row between" style="margin:32rpx 4rpx 16rpx">
-      <view class="h3" style="margin:0">四维成长</view>
-      <text class="small" style="color:var(--brand-700);font-weight:600" bindtap="goReport">查看报告 ›</text>
-    </view>
-    <view class="quad">
-      <view wx:for="{{dims}}" wx:key="key" class="q">
-        <view class="qn"><text class="dot" style="background:{{item.color}}"></text>{{item.name}}</view>
-        <view class="qpct" style="color:{{item.dark}}">{{item.pct}}%</view>
-        <view class="bar"><view class="fill" style="width:{{item.pct}}%;background:{{item.color}}"></view></view>
+    <view class="igroup">
+      <view class="igroup-title">四维成长</view>
+      <view class="igroup-card">
+        <view class="irow" wx:for="{{dims}}" wx:key="key" bindtap="goReport">
+          <text class="dot" style="background:{{item.color}}"></text>
+          <view class="tx" style="margin-left:14rpx">{{item.name}}</view>
+          <view class="rt">{{item.pct}}%</view>
+          <text class="chev">›</text>
+        </view>
       </view>
     </view>
 
     <!-- 今日待打卡 -->
-    <view class="row between" style="margin:32rpx 4rpx 16rpx">
-      <view class="h3" style="margin:0">今日待打卡</view>
-      <text class="small" style="color:var(--brand-700);font-weight:600" bindtap="goCheckin">去打卡 ›</text>
-    </view>
-    <view wx:for="{{today}}" wx:key="id" class="task" data-id="{{item.id}}" bindtap="toggleToday">
-      <view class="row between">
-        <text class="tn">{{item.name}}</text>
-        <view class="check {{item.done ? 'on' : ''}}">{{item.done ? '✓' : ''}}</view>
-      </view>
-      <view class="chips">
-        <text class="pill pill-{{item.dim}}">{{dimName[item.dim]}}</text>
-        <text class="pill">+{{item.points}}</text>
+    <view class="igroup">
+      <view class="igroup-title">今日待打卡</view>
+      <view class="igroup-card">
+        <view class="irow" wx:for="{{today}}" wx:key="id" data-id="{{item.id}}" bindtap="toggleToday">
+          <view class="check {{item.done ? 'on' : ''}}">{{item.done ? '✓' : ''}}</view>
+          <view class="tx" style="margin-left:18rpx">{{item.name}}</view>
+          <text class="pill pill-{{item.dim}}" style="margin-left:auto">{{dimName[item.dim]}} +{{item.points}}</text>
+        </view>
       </view>
     </view>
 
     <!-- 经典今日推荐 -->
-    <view class="h3" style="margin:32rpx 4rpx 16rpx">经典今日推荐</view>
-    <view class="card" style="background:var(--c-heart-bg);border:none" bindtap="goClassics">
-      <view class="row between">
-        <view>
-          <view class="tn" style="font-size:28rpx;color:{{classicToday.color}}">《{{classicToday.name}}》</view>
-          <view class="muted" style="margin-top:6rpx">已读 {{classicToday.read}} / {{classicToday.total}} 章 · 继续诵读</view>
+    <view class="igroup">
+      <view class="igroup-title">经典今日推荐</view>
+      <view class="igroup-card tap" bindtap="goClassics">
+        <view class="row between">
+          <view>
+            <view class="tn" style="font-size:28rpx">《{{classicToday.name}}》</view>
+            <view class="muted" style="margin-top:6rpx">已读 {{classicToday.read}} / {{classicToday.total}} 章 · 继续诵读</view>
+          </view>
+          <text class="btn sm" style="margin:0">诵读</text>
         </view>
-        <text class="btn sm" style="margin:0">诵读</text>
       </view>
     </view>
   </block>

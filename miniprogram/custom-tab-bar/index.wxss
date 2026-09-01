@@ -1,4 +1,4 @@
-/* ===== 液态玻璃岛底部导航（Floating Glass Dock · Light UI Kit） ===== */
+/* ===== 液态玻璃岛底部导航（Floating Glass Dock · iOS 风格） ===== */
 
 .tabbar {
   position: fixed;
@@ -14,7 +14,7 @@
   background: rgba(255, 255, 255, 0.62);
   border: 1rpx solid rgba(255, 255, 255, 0.9);
   border-radius: 30rpx;
-  box-shadow: 0 10rpx 30rpx rgba(99, 102, 241, 0.18);
+  box-shadow: 0 10rpx 30rpx rgba(94, 92, 230, 0.18);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 
@@ -36,7 +36,7 @@
   right: 0;
   bottom: 0;
   border-radius: 30rpx;
-  background: linear-gradient(90deg, rgba(99, 102, 241, 0.12), rgba(99, 102, 241, 0.05));
+  background: linear-gradient(90deg, rgba(94, 92, 230, 0.12), rgba(94, 92, 230, 0.05));
   z-index: 0;
 }
 
@@ -54,7 +54,7 @@
   transition: color 0.2s;
 }
 .tb.on {
-  color: #6366F1;
+  color: #5E5CE6;
 }
 .txt {
   font-size: 22rpx;
@@ -92,7 +92,7 @@
   width: 46rpx;
   height: 46rpx;
   border-radius: 50%;
-  background: rgba(99, 102, 241, 0.14);
+  background: rgba(94, 92, 230, 0.14);
 }
 
 /* ---- 首页（房子） ---- */
@@ -100,7 +100,7 @@
   background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M12%203L4%2010v10h6v-6h4v6h6V10z%27%20fill%3D%27none%27%20stroke%3D%27%23999999%27%20stroke-width%3D%271.8%27%20stroke-linejoin%3D%27round%27%20stroke-linecap%3D%27round%27%2F%3E%3C%2Fsvg%3E");
 }
 .tb.on .icon-home {
-  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M12%202.5L3.5%2010l1.5%201.5V20h5v-6h4v6h5v-8.5l1.5-1.5z%27%20fill%3D%27%236366F1%27%2F%3E%3C%2Fsvg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M12%202.5L3.5%2010l1.5%201.5V20h5v-6h4v6h5v-8.5l1.5-1.5z%27%20fill%3D%27%235E5CE6%27%2F%3E%3C%2Fsvg%3E");
 }
 
 /* ---- 任务（勾选圆） ---- */
@@ -108,7 +108,7 @@
   background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%2712%27%20r%3D%279%27%20fill%3D%27none%27%20stroke%3D%27%23999999%27%20stroke-width%3D%271.8%27%2F%3E%3Cpath%20d%3D%27M8%2012l2.5%202.5L16%209%27%20fill%3D%27none%27%20stroke%3D%27%23999999%27%20stroke-width%3D%271.8%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%2F%3E%3C%2Fsvg%3E");
 }
 .tb.on .icon-task {
-  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%2712%27%20r%3D%279%27%20fill%3D%27%236366F1%27%2F%3E%3Cpath%20d%3D%27M8%2011.5l2.5%202.5L16%208.5%27%20fill%3D%27none%27%20stroke%3D%27%23fff%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%2F%3E%3C%2Fsvg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%2712%27%20r%3D%279%27%20fill%3D%27%235E5CE6%27%2F%3E%3Cpath%20d%3D%27M8%2011.5l2.5%202.5L16%208.5%27%20fill%3D%27none%27%20stroke%3D%27%23fff%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%2F%3E%3C%2Fsvg%3E");
 }
 
 /* ---- 发现（指南针） ---- */
@@ -116,7 +116,7 @@
   background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%2712%27%20r%3D%279%27%20fill%3D%27none%27%20stroke%3D%27%23999999%27%20stroke-width%3D%271.8%27%2F%3E%3Cpath%20d%3D%27M12%208l2.4%204-2.4%204-2.4-4z%27%20fill%3D%27none%27%20stroke%3D%27%23999999%27%20stroke-width%3D%271.6%27%20stroke-linejoin%3D%27round%27%2F%3E%3C%2Fsvg%3E");
 }
 .tb.on .icon-discover {
-  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%2712%27%20r%3D%279%27%20fill%3D%27%236366F1%27%2F%3E%3Cpath%20d%3D%27M12%207.5l3%204.5-3%204.5-3-4.5z%27%20fill%3D%27%23fff%27%2F%3E%3C%2Fsvg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%2712%27%20r%3D%279%27%20fill%3D%27%235E5CE6%27%2F%3E%3Cpath%20d%3D%27M12%207.5l3%204.5-3%204.5-3-4.5z%27%20fill%3D%27%23fff%27%2F%3E%3C%2Fsvg%3E");
 }
 
 /* ---- 我的（人物） ---- */
@@ -124,5 +124,5 @@
   background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%277.5%27%20r%3D%274%27%20fill%3D%27none%27%20stroke%3D%27%23999999%27%20stroke-width%3D%271.8%27%2F%3E%3Cpath%20d%3D%27M4.5%2021c0-4%203.5-6.5%207.5-6.5s7.5%202.5%207.5%206.5%27%20fill%3D%27none%27%20stroke%3D%27%23999999%27%20stroke-width%3D%271.8%27%20stroke-linecap%3D%27round%27%2F%3E%3C%2Fsvg%3E");
 }
 .tb.on .icon-mine {
-  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%277.5%27%20r%3D%274%27%20fill%3D%27%236366F1%27%2F%3E%3Cpath%20d%3D%27M4.5%2021c0-4%203.5-6.5%207.5-6.5s7.5%202.5%207.5%206.5%27%20fill%3D%27%236366F1%27%2F%3E%3C%2Fsvg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%277.5%27%20r%3D%274%27%20fill%3D%27%235E5CE6%27%2F%3E%3Cpath%20d%3D%27M4.5%2021c0-4%203.5-6.5%207.5-6.5s7.5%202.5%207.5%206.5%27%20fill%3D%27%235E5CE6%27%2F%3E%3C%2Fsvg%3E");
 }

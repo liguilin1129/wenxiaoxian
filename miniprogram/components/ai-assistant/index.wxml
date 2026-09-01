@@ -1,7 +1,8 @@
 <!-- 全局悬浮 AI 助手（微信聊天风格） -->
-<view class="ai-wrap">
-  <!-- 悬浮按钮（可拖动，位置不持久化） -->
+<view class="ai-wrap" style="height: 0rpx; display: block; box-sizing: border-box">
+  <!-- 悬浮按钮（可拖动，位置不持久化；面板打开时隐藏） -->
   <view
+    wx:if="{{!showPanel}}"
     class="ai-fab {{fabMoving ? 'moving' : ''}}"
     style="transform: translate({{fabOffset.x}}px, {{fabOffset.y}}px);"
     hover-class="{{fabMoving ? '' : 'fab-hover'}}"
@@ -18,7 +19,7 @@
 
   <!-- 聊天面板（贴底弹层） -->
   <view wx:if="{{showPanel}}" class="ai-mask" bindtap="onClose" catchtouchmove="preventMove">
-    <view class="ai-panel" style="bottom: {{kbBottom}}" catchtap="preventMove" catchtouchmove="preventMove">
+    <view class="ai-panel" style="top: {{navTop}}; bottom: {{kbBottom}}" catchtap="preventMove" catchtouchmove="preventMove">
       <!-- 面板头部（微信导航栏风格） -->
       <view class="panel-header">
         <view class="panel-back" bindtap="onClose">
@@ -72,12 +73,14 @@
             class="chat-input"
             value="{{draft}}"
             bindinput="onInput"
-            bindfocus="onFocus"
-            bindblur="onBlur"
+            adjust-position="{{false}}"
+            bindfocus="onKbFocus"
+            bindblur="onKbBlur"
             placeholder="发送消息…"
             placeholder-class="chat-ph"
             confirm-type="send"
             bindconfirm="onSend"
+            cursor-spacing="10"
           />
         </view>
         <view class="send-btn {{draft ? 'send-on' : ''}}" bindtap="onSend">发送</view>

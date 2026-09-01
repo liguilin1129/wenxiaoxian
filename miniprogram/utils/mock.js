@@ -2,10 +2,10 @@
 // 数据来源：《20260502文小贤—v1.0.xlsx》反推
 
 const dimensions = [
-  { key: 'heart', name: '好身心', weight: '×2', color: '#FB7185', bg: '#FFF1F3', dark: '#E11D6F', pct: 86, desc: '德育 · 十善十不善' },
-  { key: 'body',  name: '好身体', weight: '×1.5', color: '#34D399', bg: '#ECFDF5', dark: '#0F9D6B', pct: 74, desc: '专注 · 坚韧 · 勤奋 · 自律' },
-  { key: 'habit', name: '好习惯', weight: '×1.3', color: '#6366F1', bg: '#EEEDFE', dark: '#4F46E5', pct: 68, desc: '独立 · 学习 · 规划 · 自省' },
-  { key: 'taste', name: '好品味', weight: '×1',  color: '#FBBF24', bg: '#FFFBEB', dark: '#B7791F', pct: 61, desc: '创造 · 想象 · 审美 · 专注' }
+  { key: 'heart', name: '好身心', weight: '×2', color: '#F0798F', bg: '#FBEAF0', dark: '#C25068', pct: 86, desc: '德育 · 十善十不善' },
+  { key: 'body',  name: '好身体', weight: '×1.5', color: '#54BE8C', bg: '#E6F6EE', dark: '#3E9B73', pct: 74, desc: '专注 · 坚韧 · 勤奋 · 自律' },
+  { key: 'habit', name: '好习惯', weight: '×1.3', color: '#5E5CE6', bg: '#ECECFF', dark: '#4F46E5', pct: 68, desc: '独立 · 学习 · 规划 · 自省' },
+  { key: 'taste', name: '好品味', weight: '×1',  color: '#DDA457', bg: '#FBF1E2', dark: '#B5812F', pct: 61, desc: '创造 · 想象 · 审美 · 专注' }
 ];
 
 const child = {
@@ -423,6 +423,18 @@ const rewards = [
   { id: 'r4', name: '决定周末家庭菜单', desc: '自主规划', cost: 60, dim: 'taste' }
 ];
 
+// 荣誉墙 · 成就勋章（里程碑解锁的虚拟勋章）
+const badges = [
+  { id: 'b1', name: '打卡新星', icon: '🌟', got: true, desc: '连续打卡 7 天' },
+  { id: 'b2', name: '诵读小达人', icon: '📖', got: true, desc: '诵读经典 10 章' },
+  { id: 'b3', name: '好习惯王', icon: '🌱', got: true, desc: '完成 50 项任务' },
+  { id: 'b4', name: '公益小天使', icon: '🤝', got: true, desc: '完成 1 次公益捐赠' },
+  { id: 'b5', name: '运动健将', icon: '🏃', got: false, desc: '坚持锻炼 30 天' },
+  { id: 'b6', name: '书法新星', icon: '🖌️', got: false, desc: '完成数字书法 10 课' },
+  { id: 'b7', name: '月度状元', icon: '🏅', got: false, desc: '月度积分榜前 3' },
+  { id: 'b8', name: '全能少年', icon: '👑', got: false, desc: '五育全部达 80%' }
+];
+
 // 五类内功
 const neigong = [
   { name: '愿力 / 内驱力', pct: 82 },
@@ -433,5 +445,5 @@ const neigong = [
 ];
 
 module.exports = {
-  dimensions, child, todayTasks, tasks, taskDetail, classics, classicChapters, classicToday, pointsHistory, rewards, neigong, discoverArticles, courses, cases
+  dimensions, child, todayTasks, tasks, taskDetail, classics, classicChapters, classicToday, pointsHistory, rewards, badges, neigong, discoverArticles, courses, cases
 };

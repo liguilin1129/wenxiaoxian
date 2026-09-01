@@ -1,61 +1,134 @@
-/* 首页样式主要复用 app.wxss 设计系统 */
+/* 首页样式（iOS 化：复用 app.wxss 设计系统 + 分组列表） */
 
-/* 顶栏右侧：搜索 + 设置 + 头像 */
-.head-right { display: flex; align-items: center; gap: 18rpx; }
-.head-ic {
-  width: 64rpx; height: 64rpx; border-radius: 50%;
-  background: var(--surface); border: 1px solid var(--line);
+/* 头像（首页荣誉墙，同色系渐变 + 轻投影） */
+.avatar {
+  width: 80rpx; height: 80rpx; border-radius: 50%;
+  background: linear-gradient(135deg, #6E6CF0, #5E5CE6);
+  color: #fff;
   display: flex; align-items: center; justify-content: center;
-  font-size: 32rpx;
+  font-size: 34rpx; font-weight: 700;
+  flex: none;
+  border: none; box-shadow: 0 4rpx 14rpx rgba(94, 92, 230, .3);
+}
+.top-bar-info { display: flex; flex-direction: column; gap: 2rpx; }
+.top-bar-name { font-size: 32rpx; font-weight: 700; color: var(--ink-1); line-height: 1.2; }
+.top-bar-sub { font-size: 24rpx; color: var(--ink-3); line-height: 1.2; }
+
+/* 维度色点 */
+.dot { width: 18rpx; height: 18rpx; border-radius: 50%; display: inline-block; flex: none; }
+
+/* 顶部搜索栏（iOS 灰底） */
+.search-bar {
+  display: flex; align-items: center; gap: 12rpx;
+  margin: 18rpx 0 4rpx;
+  padding: 14rpx 22rpx;
+  background: var(--fill);
+  border-radius: 14rpx;
+}
+.search-ic { font-size: 30rpx; color: var(--ink-3); flex: none; }
+.search-input { flex: 1; font-size: 28rpx; color: var(--ink-1); }
+.search-ph { color: var(--ink-3); }
+.search-clear {
+  font-size: 30rpx; color: var(--ink-3);
+  padding: 0 6rpx; flex: none;
 }
 
-/* 快捷入口宫格 */
+/* 搜索结果面板（白卡） */
+.search-panel {
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 6rpx 0;
+  margin-top: 14rpx;
+  box-shadow: 0 8rpx 24rpx rgba(17, 17, 26, .08);
+}
+.search-item {
+  display: flex; align-items: center; gap: 18rpx;
+  padding: 20rpx 24rpx;
+}
+.search-item-ic {
+  width: 64rpx; height: 64rpx; border-radius: 16rpx;
+  background: var(--brand-soft);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 34rpx; flex: none;
+}
+.search-item-name { font-size: 28rpx; font-weight: 600; color: var(--ink-1); }
+.search-item-sub { font-size: 22rpx; color: var(--ink-3); margin-top: 4rpx; }
+.search-item-tag {
+  font-size: 22rpx; color: var(--brand-700);
+  background: var(--brand-soft);
+  padding: 4rpx 14rpx; border-radius: 999rpx; flex: none;
+}
+.search-empty {
+  padding: 30rpx; text-align: center;
+  color: var(--ink-3); font-size: 26rpx;
+}
+
+/* 荣誉墙 · 用户行 + 勋章网格 */
+.badge-user {
+  display: flex; align-items: center; gap: 18rpx;
+  padding: 26rpx 28rpx 22rpx;
+}
+.badge-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22rpx 12rpx;
+  padding: 0 28rpx 26rpx;
+}
+.badge { display: flex; flex-direction: column; align-items: center; }
+.badge-ic {
+  width: 88rpx; height: 88rpx; border-radius: 26rpx;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 44rpx;
+  background: var(--brand-soft);
+  border: 1px solid var(--brand-soft2);
+}
+.badge.off .badge-ic {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  filter: grayscale(1);
+  opacity: .55;
+}
+.badge-name {
+  margin-top: 12rpx; font-size: 22rpx; color: var(--ink-2);
+  text-align: center;
+}
+.badge.off .badge-name { color: var(--ink-3); }
+
+/* 快捷入口宫格（在 igroup-card 内，统一品牌色） */
 .quick-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20rpx 12rpx;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  padding: 28rpx 16rpx 20rpx;
-  margin-bottom: 24rpx;
-  box-shadow: 0 2rpx 8rpx rgba(17, 17, 26, .04);
+  gap: 24rpx 12rpx;
+  padding: 28rpx 16rpx 24rpx;
 }
 .quick-item { display: flex; flex-direction: column; align-items: center; }
 .quick-ic {
   width: 88rpx; height: 88rpx; border-radius: 26rpx;
   display: flex; align-items: center; justify-content: center;
   font-size: 40rpx;
+  background: var(--brand-soft);
+  color: var(--brand-700);
 }
 .quick-name {
   margin-top: 12rpx; font-size: 22rpx; color: var(--ink-2);
   text-align: center;
 }
 
-/* 智能提醒 */
-.reminder {
-  background: linear-gradient(135deg, #FFF7E6, #FFFBEB);
-  border: 1px solid #FDE68A;
-  border-radius: var(--radius-sm);
-  padding: 22rpx 26rpx;
-  margin-bottom: 24rpx;
+/* 智能提醒（igroup-card 内行） */
+.reminder-item {
+  display: flex; align-items: center; gap: 14rpx;
+  padding: 22rpx 28rpx;
+  position: relative;
 }
-.reminder-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12rpx; }
-.reminder-title { font-size: 28rpx; font-weight: 700; color: #B7791F; }
-.reminder-count { font-size: 22rpx; color: #B7791F; opacity: .8; }
-.reminder-item { display: flex; align-items: center; gap: 14rpx; padding: 8rpx 0; }
-.reminder-ic { font-size: 30rpx; }
+.reminder-item + .reminder-item::before {
+  content: ""; position: absolute; top: 0; left: 28rpx; right: 0;
+  height: 1rpx; background: var(--sep);
+}
+.reminder-ic { font-size: 30rpx; flex: none; }
 .reminder-txt { font-size: 26rpx; color: var(--ink-2); }
 
-/* 今日概览 */
-.ov-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  padding: 28rpx;
-  margin-bottom: 8rpx;
-  box-shadow: 0 2rpx 8rpx rgba(17, 17, 26, .04);
-}
+/* 今日概览（igroup-card 内） */
+.ov-card { padding: 28rpx; }
 .ov-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20rpx; }
 .ov-body { display: flex; align-items: center; gap: 28rpx; }
 .ring {
@@ -77,45 +150,20 @@
 
 /* 未登录游客态 */
 .guest-hero {
-  background: linear-gradient(135deg, #6366F1, #8B5CF6);
+  background: linear-gradient(135deg, #6E6CF0, #5E5CE6);
   border-radius: var(--radius);
   padding: 56rpx 40rpx;
+  margin: 16rpx 32rpx 0;
   color: #fff;
   text-align: center;
-  box-shadow: 0 8rpx 30rpx rgba(17, 17, 26, .08);
+  box-shadow: 0 10rpx 30rpx rgba(94, 92, 230, .22);
 }
 .guest-emoji { font-size: 96rpx; }
 .guest-title {
-  font-size: 38rpx;
-  font-weight: 800;
-  margin-top: 20rpx;
-  letter-spacing: -1rpx;
+  font-size: 38rpx; font-weight: 800;
+  margin-top: 20rpx; letter-spacing: -1rpx;
 }
 .guest-desc {
-  font-size: 26rpx;
-  opacity: .85;
-  margin-top: 12rpx;
-  line-height: 1.6;
-}
-.guest-feat {
-  display: flex;
-  align-items: center;
-  gap: 24rpx;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  padding: 26rpx 28rpx;
-  margin-bottom: 20rpx;
-  box-shadow: 0 2rpx 8rpx rgba(17, 17, 26, .04);
-}
-.guest-feat-icon {
-  width: 76rpx;
-  height: 76rpx;
-  border-radius: 20rpx;
-  background: var(--brand-soft);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 36rpx;
-  flex: none;
+  font-size: 26rpx; opacity: .85;
+  margin-top: 12rpx; line-height: 1.6;
 }
