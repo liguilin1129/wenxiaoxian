@@ -97,7 +97,7 @@
           data-tab="{{item.tab}}"
           bindtap="goQuick"
         >
-          <view class="quick-ic">{{item.icon}}</view>
+          <view class="quick-ic quick-ic-{{index}}"><view class="quick-symbol"></view></view>
           <view class="quick-name">{{item.name}}</view>
         </view>
       </view>

@@ -105,10 +105,29 @@
 .quick-ic {
   width: 88rpx; height: 88rpx; border-radius: 26rpx;
   display: flex; align-items: center; justify-content: center;
-  font-size: 40rpx;
   background: var(--brand-soft);
   color: var(--brand-700);
 }
+.quick-symbol { width: 38rpx; height: 38rpx; position: relative; }
+.quick-symbol::before, .quick-symbol::after { content: ''; position: absolute; box-sizing: border-box; }
+/* 统一 2rpx 线宽的 iOS 线性快捷图标 */
+.quick-ic-0 .quick-symbol { border: 3rpx solid currentColor; border-radius: 50%; }
+.quick-ic-0 .quick-symbol::after { width: 16rpx; height: 9rpx; border-left: 3rpx solid currentColor; border-bottom: 3rpx solid currentColor; transform: rotate(-45deg); left: 9rpx; top: 10rpx; }
+.quick-ic-1 .quick-symbol { border: 3rpx solid currentColor; border-radius: 12rpx; }
+.quick-ic-1 .quick-symbol::before { width: 18rpx; height: 3rpx; background: currentColor; left: 7rpx; top: 10rpx; box-shadow: 0 10rpx 0 currentColor; }
+.quick-ic-2 .quick-symbol { border: 3rpx solid currentColor; border-radius: 5rpx 10rpx 10rpx 5rpx; }
+.quick-ic-2 .quick-symbol::before { height: 28rpx; border-left: 3rpx solid currentColor; left: 16rpx; top: 2rpx; }
+.quick-ic-3 .quick-symbol::before { width: 30rpx; height: 23rpx; border: 3rpx solid currentColor; border-radius: 8rpx; left: 4rpx; top: 11rpx; }
+.quick-ic-3 .quick-symbol::after { width: 18rpx; height: 18rpx; border-left: 3rpx solid currentColor; border-top: 3rpx solid currentColor; transform: rotate(45deg); left: 10rpx; top: 1rpx; }
+.quick-ic-4 .quick-symbol::before { width: 30rpx; height: 25rpx; border: 3rpx solid currentColor; border-radius: 8rpx; left: 4rpx; top: 10rpx; }
+.quick-ic-4 .quick-symbol::after { width: 16rpx; height: 16rpx; border-left: 3rpx solid currentColor; border-top: 3rpx solid currentColor; transform: rotate(45deg); left: 11rpx; top: 2rpx; }
+.quick-ic-5 .quick-symbol::before { width: 12rpx; height: 12rpx; border: 3rpx solid currentColor; border-radius: 50%; left: 12rpx; top: 1rpx; }
+.quick-ic-5 .quick-symbol::after { width: 30rpx; height: 17rpx; border: 3rpx solid currentColor; border-radius: 18rpx 18rpx 6rpx 6rpx; left: 4rpx; bottom: 1rpx; }
+.quick-ic-6 .quick-symbol { border: 3rpx solid currentColor; border-radius: 50%; }
+.quick-ic-6 .quick-symbol::before { width: 16rpx; height: 3rpx; background: currentColor; left: 9rpx; top: 16rpx; transform: rotate(45deg); }
+.quick-ic-6 .quick-symbol::after { width: 3rpx; height: 16rpx; background: currentColor; left: 16rpx; top: 9rpx; transform: rotate(45deg); }
+.quick-ic-7 .quick-symbol { border: 3rpx solid currentColor; border-radius: 7rpx; }
+.quick-ic-7 .quick-symbol::before { width: 21rpx; height: 3rpx; background: currentColor; left: 6rpx; top: 10rpx; box-shadow: 0 8rpx 0 currentColor, 0 16rpx 0 currentColor; }
 .quick-name {
   margin-top: 12rpx; font-size: 22rpx; color: var(--ink-2);
   text-align: center;
