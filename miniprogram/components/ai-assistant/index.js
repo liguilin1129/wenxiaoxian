@@ -16,7 +16,6 @@ Component({
     bodyHeight: 0,
     fabOffset: { x: 0, y: 0 },
     fabMoving: false,
-    navTop: '0px',          // 导航栏底部位置（面板 top 不可超过此值）
     messages: [
       {
         id: 1,
@@ -28,21 +27,6 @@ Component({
   },
 
   lifetimes: {
-    attached() {
-      // 面板顶部与原生导航栏底线严格对齐。胶囊按钮的 bottom 并不等于导航栏高度，
-      // 因此按状态栏 + 由胶囊位置反推的导航栏高度计算。
-      try {
-        const menu = wx.getMenuButtonBoundingClientRect();
-        const system = wx.getSystemInfoSync();
-        const statusBarHeight = Number(system.statusBarHeight) || 0;
-        const navBarHeight = menu && menu.height
-          ? (menu.top - statusBarHeight) * 2 + menu.height
-          : 44;
-        this.setData({ navTop: Math.round(statusBarHeight + navBarHeight) + 'px' });
-      } catch (e) {
-        this.setData({ navTop: '68px' });
-      }
-    },
     detached() {
       clearTimeout(this._keyboardTimer);
     }
