@@ -222,7 +222,7 @@
   height: 0;
   border-style: solid;
   border-width: 12rpx 0 12rpx 12rpx;
-  border-color: transparent transparent transparent #95EC69;
+  border-color: transparent transparent transparent #5E5CE6;
 }
 
 /* 正在输入（三点动画） */

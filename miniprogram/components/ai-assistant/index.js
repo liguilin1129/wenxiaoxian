@@ -36,6 +36,9 @@ Component({
       } catch (e) {
         this.setData({ navTop: '80px' });
       }
+    },
+    detached() {
+      clearTimeout(this._keyboardTimer);
     }
   },
 
@@ -110,7 +113,9 @@ Component({
     },
 
     onClose() {
-      this.setData({ showPanel: false });
+      clearTimeout(this._keyboardTimer);
+      this._keyboardHeight = 0;
+      this.setData({ showPanel: false, kbBottom: '0px' });
       this.setTabBarHidden(false);
     },
 
@@ -128,26 +133,39 @@ Component({
       this.setData({ draft: e.detail.value });
     },
 
-    // 键盘避让：focus 事件 100% 触发，用 detail.height 抬升面板 + 滚到底部
+    // 焦点事件用于首帧兜底；实际高度以 keyboardheightchange 为准，避免不同设备键盘高度不一致。
     onKbFocus(e) {
-      const h = (e.detail && e.detail.height) ? e.detail.height : 300;
-      this.setData({ kbBottom: h + 'px' });
-      // 等面板位置更新后：重算高度 + 强制滚到最后一条消息（模拟微信效果）
-      setTimeout(() => {
+      const h = Number(e.detail && e.detail.height) || 0;
+      if (h > 0) this.updateKeyboardHeight(h, 0);
+      this.scheduleKeyboardLayout(0);
+    },
+    onKbHeightChange(e) {
+      const detail = e.detail || {};
+      this.updateKeyboardHeight(Number(detail.height) || 0, Number(detail.duration) || 0);
+    },
+    updateKeyboardHeight(height, duration) {
+      if (height === this._keyboardHeight) return;
+      this._keyboardHeight = height;
+      this.setData({ kbBottom: height + 'px' });
+      this.scheduleKeyboardLayout(duration);
+    },
+    scheduleKeyboardLayout(duration) {
+      clearTimeout(this._keyboardTimer);
+      this._keyboardTimer = setTimeout(() => {
+        if (!this.data.showPanel) return;
         this.computeBodyHeight();
         const msgs = this.data.messages;
-        if (msgs.length > 0) {
-          const lastId = msgs[msgs.length - 1].id;
-          // 先清空再设置，确保 scroll-into-view 每次都触发
-          this.setData({ scrollTarget: '' });
-          setTimeout(() => this.setData({ scrollTarget: 'msg-' + lastId }), 50);
-        }
-      }, 150);
+        if (!msgs.length) return;
+        const target = 'msg-' + msgs[msgs.length - 1].id;
+        this.setData({ scrollTarget: '' });
+        setTimeout(() => this.setData({ scrollTarget: target }), 20);
+      }, Math.max(0, duration) + 30);
     },
-    // 键盘收起：归位 + 重算高度
+    // 键盘收起：取消偏移并重算消息区高度。
     onKbBlur() {
+      this._keyboardHeight = 0;
       this.setData({ kbBottom: '0px' });
-      setTimeout(() => this.computeBodyHeight(), 80);
+      this.scheduleKeyboardLayout(0);
     },
 
     onSend() {
