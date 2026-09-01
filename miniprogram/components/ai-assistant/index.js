@@ -29,12 +29,18 @@ Component({
 
   lifetimes: {
     attached() {
-      // 面板顶部紧贴系统导航栏底部：直接用胶囊按钮底部（去掉额外偏移）
+      // 面板顶部与原生导航栏底线严格对齐。胶囊按钮的 bottom 并不等于导航栏高度，
+      // 因此按状态栏 + 由胶囊位置反推的导航栏高度计算。
       try {
         const menu = wx.getMenuButtonBoundingClientRect();
-        this.setData({ navTop: menu.bottom + 'px' });
+        const system = wx.getSystemInfoSync();
+        const statusBarHeight = Number(system.statusBarHeight) || 0;
+        const navBarHeight = menu && menu.height
+          ? (menu.top - statusBarHeight) * 2 + menu.height
+          : 44;
+        this.setData({ navTop: Math.round(statusBarHeight + navBarHeight) + 'px' });
       } catch (e) {
-        this.setData({ navTop: '80px' });
+        this.setData({ navTop: '68px' });
       }
     },
     detached() {
