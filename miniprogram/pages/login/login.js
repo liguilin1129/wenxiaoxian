@@ -1,33 +1,56 @@
 const app = getApp();
 const store = require('../../utils/store.js');
-
-// 可选头像（默认"贤"文字头像 + 一组可爱 emoji）
-const AVATARS = ['贤', '🦊', '🐱', '🐰', '🐻', '🦁', '🐼', '🐯', '🐶', '🐸', '🦄', '🌟', '🍎'];
+const apiConfig = require('../../utils/api-config.js');
 
 Page({
-  data: {
-    avatars: AVATARS,
-    avatar: '贤',
-    name: ''
+  data: { avatarUrl: '', nickname: '', submitting: false },
+  onChooseAvatar(e) {
+    this.setData({ avatarUrl: e.detail.avatarUrl || '' });
   },
-  pickAvatar(e) {
-    this.setData({ avatar: e.currentTarget.dataset.a });
+  onNickname(e) {
+    this.setData({ nickname: (e.detail.value || '').trim() });
   },
-  onName(e) {
-    this.setData({ name: e.detail.value });
+  onPhoneAuthorize(e) {
+    const phoneCode = e.detail && e.detail.code;
+    if (!phoneCode) return wx.showToast({ title: '需要手机号授权才能登录', icon: 'none' });
+    if (!this.data.nickname) return wx.showToast({ title: '请先填写昵称', icon: 'none' });
+    if (!apiConfig.BASE_URL) return wx.showToast({ title: '登录服务尚未配置', icon: 'none' });
+    this.setData({ submitting: true });
+    wx.login({
+      success: (loginResult) => {
+        if (!loginResult.code) return this.finishLoginError('微信登录失败，请重试');
+        wx.request({
+          url: apiConfig.BASE_URL + '/api/auth/wechat/login',
+          method: 'POST',
+          header: { 'Content-Type': 'application/json' },
+          data: { loginCode: loginResult.code, phoneCode, profile: { nickname: this.data.nickname, avatarUrl: this.data.avatarUrl } },
+          success: (response) => this.finishLogin(response.data),
+          fail: () => this.finishLoginError('无法连接登录服务，请稍后重试')
+        });
+      },
+      fail: () => this.finishLoginError('微信登录失败，请重试')
+    });
   },
-  // 轻量登录：只做资料设置，不再强制家庭会议签约
-  enter() {
-    const name = this.data.name.trim();
-    if (!name) {
-      wx.showToast({ title: '请填写昵称', icon: 'none' });
-      return;
+  finishLogin(result) {
+    if (!result || !result.ok || !result.user || !result.token) {
+      return this.finishLoginError((result && result.error && result.error.message) || '授权失败，请重试');
     }
-    const profile = { avatar: this.data.avatar, name: name };
-    // 同步到全局 + 本地持久化（刷新不丢）
+    const user = result.user;
+    const profile = {
+      avatar: user.nickname ? user.nickname.slice(0, 1) : '贤',
+      avatarUrl: user.avatarUrl || '',
+      name: user.nickname,
+      phoneNumber: user.phoneNumber || ''
+    };
     app.globalData.child = Object.assign({}, app.globalData.child, profile);
     wx.setStorageSync('childProfile', profile);
-    store.login(); // 标记已登录（与家庭会议解耦）
+    wx.setStorageSync('authToken', result.token);
+    wx.setStorageSync('authExpiresAt', result.expiresAt);
+    store.login();
     wx.reLaunch({ url: '/pages/index/index' });
+  },
+  finishLoginError(message) {
+    this.setData({ submitting: false });
+    wx.showToast({ title: message, icon: 'none' });
   }
 });

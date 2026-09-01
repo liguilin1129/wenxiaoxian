@@ -31,6 +31,16 @@
   padding: 40rpx 36rpx;
   box-shadow: 0 8rpx 30rpx rgba(17, 24, 39, 0.05);
 }
+.profile-row { display: flex; align-items: center; gap: 24rpx; margin-bottom: 34rpx; }
+.avatar-picker {
+  width: 112rpx; height: 112rpx; padding: 0; margin: 0;
+  border-radius: 50%; overflow: hidden; background: var(--brand-soft);
+  display: flex; align-items: center; justify-content: center;
+}
+.avatar-picker::after { border: none; }
+.avatar-image { width: 112rpx; height: 112rpx; }
+.avatar-placeholder { color: var(--brand-700); font-size: 26rpx; }
+.profile-tip { color: var(--ink-3); font-size: 26rpx; }
 
 .label {
   font-size: 26rpx;
@@ -75,6 +85,7 @@
 .ph {
   color: #9CA3AF;
 }
+.privacy-tip { margin-top: 22rpx; color: var(--ink-3); font-size: 22rpx; line-height: 1.6; }
 
 .enter-btn {
   margin-top: 44rpx;
