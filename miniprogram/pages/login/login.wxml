@@ -1,28 +1,22 @@
 <view class="login-page">
   <view class="hero">
-    <view class="brand-mark"><view class="brand-leaf"></view></view>
-    <view class="hero-kicker">成长花园</view>
-    <view class="hero-title">欢迎使用文小贤</view>
-    <view class="hero-sub">使用微信资料，开启专属成长之旅</view>
+    <view class="logo">🌱</view>
+    <view class="hero-title">文小贤 · 成长花园</view>
+    <view class="hero-sub">使用微信资料，开启成长之旅</view>
   </view>
 
   <view class="card">
-    <view class="group-caption">个人资料</view>
     <view class="profile-row">
       <button class="avatar-picker" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
         <image wx:if="{{avatarUrl}}" class="avatar-image" src="{{avatarUrl}}" mode="aspectFill" />
-        <text wx:else class="avatar-placeholder">＋</text>
+        <text wx:else class="avatar-placeholder">头像</text>
       </button>
-      <view class="profile-copy"><view class="profile-name">微信头像</view><view class="profile-tip">点击选择头像</view></view>
-      <text class="chevron">›</text>
+      <view class="profile-tip">点击授权微信头像</view>
     </view>
-    <view class="row-divider"></view>
-    <view class="nickname-row">
-      <view class="label">微信昵称</view>
-      <input class="nick-input" type="nickname" placeholder="填写昵称" placeholder-class="ph" value="{{nickname}}" maxlength="32" bindinput="onNickname" />
-    </view>
+    <view class="label">微信昵称</view>
+    <input class="nick-input" type="nickname" placeholder="填写或授权微信昵称" placeholder-class="ph" value="{{nickname}}" maxlength="32" bindinput="onNickname" />
+    <view class="privacy-tip">登录后将使用头像和昵称创建账号，仅用于本小程序服务。</view>
   </view>
 
   <button class="enter-btn" bindtap="onWechatLogin" loading="{{submitting}}" disabled="{{submitting}}">微信授权登录</button>
-  <view class="privacy-tip">继续即表示你同意使用头像和昵称创建账号，仅用于本小程序服务。</view>
 </view>
