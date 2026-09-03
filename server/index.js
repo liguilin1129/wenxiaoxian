@@ -159,12 +159,13 @@ async function login(req, res) {
   }
   const loginCode = cleanText(input.loginCode, 256);
   const phoneCode = cleanText(input.phoneCode, 256);
-  if (!loginCode || !phoneCode) {
-    return fail(res, 400, 'AUTHORIZATION_REQUIRED', '请先完成微信登录与手机号授权');
+  if (!loginCode) {
+    return fail(res, 400, 'AUTHORIZATION_REQUIRED', '请先完成微信登录授权');
   }
   try {
-    const [session, phoneInfo] = await Promise.all([exchangeLoginCode(loginCode), exchangePhoneCode(phoneCode)]);
-    if (!session.openid || !phoneInfo || !phoneInfo.phoneNumber) {
+    const session = await exchangeLoginCode(loginCode);
+    const phoneInfo = phoneCode ? await exchangePhoneCode(phoneCode) : null;
+    if (!session.openid) {
       return fail(res, 401, 'WECHAT_AUTH_FAILED', '微信授权信息无效或已过期');
     }
     const now = new Date().toISOString();
@@ -177,8 +178,8 @@ async function login(req, res) {
       unionId: session.unionid || existing.unionId || '',
       nickname: cleanText(profile.nickname, 32) || existing.nickname || '微信用户',
       avatarUrl: cleanText(profile.avatarUrl, 1024) || existing.avatarUrl || '',
-      phoneNumber: phoneInfo.phoneNumber,
-      countryCode: phoneInfo.countryCode || '86',
+      phoneNumber: phoneInfo ? phoneInfo.phoneNumber : (existing.phoneNumber || ''),
+      countryCode: phoneInfo ? (phoneInfo.countryCode || '86') : (existing.countryCode || ''),
       updatedAt: now
     };
     users[session.openid] = user;

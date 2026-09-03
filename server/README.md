@@ -1,6 +1,6 @@
 # 微信授权登录服务
 
-这是小程序的最小登录后端，负责把微信一次性授权凭证换成用户标识和手机号。AppSecret 只能放在本服务的 `.env` 中，不能放进小程序代码。
+这是小程序的最小登录后端，负责把微信一次性授权凭证换成用户标识；手机号授权为可选扩展。AppSecret 只能放在本服务的 `.env` 中，不能放进小程序代码。
 
 ## 启动
 
@@ -13,7 +13,6 @@
 ```json
 {
   "loginCode": "wx.login 返回的 code",
-  "phoneCode": "getPhoneNumber 返回的 code",
   "profile": { "nickname": "用户昵称", "avatarUrl": "用户头像 URL" }
 }
 ```

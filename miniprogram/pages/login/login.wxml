@@ -2,7 +2,7 @@
   <view class="hero">
     <view class="logo">🌱</view>
     <view class="hero-title">文小贤 · 成长花园</view>
-    <view class="hero-sub">授权微信资料，开启成长之旅</view>
+    <view class="hero-sub">使用微信资料，开启成长之旅</view>
   </view>
 
   <view class="card">
@@ -15,8 +15,8 @@
     </view>
     <view class="label">微信昵称</view>
     <input class="nick-input" type="nickname" placeholder="填写或授权微信昵称" placeholder-class="ph" value="{{nickname}}" maxlength="32" bindinput="onNickname" />
-    <view class="privacy-tip">授权后将使用头像、昵称和手机号创建账号，仅用于本小程序服务。</view>
+    <view class="privacy-tip">登录后将使用头像和昵称创建账号，仅用于本小程序服务。</view>
   </view>
 
-  <button class="enter-btn" open-type="getPhoneNumber" bindgetphonenumber="onPhoneAuthorize" loading="{{submitting}}" disabled="{{submitting}}">微信授权并绑定手机号</button>
+  <button class="enter-btn" bindtap="onWechatLogin" loading="{{submitting}}" disabled="{{submitting}}">微信授权登录</button>
 </view>

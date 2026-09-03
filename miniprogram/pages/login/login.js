@@ -10,9 +10,7 @@ Page({
   onNickname(e) {
     this.setData({ nickname: (e.detail.value || '').trim() });
   },
-  onPhoneAuthorize(e) {
-    const phoneCode = e.detail && e.detail.code;
-    if (!phoneCode) return wx.showToast({ title: '需要手机号授权才能登录', icon: 'none' });
+  onWechatLogin() {
     if (!this.data.nickname) return wx.showToast({ title: '请先填写昵称', icon: 'none' });
     if (!apiConfig.BASE_URL) return wx.showToast({ title: '登录服务尚未配置', icon: 'none' });
     this.setData({ submitting: true });
@@ -23,7 +21,7 @@ Page({
           url: apiConfig.BASE_URL + '/api/auth/wechat/login',
           method: 'POST',
           header: { 'Content-Type': 'application/json' },
-          data: { loginCode: loginResult.code, phoneCode, profile: { nickname: this.data.nickname, avatarUrl: this.data.avatarUrl } },
+          data: { loginCode: loginResult.code, profile: { nickname: this.data.nickname, avatarUrl: this.data.avatarUrl } },
           success: (response) => this.finishLogin(response.data),
           fail: () => this.finishLoginError('无法连接登录服务，请稍后重试')
         });
