@@ -1,22 +1,50 @@
 <view class="login-page">
+  <!-- 顶部品牌区 -->
   <view class="hero">
     <view class="logo">🌱</view>
-    <view class="hero-title">文小贤 · 成长花园</view>
-    <view class="hero-sub">使用微信资料，开启成长之旅</view>
+    <view class="hero-title">加入成长花园</view>
+    <view class="hero-sub">填写资料，开启文小贤成长之旅</view>
   </view>
 
-  <view class="card">
-    <view class="profile-row">
-      <button class="avatar-picker" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
-        <image wx:if="{{avatarUrl}}" class="avatar-image" src="{{avatarUrl}}" mode="aspectFill" />
-        <text wx:else class="avatar-placeholder">头像</text>
+  <!-- 头像 -->
+  <view class="igroup">
+    <view class="igroup-title">头像</view>
+    <view class="group-card">
+      <button class="avatar-row" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+        <image wx:if="{{avatarUrl}}" class="ava-big" src="{{avatarUrl}}" mode="aspectFill" />
+        <view wx:else class="ava-big ava-placeholder">{{nickname ? nickname.slice(0,1) : '贤'}}</view>
+        <view class="change">选择微信头像</view>
       </button>
-      <view class="profile-tip">点击授权微信头像</view>
     </view>
-    <view class="label">微信昵称</view>
-    <input class="nick-input" type="nickname" placeholder="填写或授权微信昵称" placeholder-class="ph" value="{{nickname}}" maxlength="32" bindinput="onNickname" />
-    <view class="privacy-tip">登录后将使用头像和昵称创建账号，仅用于本小程序服务。</view>
   </view>
 
-  <button class="enter-btn" bindtap="onWechatLogin" loading="{{submitting}}" disabled="{{submitting}}">微信授权登录</button>
+  <!-- 昵称 -->
+  <view class="igroup">
+    <view class="igroup-title">昵称</view>
+    <view class="group-card">
+      <view class="irow">
+        <input
+          class="nick-input"
+          type="nickname"
+          placeholder="填写或授权微信昵称"
+          placeholder-class="ph"
+          value="{{nickname}}"
+          maxlength="32"
+          bindinput="onNickname"
+        />
+      </view>
+    </view>
+  </view>
+
+  <view class="privacy">
+    登录后将使用头像和昵称创建账号，仅用于本小程序服务。
+  </view>
+
+  <!-- 底部登录按钮 -->
+  <view class="bottom">
+    <button class="enter-btn {{submitting ? 'dis' : ''}}" bindtap="onWechatLogin" loading="{{submitting}}" disabled="{{submitting}}">
+      微信授权登录
+    </button>
+    <view class="sub">轻量登录，安全便捷</view>
+  </view>
 </view>

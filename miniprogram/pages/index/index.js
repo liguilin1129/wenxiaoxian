@@ -124,6 +124,14 @@ Page({
   goReport() { wx.navigateTo({ url: '/pages/report/report' }); },
   goCheckin() { wx.navigateTo({ url: '/pages/checkin/checkin' }); },
   goClassics() { wx.navigateTo({ url: '/pages/classics/classics' }); },
+  goTasks() { wx.switchTab({ url: '/pages/tasks/tasks' }); },
+  goBadges() {
+    // 勋章墙详情页暂未独立，先用 toast 提示；后续可新建 pages/badges/badges
+    wx.showToast({ title: '勋章墙详情即将上线', icon: 'none' });
+  },
+  goReminders() {
+    wx.showToast({ title: '全部提醒即将上线', icon: 'none' });
+  },
   goSettings() {
     // 轻量设置：暂用「我的」页承载（会员/资料/退出入口齐全）
     wx.switchTab({ url: '/pages/profile/profile' });

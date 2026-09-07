@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>社区发布 - 图片/视频 1:1 预览</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #F5F5F7;
+      padding: 40rpx 0;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      padding: 40px 20px;
+    }
+    .phone {
+      width: 375px;
+      height: 812px;
+      background: #fff;
+      border-radius: 44px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.12);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .screen {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24rpx;
+      padding: 24px;
+      background: #F5F5F7;
+    }
+    .title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    /* WXSS replica */
+    .scr-body { padding-bottom: 60px; }
+    .pub-hint {
+      font-size: 13px;
+      color: #6B6B7B;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .field {
+      background: #fff;
+      border: 1px solid #EBEBF0;
+      border-radius: 16rpx;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(17,17,26,.04);
+    }
+    .content-input {
+      width: 100%;
+      min-height: 140px;
+      font-size: 15px;
+      color: #333344;
+      line-height: 1.6;
+      border: none;
+      outline: none;
+      resize: none;
+      font-family: inherit;
+    }
+    .counter {
+      text-align: right;
+      font-size: 11px;
+      color: #8B8B9E;
+      margin-top: 6px;
+    }
+    .label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1A1A2E;
+      margin-bottom: 12px;
+    }
+    .label .sub { font-size: 12px; font-weight: 400; color: #8B8B9E; }
+
+    .media-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+    .media-item, .media-add {
+      position: relative;
+      width: calc((100% - 18px) / 3);
+      aspect-ratio: 1;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #F5F5F7;
+    }
+    .media-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .video-badge, .pm-play {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(0,0,0,.55);
+      color: #fff;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-left: 3px;
+    }
+    .media-del {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(0,0,0,.55);
+      color: #fff;
+      font-size: 16px;
+      line-height: 22px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .media-add {
+      border: 2px dashed #8B8B9E;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #8B8B9E;
+      cursor: pointer;
+    }
+    .add-icon { font-size: 28px; line-height: 1; }
+    .add-text { font-size: 11px; margin-top: 4px; }
+
+    .btn {
+      width: 100%;
+      height: 48px;
+      border-radius: 12px;
+      background: #6366F1;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      border: none;
+      margin-top: 12px;
+      cursor: pointer;
+    }
+
+    /* feed replica */
+    .feed { padding-top: 4px; }
+    .post {
+      display: flex;
+      padding: 16px 0;
+      border-bottom: 1px solid #EBEBF0;
+    }
+    .post:last-child { border-bottom: none; }
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #E0E0E8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #444;
+      flex: none;
+    }
+    .pbody { flex: 1; margin-left: 12px; min-width: 0; }
+    .phead { display: flex; justify-content: space-between; align-items: center; }
+    .pname { font-size: 15px; font-weight: 700; color: #1A1A2E; }
+    .ptime { font-size: 12px; color: #8B8B9E; }
+    .ptext { font-size: 14px; color: #444456; margin-top: 6px; line-height: 1.55; }
+    .pmedia {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .pm-item {
+      position: relative;
+      width: calc((100% - 12px) / 3);
+      aspect-ratio: 1;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #F5F5F7;
+    }
+    .pm-item.pm-one {
+      width: 60%;
+      aspect-ratio: 16 / 10;
+    }
+    .pm-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .pactions { display: flex; gap: 24px; margin-top: 10px; }
+    .act { font-size: 13px; color: #8B8B9E; display: flex; align-items: center; gap: 4px; }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      background: #EEF2FF;
+      color: #4338CA;
+    }
+    .picker {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .p-arrow { color: #8B8B9E; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <!-- 发布页 -->
+  <div class="phone">
+    <div class="title">发布页（发动态）</div>
+    <div class="screen">
+      <div class="scr-body">
+        <div class="pub-hint">记录孩子日常，和邻里一起成长</div>
+        <div class="field">
+          <textarea class="content-input" placeholder="分享今天孩子的成长点滴…">今天小贤背诵《论语·学而》第一段，录了视频纪念一下～</textarea>
+          <div class="counter">24/200</div>
+        </div>
+        <div class="field">
+          <div class="label">添加图片或视频 <span class="sub">（最多 9 个）</span></div>
+          <div class="media-grid">
+            <div class="media-item">
+              <img class="media-thumb" src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&h=300&fit=crop" />
+              <div class="media-del">×</div>
+            </div>
+            <div class="media-item">
+              <img class="media-thumb" src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=300&h=300&fit=crop" />
+              <div class="video-badge">▶</div>
+              <div class="media-del">×</div>
+            </div>
+            <div class="media-add">
+              <div class="add-icon">+</div>
+              <div class="add-text">图片/视频</div>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <div class="label">选择标签</div>
+          <div class="picker">
+            <span class="pill">打卡</span>
+            <span class="p-arrow">›</span>
+          </div>
+        </div>
+        <button class="btn">发布</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 成长圈列表 -->
+  <div class="phone">
+    <div class="title">成长圈（发布后展示）</div>
+    <div class="screen">
+      <div class="feed">
+        <div class="post">
+          <div class="avatar">贤</div>
+          <div class="pbody">
+            <div class="phead">
+              <span class="pname">我</span>
+              <span class="ptime">刚刚</span>
+            </div>
+            <div class="ptext">今天小贤背诵《论语·学而》第一段，录了视频纪念一下～</div>
+            <div class="pmedia">
+              <div class="pm-item">
+                <img class="pm-thumb" src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&h=300&fit=crop" />
+              </div>
+              <div class="pm-item">
+                <img class="pm-thumb" src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=300&h=300&fit=crop" />
+                <div class="pm-play">▶</div>
+              </div>
+            </div>
+            <div class="pactions">
+              <div class="act">🤍 0</div>
+              <div class="act">💬 0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

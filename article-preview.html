@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>发现页·文章 1:1 预览</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #F5F5F7;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      padding: 40px 20px;
+    }
+    .phone {
+      width: 375px;
+      height: 812px;
+      background: #fff;
+      border-radius: 44px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.12);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .screen {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      background: #F5F5F7;
+    }
+
+    /* article list */
+    .greet { font-size: 14px; color: #6B6B7B; }
+    .title { font-size: 26px; font-weight: 800; color: #1A1A2E; margin-top: 4px; }
+    .tabs {
+      display: flex;
+      gap: 10px;
+      padding: 24px 0 20px;
+    }
+    .tab {
+      padding: 6px 14px;
+      border-radius: 16px;
+      font-size: 13px;
+      color: #6B6B7B;
+      background: #fff;
+      border: 1px solid #EBEBF0;
+    }
+    .tab.on { color: #fff; background: #6366F1; border-color: #6366F1; font-weight: 600; }
+
+    .acard {
+      display: flex;
+      background: #fff;
+      border: 1px solid #EBEBF0;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(17,17,26,.04);
+    }
+    .acover {
+      width: 68px;
+      height: 68px;
+      border-radius: 12px;
+      background: #EEEDFE;
+      color: #4F46E5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      flex: none;
+      margin-right: 14px;
+    }
+    .ainfo { flex: 1; min-width: 0; }
+    .acat {
+      display: inline-flex;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      color: #4F46E5;
+      background: #EEEDFE;
+      margin-bottom: 6px;
+    }
+    .atitle { font-size: 16px; font-weight: 700; color: #1A1A2E; line-height: 1.35; }
+    .asummary {
+      font-size: 13px;
+      color: #6B6B7B;
+      margin-top: 6px;
+      line-height: 1.45;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .ameta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #8B8B9E;
+    }
+
+    /* article detail */
+    .aheader { padding-bottom: 20px; border-bottom: 1px solid #EBEBF0; }
+    .big { width: 90px; height: 90px; font-size: 48px; margin-bottom: 16px; }
+    .abody { padding-top: 20px; }
+    .paragraph {
+      font-size: 15px;
+      color: #444456;
+      line-height: 1.85;
+      margin-bottom: 18px;
+      text-align: justify;
+    }
+  </style>
+</head>
+<body>
+  <!-- 文章列表 -->
+  <div class="phone">
+    <div class="screen">
+      <div class="greet">精选文章</div>
+      <div class="title">优秀文章 · 报道 · 采访</div>
+      <div class="tabs">
+        <div class="tab on">全部</div>
+        <div class="tab">优秀文章</div>
+        <div class="tab">报道</div>
+        <div class="tab">采访</div>
+      </div>
+
+      <div class="acard">
+        <div class="acover">📖</div>
+        <div class="ainfo">
+          <div class="acat">优秀文章</div>
+          <div class="atitle">为什么孩子要从小读《论语》？</div>
+          <div class="asummary">经典诵读不是背诵任务，而是人格养成的长期复利。</div>
+          <div class="ameta">
+            <span>编辑部</span><span>·</span><span>2026-08-20</span><span>·</span><span>1240 阅读</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="acard">
+        <div class="acover">🏫</div>
+        <div class="ainfo">
+          <div class="acat">报道</div>
+          <div class="atitle">“文小贤”家庭教育计划走进社区学校</div>
+          <div class="asummary">第一批试点家庭分享：孩子从被动到主动，家长从焦虑到从容。</div>
+          <div class="ameta">
+            <span>社区新闻中心</span><span>·</span><span>2026-08-15</span><span>·</span><span>2301 阅读</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="acard">
+        <div class="acover">🎙️</div>
+        <div class="ainfo">
+          <div class="acat">采访</div>
+          <div class="atitle">专访 | 孩子专注力差？先从家庭环境改起</div>
+          <div class="asummary">儿童发展专家建议：专注力不是训练出来的，而是保护出来的。</div>
+          <div class="ameta">
+            <span>李教授</span><span>·</span><span>2026-08-05</span><span>·</span><span>3420 阅读</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 文章详情 -->
+  <div class="phone">
+    <div class="screen" style="background:#fff">
+      <div class="aheader">
+        <div class="acover big">📖</div>
+        <div class="acat">优秀文章</div>
+        <div class="title" style="font-size:24px;margin-top:8px">为什么孩子要从小读《论语》？</div>
+        <div class="ameta" style="margin-top:14px">
+          <span>编辑部</span><span>·</span><span>2026-08-20</span><span>·</span><span>1240 阅读</span>
+        </div>
+      </div>
+      <div class="abody">
+        <div class="paragraph">《论语》是中华民族最重要的文化元典之一。对孩子来说，诵读《论语》最大的价值并不在于“能背多少章”，而在于让“仁、义、礼、智、信”这些价值观念在日常语言中耳濡目染。</div>
+        <div class="paragraph">我们建议家长不要把它当成“作业”，而是把《论语》放入晨间仪式：每天 5 分钟，声音不用大，节奏不用快，坚持三个月，孩子的专注力与表达力都会有明显变化。</div>
+        <div class="paragraph">本期文章从脑科学、语言敏感期、家庭教养三个维度，聊了聊为什么“读经典”这件事越早开始越好。</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

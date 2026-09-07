@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>任务中心 · 柔和极简配色预览</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { margin:0; background:#EAEAEF; font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; display:flex; justify-content:center; padding:24px 0; }
+  .phone { width:390px; background:#F5F5F7; border-radius:38px; box-shadow:0 12px 40px rgba(0,0,0,.18); overflow:hidden; border:1px solid #d8d8de; }
+  .status { height:44px; }
+  .scr-head { padding:18px 20px 12px; background:#fff; }
+  .greet { font-size:13px; color:#8B8B9E; }
+  .title { font-size:24px; font-weight:700; color:#1A1A2E; margin-top:2px; }
+  .scr-body { padding:16px 20px 8px; }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px; }
+  .pill { font-size:12px; padding:5px 13px; border-radius:999px; background:#FAFAFB; color:#444456; font-weight:600; }
+  .pill.on { background:#1A1A2E; color:#fff; }
+  .done-summary { font-size:13px; color:#444456; margin-bottom:16px; }
+  .done-summary .num { color:#1A1A2E; font-weight:800; font-size:17px; margin:0 3px; }
+  .h3 { font-size:16px; font-weight:700; color:#1A1A2E; margin:14px 2px 12px; }
+  .task { background:#fff; border-radius:16px; padding:14px; border:1px solid #ECECF1; margin-bottom:12px; display:flex; align-items:center; gap:12px; box-shadow:0 2px 8px rgba(17,17,26,.04); }
+  .task.done { background:#FAFAFB; border-color:#E3E3EA; }
+  .task-main { flex:1; min-width:0; }
+  .tn { font-size:15px; font-weight:700; color:#1A1A2E; }
+  .tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  .tag { font-size:11px; padding:3px 10px; border-radius:999px; background:#FAFAFB; color:#444456; font-weight:600; }
+  .reward { display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px dashed #ECECF1; font-size:13px; color:#444456; }
+  .reward:last-child { border-bottom:none; }
+  .pts { color:#1A1A2E; font-weight:700; font-size:13px; }
+  .check-btn { flex:none; width:54px; height:54px; border-radius:50%; border:2px solid #6366F1; background:#EEEDFE; color:#4338CA; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; }
+  .check-btn.on { background:#6366F1; color:#fff; border-color:#6366F1; }
+  .note { font-size:11px; color:#8B8B9E; padding:4px 20px 22px; line-height:1.7; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="status"></div>
+  <div class="scr-head">
+    <div class="greet">鼓励中心</div>
+    <div class="title">任务与行为</div>
+  </div>
+  <div class="scr-body">
+    <div class="chips">
+      <span class="pill on">全部</span>
+      <span class="pill">好身心</span>
+      <span class="pill">好身体</span>
+      <span class="pill">好习惯</span>
+      <span class="pill">好品味</span>
+    </div>
+    <div class="done-summary">已打卡 <span class="num">2</span> / 11 个任务</div>
+
+    <div class="h3">好身心 · 德育</div>
+    <div class="task done">
+      <div class="task-main">
+        <div class="tn">正其心</div>
+        <div class="tags"><span class="tag">愿力 / 内驱力</span><span class="tag">经典《论语》</span></div>
+        <div class="reward"><span>善良敦厚（仁）</span><span class="pts">+10</span></div>
+        <div class="reward"><span>正直担当（义）</span><span class="pts">+10</span></div>
+        <div class="reward"><span>诚实守信（信）</span><span class="pts">+10</span></div>
+      </div>
+      <div class="check-btn on">✓</div>
+    </div>
+    <div class="task">
+      <div class="task-main">
+        <div class="tn">善其行</div>
+        <div class="tags"><span class="tag">不杀 · 不盗 · 不邪淫</span></div>
+        <div class="reward"><span>爱护生命</span><span class="pts">+8</span></div>
+        <div class="reward"><span>行为光明</span><span class="pts">+8</span></div>
+      </div>
+      <div class="check-btn">打卡</div>
+    </div>
+
+    <div class="h3">好身体 · 健康</div>
+    <div class="task">
+      <div class="task-main">
+        <div class="tn">健康饮食</div>
+        <div class="tags"><span class="tag">不挑食 · 均衡</span></div>
+        <div class="reward"><span>准时吃饭</span><span class="pts">+6</span></div>
+        <div class="reward"><span>少吃零食</span><span class="pts">+6</span></div>
+      </div>
+      <div class="check-btn">打卡</div>
+    </div>
+    <div class="task done">
+      <div class="task-main">
+        <div class="tn">坚持锻炼</div>
+        <div class="tags"><span class="tag">武术 · 太极</span></div>
+        <div class="reward"><span>每日运动</span><span class="pts">+10</span></div>
+        <div class="reward"><span>体态端正</span><span class="pts">+6</span></div>
+      </div>
+      <div class="check-btn on">✓</div>
+    </div>
+
+    <div class="h3">好习惯 · 习惯</div>
+    <div class="task">
+      <div class="task-main">
+        <div class="tn">整理书包</div>
+        <div class="tags"><span class="tag">独立</span></div>
+        <div class="reward"><span>物归原处</span><span class="pts">+5</span></div>
+      </div>
+      <div class="check-btn">打卡</div>
+    </div>
+
+    <div class="h3">好品味 · 审美</div>
+    <div class="task">
+      <div class="task-main">
+        <div class="tn">自由绘画</div>
+        <div class="tags"><span class="tag">创造</span></div>
+        <div class="reward"><span>每日创作</span><span class="pts">+6</span></div>
+      </div>
+      <div class="check-btn">打卡</div>
+    </div>
+  </div>
+  <div class="note">柔和极简：正文统一深灰（#1A1A2E / #444456）；分组标题去掉维度彩色；加分数字由靛蓝改为深灰；已打卡态去掉彩色描边、卡片转浅灰；唯一彩色焦点保留在「打卡」按钮（靛蓝主色 #6366F1）。</div>
+</div>
+</body>
+</html>

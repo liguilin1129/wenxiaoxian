@@ -4,6 +4,7 @@ Thumbs.db
 *.swp
 .idea/
 .vscode/
+.workbuddy/
 *.log
 
 # ===== 依赖（本小程序为纯源码，无 node_modules；此处为通用预留） =====

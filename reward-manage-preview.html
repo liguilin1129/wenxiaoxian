@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>商城家长自定义 1:1 预览</title>
+<style>
+  :root{
+    --brand:#6366F1; --brand-600:#4F46E5; --brand-700:#4338CA;
+    --brand-soft:#EEEDFE; --surface:#FFFFFF; --surface-2:#FAFAFB;
+    --ink-1:#1A1A2E; --ink-2:#444456; --ink-3:#8B8B9E;
+    --line:#ECECF1; --line-2:#F0F0F4;
+    --c-heart:#FB7185; --c-heart-bg:#FFF1F3; --c-heart-d:#E11D6F;
+    --c-body:#34D399; --c-body-bg:#ECFDF5; --c-body-d:#0F9D6B;
+    --c-habit:#6366F1; --c-habit-bg:#EEEDFE; --c-habit-d:#4F46E5;
+    --c-taste:#FBBF24; --c-taste-bg:#FFFBEB; --c-taste-d:#B7791F;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased;}
+  body{background:#e9e9ee;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;color:var(--ink-1);}
+  .phone{width:390px;margin:20px auto;background:#F5F5F7;border-radius:44px;overflow:hidden;box-shadow:0 20px 60px rgba(17,17,26,.18);border:10px solid #1c1c22;position:relative;min-height:780px;}
+  .statusbar{height:44px;background:var(--surface);display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-size:13px;font-weight:600;}
+  .nav{height:44px;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;border-bottom:1px solid var(--line);position:relative;}
+  .nav .back{position:absolute;left:14px;font-size:22px;color:var(--brand-700);cursor:pointer;}
+
+  .scr-head{padding:26px 22px 16px;background:var(--surface);}
+  .row{display:flex;align-items:center;}
+  .between{justify-content:space-between;}
+  .greet{font-size:13px;color:var(--c-taste-d);font-weight:600;}
+  .title{font-size:26px;font-weight:700;margin-top:4px;letter-spacing:-.5px;}
+  .mg-btn{font-size:13px;font-weight:600;color:var(--brand-700);background:var(--brand-soft);padding:7px 16px;border-radius:999px;flex:none;cursor:pointer;}
+
+  .scr-body{padding:16px 22px 70px;}
+  .points-hero{background:linear-gradient(135deg,#6366F1,#8B5CF6);color:#fff;border-radius:32px;padding:20px;margin-bottom:18px;}
+  .points-hero .lbl{font-size:12px;opacity:.9;}
+  .points-hero .num{font-size:38px;font-weight:800;line-height:1;margin:4px 0;}
+  .points-hero .lv{display:inline-block;background:rgba(255,255,255,.2);padding:3px 12px;border-radius:999px;font-size:12px;font-weight:600;}
+
+  .task{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(17,17,26,.04);}
+  .tn{font-size:17px;font-weight:700;color:var(--ink-1);}
+  .muted{font-size:13px;color:var(--ink-3);margin-top:4px;}
+  .pill{font-size:13px;padding:4px 12px;border-radius:999px;font-weight:600;flex:none;}
+  .pill-heart{background:var(--c-heart-bg);color:var(--c-heart-d);}
+  .pill-body{background:var(--c-body-bg);color:var(--c-body-d);}
+  .pill-habit{background:var(--c-habit-bg);color:var(--c-habit-d);}
+  .pill-taste{background:var(--c-taste-bg);color:var(--c-taste-d);}
+  .btn{display:block;width:100%;text-align:center;background:var(--brand);color:#fff;font-weight:600;font-size:15px;padding:14px;border-radius:20px;border:none;cursor:pointer;}
+  .btn.soft{background:var(--brand-soft);color:var(--brand-700);}
+  .btn[disabled]{opacity:.45;cursor:not-allowed;}
+
+  .mg-actions{display:flex;gap:10px;margin-top:12px;}
+  .mg-act{flex:1;text-align:center;padding:10px;border-radius:20px;font-size:13px;font-weight:600;background:var(--surface-2);border:1px solid var(--line);color:var(--ink-2);cursor:pointer;}
+  .mg-act.del{color:var(--c-heart-d);background:var(--c-heart-bg);border-color:transparent;}
+  .add-btn{margin-top:16px;text-align:center;padding:16px;background:var(--brand);color:#fff;font-weight:600;font-size:15px;border-radius:24px;cursor:pointer;}
+
+  /* form */
+  .form-card{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:0 18px;box-shadow:0 1px 4px rgba(17,17,26,.04);}
+  .field{padding:16px 0;border-bottom:1px solid var(--line);}
+  .field.noborder{border-bottom:none;}
+  .field .label{font-size:13px;color:var(--ink-3);margin-bottom:10px;}
+  .input{font-size:16px;color:var(--ink-1);width:100%;border:none;outline:none;background:transparent;}
+  .textarea{width:100%;height:70px;font-size:15px;color:var(--ink-1);background:var(--surface-2);border-radius:20px;padding:10px;resize:none;border:none;outline:none;}
+  .picker{display:flex;align-items:center;gap:9px;background:var(--surface-2);border-radius:20px;padding:10px 12px;}
+  .picker .dot{width:13px;height:13px;border-radius:50%;flex:none;}
+  .picker .pname{font-size:15px;font-weight:600;flex:1;color:var(--ink-1);}
+  .ar{color:var(--ink-3);font-size:18px;}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;}
+  .chip{font-size:13px;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface-2);cursor:pointer;font-weight:600;color:var(--ink-2);}
+  .chip.on{color:#fff;border-color:transparent;}
+  .del-link{text-align:center;margin-top:18px;font-size:14px;color:var(--c-heart-d);font-weight:600;cursor:pointer;}
+
+  .tabs{position:absolute;bottom:0;left:0;right:0;display:flex;background:#fff;border-top:1px solid var(--line);}
+  .tabs .t{flex:1;text-align:center;padding:10px;font-size:12px;color:var(--ink-3);cursor:pointer;}
+  .tabs .t.on{color:var(--brand-700);font-weight:700;}
+  .hint{text-align:center;font-size:12px;color:#666;margin-top:8px;}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><span>●●● 5G</span></div>
+  <div class="nav"><span class="back" id="navBack" style="display:none" onclick="goBack()">‹</span><span id="navTitle">奖励商城</span></div>
+
+  <!-- 商城 / 管理 视图 -->
+  <div id="mallView">
+    <div class="scr-head">
+      <div class="row between" style="align-items:flex-end">
+        <div>
+          <div class="greet">奖励商城</div>
+          <div class="title">用积分换心愿</div>
+        </div>
+        <div class="mg-btn" onclick="toggleManage()">管理</div>
+      </div>
+    </div>
+    <div class="scr-body">
+      <div class="points-hero">
+        <div class="lbl">我的余额</div>
+        <div class="num">1280</div>
+        <text class="lv">积分可自由兑换</text>
+      </div>
+      <div id="rewardList"></div>
+    </div>
+  </div>
+
+  <!-- 编辑表单视图 -->
+  <div id="formView" style="display:none">
+    <div class="scr-body" style="padding-top:20px">
+      <div class="form-card">
+        <div class="field"><div class="label">心愿名称</div><input class="input" id="fName" placeholder="如：周末去公园放风" value="乐高积木" /></div>
+        <div class="field"><div class="label">所需积分</div><input class="input" id="fCost" type="number" placeholder="如：50" value="80" /></div>
+        <div class="field"><div class="label">描述（选填）</div><textarea class="textarea" id="fDesc" placeholder="简单说明这个心愿">攒够分就安排</textarea></div>
+        <div class="field noborder"><div class="label">分类标签</div><div class="chips" id="fDims"></div></div>
+      </div>
+      <button class="btn" id="saveBtn" style="margin-top:18px" onclick="saveReward()">保存心愿</button>
+      <div class="del-link" id="delLink" onclick="delReward()">删除该心愿</div>
+      <div class="muted" style="text-align:center;margin-top:12px;color:var(--ink-3);font-size:12px">保存后，这个心愿会立即出现在孩子的积分商城里</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="t on" onclick="showMall()">① 商城</div>
+    <div class="t" onclick="showManage()">② 管理模式</div>
+    <div class="t" onclick="showForm('add')">③ 编辑表单</div>
+  </div>
+</div>
+<div class="hint">预览：① 商城正常态 → ② 点「管理」进入管理模式（每张卡可编辑/删除，底部新增心愿）→ ③ 新增/编辑表单（名称/积分/描述/分类）</div>
+
+<script>
+const DIMS=[{key:'heart',name:'好身心',color:'#FB7185'},{key:'body',name:'好身体',color:'#34D399'},{key:'habit',name:'好习惯',color:'#6366F1'},{key:'taste',name:'好品味',color:'#FBBF24'}];
+let rewards=[
+  {id:'r1',name:'周末去公园放风',desc:'家庭时光',cost:50,dim:'taste'},
+  {id:'r2',name:'挑选一本绘本',desc:'好品味养成',cost:80,dim:'taste'},
+  {id:'r3',name:'延长游戏时间 30 分',desc:'好身体调剂',cost:120,dim:'taste'},
+  {id:'r4',name:'决定周末家庭菜单',desc:'自主规划',cost:60,dim:'taste'}
+];
+let manage=false;
+let curDim=3;
+let editingId=null;
+
+function pillClass(d){return 'pill pill-'+d;}
+function renderList(){
+  const wrap=document.getElementById('rewardList');
+  wrap.innerHTML=rewards.map(r=>`
+    <div class="task">
+      <div class="row between">
+        <div><div class="tn">${r.name}</div><div class="muted">${r.desc}</div></div>
+        <text class="${pillClass(r.dim)}">${r.cost} 分</text>
+      </div>
+      ${manage?`<div class="mg-actions">
+        <div class="mg-act" onclick="showForm('edit','${r.id}')">✎ 编辑</div>
+        <div class="mg-act del" onclick="delFromMall('${r.id}')">🗑 删除</div>
+      </div>`:`<button class="btn soft" style="margin-top:12px">兑换</button>`}
+    </div>`).join('');
+  if(manage){
+    wrap.innerHTML+=`<div class="add-btn" onclick="showForm('add')">＋ 新增心愿</div>`;
+  }else{
+    wrap.innerHTML+=`<div class="muted" style="text-align:center;margin-top:14px;color:var(--ink-3);font-size:12px">兑换后将从积分余额扣除，可在「积分明细」查看</div>`;
+  }
+}
+function toggleManage(){ manage=!manage; if(manage){document.getElementById('navTitle').textContent='管理心愿'; document.querySelector('.mg-btn').textContent='完成';} else {document.getElementById('navTitle').textContent='奖励商城'; document.querySelector('.mg-btn').textContent='管理';} renderList(); }
+
+function renderDims(){
+  document.getElementById('fDims').innerHTML=DIMS.map((d,i)=>`<div class="chip ${i===curDim?'on':''}" style="${i===curDim?('background:'+d.color):''}" onclick="pickDim(${i})">${d.name}</div>`).join('');
+}
+function pickDim(i){ curDim=i; renderDims(); }
+
+function showMall(){ manage=false; document.getElementById('mallView').style.display='block'; document.getElementById('formView').style.display='none'; document.getElementById('navBack').style.display='none'; document.getElementById('navTitle').textContent='奖励商城'; document.querySelector('.mg-btn').textContent='管理'; renderList(); }
+function showManage(){ document.getElementById('mallView').style.display='block'; document.getElementById('formView').style.display='none'; document.getElementById('navBack').style.display='none'; manage=true; document.getElementById('navTitle').textContent='管理心愿'; document.querySelector('.mg-btn').textContent='完成'; renderList(); }
+function showForm(mode,id){
+  editingId = (mode==='edit')? id : null;
+  document.getElementById('mallView').style.display='none'; document.getElementById('formView').style.display='block';
+  document.getElementById('navBack').style.display='block';
+  document.getElementById('navTitle').textContent = mode==='add'?'新增心愿':'编辑心愿';
+  document.getElementById('delLink').style.display = mode==='edit'?'block':'none';
+  if(mode==='edit'){ const r=rewards.find(x=>x.id===id); if(r){ document.getElementById('fName').value=r.name; document.getElementById('fCost').value=r.cost; document.getElementById('fDesc').value=r.desc; curDim=DIMS.findIndex(d=>d.key===r.dim); if(curDim<0)curDim=3; } }
+  else { document.getElementById('fName').value=''; document.getElementById('fCost').value=''; document.getElementById('fDesc').value=''; curDim=3; }
+  renderDims(); validate();
+}
+function goBack(){ showMall(); }
+function validate(){ const name=document.getElementById('fName').value.trim(); const cost=Number(document.getElementById('fCost').value); document.getElementById('saveBtn').disabled = !(name && cost>0); }
+document.getElementById('fName').addEventListener('input',validate);
+document.getElementById('fCost').addEventListener('input',validate);
+
+function saveReward(){
+  const name=document.getElementById('fName').value.trim(); const cost=Number(document.getElementById('fCost').value);
+  if(!name||!(cost>0)){alert('请填写名称和有效积分');return;}
+  const desc=document.getElementById('fDesc').value.trim()||'家长自定义心愿'; const dim=DIMS[curDim].key;
+  if(editingId){ const r=rewards.find(x=>x.id===editingId); if(r){r.name=name;r.cost=cost;r.desc=desc;r.dim=dim;} }
+  else { rewards.push({id:'c'+Date.now(),name,cost,desc,dim}); }
+  alert('已保存（预览）'); showMall();
+}
+function delFromMall(id){ rewards=rewards.filter(r=>r.id!==id); renderList(); }
+function delReward(){ if(!editingId)return; rewards=rewards.filter(r=>r.id!==editingId); alert('已删除（预览）'); showMall(); }
+
+renderList(); renderDims();
+</script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>社区拆分预览 · 顶部导航栏</title>
+<style>
+  :root{
+    --brand:#6366F1; --brand-700:#4338CA; --brand-soft:#EEEDFE;
+    --bg:#F5F5F7; --surface:#FFFFFF; --surface-2:#FAFAFB;
+    --ink-1:#1A1A2E; --ink-2:#444456; --ink-3:#8B8B9E;
+    --line:#ECECF1; --line-2:#F0F0F4;
+    --c-heart-d:#E11D6F;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:#E9E9EF;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;justify-content:center;padding:40px 16px;color:var(--ink-1);}
+  .phone{width:390px;background:var(--bg);border-radius:44px;box-shadow:0 24px 60px rgba(0,0,0,.18);overflow:hidden;position:relative;}
+  .status{height:54px;background:var(--surface);display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:15px;font-weight:600;}
+  .status .dots{letter-spacing:2px;}
+  .notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:140px;height:30px;background:#000;border-radius:18px;}
+  /* 顶部导航栏 top-tabs */
+  .top-tabs{position:sticky;top:0;z-index:20;display:flex;background:var(--surface);border-bottom:1rpx solid var(--line);box-shadow:0 2rpx 10rpx rgba(17,17,26,.03);}
+  .tt-tab{position:relative;flex:1;text-align:center;padding:18px 0 14px;font-size:15px;font-weight:600;color:var(--ink-3);cursor:pointer;transition:color .15s;}
+  .tt-tab.on{color:var(--brand-700);font-weight:700;}
+  .tt-bar{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:30px;height:4px;border-radius:4px;background:var(--brand);opacity:0;transition:opacity .15s;}
+  .tt-tab.on .tt-bar{opacity:1;}
+  .scr-body{padding:18px 18px 90px;min-height:560px;}
+  /* 成长圈 */
+  .post{display:flex;padding:16px 0;border-bottom:1rpx solid var(--line);}
+  .post:last-child{border-bottom:none;}
+  .avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#6366F1,#8B5CF6);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex:none;}
+  .pbody{flex:1;margin-left:12px;min-width:0;}
+  .phead{display:flex;justify-content:space-between;align-items:center;}
+  .pname{font-size:15px;font-weight:700;}
+  .ptime{font-size:12px;color:var(--ink-3);}
+  .ptext{font-size:14px;color:var(--ink-2);margin-top:6px;line-height:1.55;}
+  .pactions{display:flex;gap:24px;margin-top:10px;}
+  .act{font-size:13px;color:var(--ink-3);display:flex;align-items:center;gap:4px;}
+  .act.liked{color:var(--c-heart-d);}
+  /* 育儿干货 */
+  .art{display:flex;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(17,17,26,.04);}
+  .acover{width:46px;height:46px;border-radius:12px;flex:none;margin-right:13px;background:var(--brand-soft);color:var(--brand-700);display:flex;align-items:center;justify-content:center;font-size:22px;}
+  .atext{flex:1;min-width:0;}
+  .atitle{font-size:15px;font-weight:700;}
+  .ameta{display:flex;align-items:center;gap:8px;margin-top:6px;}
+  .pill{font-size:11px;padding:3px 10px;border-radius:999px;background:var(--brand-soft);color:var(--brand-700);font-weight:600;}
+  .aread{font-size:12px;color:var(--ink-3);}
+  .darrow{font-size:22px;color:var(--ink-3);margin-left:6px;flex:none;}
+  /* 邻里榜 */
+  .rank{display:flex;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:13px 16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(17,17,26,.04);}
+  .rank.me{border-color:var(--brand);background:var(--brand-soft);}
+  .rno{width:30px;height:30px;border-radius:50%;flex:none;margin-right:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;background:var(--ink-3);}
+  .rno-1{background:linear-gradient(135deg,#FB7185,#F43F5E);}
+  .rno-2{background:linear-gradient(135deg,#FBBF24,#F59E0B);}
+  .rno-3{background:linear-gradient(135deg,#34D399,#10B981);}
+  .rname{flex:1;font-size:15px;font-weight:700;}
+  .rdays{font-size:13px;color:var(--ink-3);}
+  .rnum{font-size:16px;font-weight:800;color:var(--brand-700);margin:0 2px;}
+  .hidden{display:none;}
+  .hint{text-align:center;color:var(--ink-3);font-size:13px;margin-top:14px;}
+  /* 底部 tab 示意 */
+  .tabbar{position:absolute;bottom:0;left:0;right:0;height:74px;background:#fff;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-around;padding-bottom:8px;}
+  .tb{font-size:11px;color:var(--ink-3);text-align:center;}
+  .tb.on{color:var(--brand);font-weight:700;}
+</style>
+</head>
+<body>
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="status"><span>9:41</span><span class="dots">●●● 5G ▮</span></div>
+    <!-- 顶部导航栏 -->
+    <div class="top-tabs">
+      <div class="tt-tab on" data-k="feed" onclick="switchTab('feed')"><span class="tt-label">成长圈</span><div class="tt-bar"></div></div>
+      <div class="tt-tab" data-k="articles" onclick="switchTab('articles')"><span class="tt-label">育儿干货</span><div class="tt-bar"></div></div>
+      <div class="tt-tab" data-k="rank" onclick="switchTab('rank')"><span class="tt-label">邻里榜</span><div class="tt-bar"></div></div>
+    </div>
+
+    <!-- 成长圈 -->
+    <div class="scr-body" id="feed">
+      <div class="post"><div class="avatar">贤</div><div class="pbody"><div class="phead"><span class="pname">贤妈</span><span class="ptime">10 分钟前</span></div><div class="ptext">小贤这周连续晨读经典 5 天，专注力肉眼可见地提升啦📖</div><div class="pactions"><span class="act liked">❤️ 13</span><span class="act">💬 3</span></div></div></div>
+      <div class="post"><div class="avatar">乐</div><div class="pbody"><div class="phead"><span class="pname">乐乐爸</span><span class="ptime">1 小时前</span></div><div class="ptext">分享一个亲子沟通小技巧：多用「我看到…」句式，少说「你为什么…」，孩子更愿意听。</div><div class="pactions"><span class="act">🤍 28</span><span class="act">💬 9</span></div></div></div>
+      <div class="post"><div class="avatar">糖</div><div class="pbody"><div class="phead"><span class="pname">糖糖妈</span><span class="ptime">今天 09:20</span></div><div class="ptext">今天带娃完成好习惯挑战，顺利兑换了心心念念的乐高🎉 积分制真香！</div><div class="pactions"><span class="act">🤍 45</span><span class="act">💬 6</span></div></div></div>
+    </div>
+
+    <!-- 育儿干货 -->
+    <div class="scr-body hidden" id="articles">
+      <div class="art"><div class="acover">⏰</div><div class="atext"><div class="atitle">如何培养孩子的时间感知力</div><div class="ameta"><span class="pill">习惯养成</span><span class="aread">2.3万 阅读</span></div></div><div class="darrow">›</div></div>
+      <div class="art"><div class="acover">📜</div><div class="atext"><div class="atitle">经典诵读对专注力的 4 个好处</div><div class="ameta"><span class="pill">经典学习</span><span class="aread">1.8万 阅读</span></div></div><div class="darrow">›</div></div>
+      <div class="art"><div class="acover">🪙</div><div class="atext"><div class="atitle">积分制激励，怎么设才不翻车</div><div class="ameta"><span class="pill">家庭教育</span><span class="aread">3.1万 阅读</span></div></div><div class="darrow">›</div></div>
+    </div>
+
+    <!-- 邻里榜 -->
+    <div class="scr-body hidden" id="rank">
+      <div class="rank me"><div class="rno rno-1">1</div><div class="avatar">小</div><div class="rname">小贤（我）</div><div class="rdays">连续 <span class="rnum">21</span> 天</div></div>
+      <div class="rank"><div class="rno rno-2">2</div><div class="avatar">乐</div><div class="rname">乐乐</div><div class="rdays">连续 <span class="rnum">19</span> 天</div></div>
+      <div class="rank"><div class="rno rno-3">3</div><div class="avatar">糖</div><div class="rname">糖糖</div><div class="rdays">连续 <span class="rnum">17</span> 天</div></div>
+      <div class="rank"><div class="rno">4</div><div class="avatar">安</div><div class="rname">安安</div><div class="rdays">连续 <span class="rnum">15</span> 天</div></div>
+      <div class="rank"><div class="rno">5</div><div class="avatar">豆</div><div class="rname">豆豆</div><div class="rdays">连续 <span class="rnum">12</span> 天</div></div>
+    </div>
+
+    <div class="hint">↑ 点击顶部「成长圈 / 育儿干货 / 邻里榜」切换不同页面</div>
+
+    <div class="tabbar">
+      <div class="tb">首页</div><div class="tb">任务</div><div class="tb">发现</div><div class="tb on">我的</div>
+    </div>
+  </div>
+
+<script>
+  function switchTab(k){
+    document.querySelectorAll('.tt-tab').forEach(t=>t.classList.toggle('on', t.dataset.k===k));
+    ['feed','articles','rank'].forEach(id=>{
+      document.getElementById(id).classList.toggle('hidden', id!==k);
+    });
+  }
+</script>
+</body>
+</html>

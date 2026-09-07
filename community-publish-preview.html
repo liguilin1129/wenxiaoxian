@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>社区发布功能预览</title>
+<style>
+  :root{
+    --brand:#6366F1; --brand-700:#4338CA; --brand-soft:#EEEDFE;
+    --bg:#F5F5F7; --surface:#FFFFFF; --surface-2:#FAFAFB;
+    --ink-1:#1A1A2E; --ink-2:#444456; --ink-3:#8B8B9E;
+    --line:#ECECF1;
+    --c-heart-d:#E11D6F;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:#E9E9EF;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;gap:30px;justify-content:center;padding:30px 16px;color:var(--ink-1);flex-wrap:wrap;}
+  .phone{width:390px;background:var(--bg);border-radius:44px;box-shadow:0 24px 60px rgba(0,0,0,.18);overflow:hidden;position:relative;}
+  .status{height:54px;background:var(--surface);display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-size:15px;font-weight:600;}
+  .notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:140px;height:30px;background:#000;border-radius:18px;}
+  .top-tabs{position:sticky;top:0;z-index:20;display:flex;background:var(--surface);border-bottom:1rpx solid var(--line);box-shadow:0 2rpx 10rpx rgba(17,17,26,.03);}
+  .tt-tab{position:relative;flex:1;text-align:center;padding:18px 0 14px;font-size:15px;font-weight:600;color:var(--ink-3);cursor:pointer;}
+  .tt-tab.on{color:var(--brand-700);font-weight:700;}
+  .tt-bar{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:30px;height:4px;border-radius:4px;background:var(--brand);opacity:0;}
+  .tt-tab.on .tt-bar{opacity:1;}
+  .scr-body{padding:18px 18px 100px;min-height:560px;}
+  .post{display:flex;padding:16px 0;border-bottom:1rpx solid var(--line);}
+  .avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#6366F1,#8B5CF6);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex:none;}
+  .pbody{flex:1;margin-left:12px;min-width:0;}
+  .phead{display:flex;justify-content:space-between;align-items:center;}
+  .pname{font-size:15px;font-weight:700;}
+  .ptime{font-size:12px;color:var(--ink-3);}
+  .ptext{font-size:14px;color:var(--ink-2);margin-top:6px;line-height:1.55;}
+  .pactions{display:flex;gap:24px;margin-top:10px;}
+  .act{font-size:13px;color:var(--ink-3);display:flex;align-items:center;gap:4px;}
+  .fab{position:absolute;right:18px;bottom:90px;width:54px;height:54px;border-radius:50%;background:var(--brand);color:#fff;font-size:36px;font-weight:300;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(99,102,241,.35);z-index:30;cursor:pointer;}
+  /* publish form */
+  .form{padding:18px;}
+  .hint{color:var(--ink-3);font-size:14px;margin-bottom:16px;}
+  .field{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:16px;box-shadow:0 1px 4px rgba(17,17,26,.04);}
+  .title-input{width:100%;border:none;font-size:18px;font-weight:700;outline:none;background:transparent;}
+  .content-input{width:100%;min-height:140px;border:none;font-size:16px;resize:none;outline:none;background:transparent;line-height:1.6;}
+  .counter{text-align:right;font-size:12px;color:var(--ink-3);margin-top:6px;}
+  .label{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .picker{display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+  .pill{font-size:12px;padding:4px 12px;border-radius:999px;background:var(--brand-soft);color:var(--brand-700);font-weight:600;}
+  .btn{display:block;width:100%;text-align:center;background:var(--brand);color:#fff;font-weight:600;font-size:17px;padding:14px;border-radius:14px;border:none;cursor:pointer;margin-top:8px;}
+  .tabbar{position:absolute;bottom:0;left:0;right:0;height:74px;background:#fff;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-around;padding-bottom:8px;}
+  .tb{font-size:11px;color:var(--ink-3);text-align:center;}
+  .tb.on{color:var(--brand);font-weight:700;}
+  .hidden{display:none;}
+  .screen{min-height:560px;}
+</style>
+</head>
+<body>
+  <!-- 成长圈预览 -->
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="status"><span>9:41</span><span>●●● 5G ▮</span></div>
+    <div class="top-tabs">
+      <div class="tt-tab on"><span>成长圈</span><div class="tt-bar"></div></div>
+      <div class="tt-tab"><span>育儿干货</span><div class="tt-bar"></div></div>
+      <div class="tt-tab"><span>邻里榜</span><div class="tt-bar"></div></div>
+    </div>
+    <div class="screen" id="feedScreen">
+      <div class="scr-body">
+        <div class="post"><div class="avatar">贤</div><div class="pbody"><div class="phead"><span class="pname">贤妈</span><span class="ptime">10 分钟前</span></div><div class="ptext">小贤这周连续晨读经典 5 天，专注力肉眼可见地提升啦📖</div><div class="pactions"><span class="act">❤️ 12</span><span class="act">💬 3</span></div></div></div>
+        <div class="post"><div class="avatar">乐</div><div class="pbody"><div class="phead"><span class="pname">乐乐爸</span><span class="ptime">1 小时前</span></div><div class="ptext">分享一个亲子沟通小技巧：多用「我看到…」句式，少说「你为什么…」，孩子更愿意听。</div><div class="pactions"><span class="act">🤍 28</span><span class="act">💬 9</span></div></div></div>
+      </div>
+      <div class="fab" onclick="showForm('feed')">+</div>
+    </div>
+    <div class="screen hidden" id="feedForm">
+      <div class="form">
+        <div class="hint">记录孩子日常，和邻里一起成长</div>
+        <div class="field"><textarea class="content-input" id="feedText" placeholder="分享今天孩子的成长点滴…" maxlength="200"></textarea><div class="counter"><span id="feedCount">0</span>/200</div></div>
+        <div class="field"><div class="label">选择标签</div><div class="picker"><span class="pill">日常</span><span style="color:var(--ink-3)">›</span></div></div>
+        <button class="btn" onclick="submitFeed()">发布动态</button>
+      </div>
+    </div>
+    <div class="tabbar"><div class="tb">首页</div><div class="tb">任务</div><div class="tb">发现</div><div class="tb on">我的</div></div>
+  </div>
+
+  <!-- 育儿干货预览 -->
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="status"><span>9:41</span><span>●●● 5G ▮</span></div>
+    <div class="top-tabs">
+      <div class="tt-tab"><span>成长圈</span><div class="tt-bar"></div></div>
+      <div class="tt-tab on"><span>育儿干货</span><div class="tt-bar"></div></div>
+      <div class="tt-tab"><span>邻里榜</span><div class="tt-bar"></div></div>
+    </div>
+    <div class="screen" id="articleScreen">
+      <div class="scr-body">
+        <div style="display:flex;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(17,17,26,.04);">
+          <div style="width:46px;height:46px;border-radius:12px;flex:none;margin-right:13px;background:var(--brand-soft);color:var(--brand-700);display:flex;align-items:center;justify-content:center;font-size:22px;">⏰</div>
+          <div style="flex:1;min-width:0;"><div style="font-size:15px;font-weight:700;">如何培养孩子的时间感知力</div><div style="display:flex;align-items:center;gap:8px;margin-top:6px;"><span class="pill">习惯养成</span><span style="font-size:12px;color:var(--ink-3)">2.3万 阅读</span></div></div>
+          <div style="font-size:22px;color:var(--ink-3);margin-left:6px;">›</div>
+        </div>
+        <div style="display:flex;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(17,17,26,.04);">
+          <div style="width:46px;height:46px;border-radius:12px;flex:none;margin-right:13px;background:var(--brand-soft);color:var(--brand-700);display:flex;align-items:center;justify-content:center;font-size:22px;">📜</div>
+          <div style="flex:1;min-width:0;"><div style="font-size:15px;font-weight:700;">经典诵读对专注力的 4 个好处</div><div style="display:flex;align-items:center;gap:8px;margin-top:6px;"><span class="pill">经典学习</span><span style="font-size:12px;color:var(--ink-3)">1.8万 阅读</span></div></div>
+          <div style="font-size:22px;color:var(--ink-3);margin-left:6px;">›</div>
+        </div>
+      </div>
+      <div class="fab" onclick="showForm('article')">+</div>
+    </div>
+    <div class="screen hidden" id="articleForm">
+      <div class="form">
+        <div class="hint">分享你的育儿经验，帮助更多家长</div>
+        <div class="field"><input class="title-input" id="articleTitle" placeholder="请输入标题" /></div>
+        <div class="field"><textarea class="content-input" id="articleText" placeholder="写下你的经验正文…" maxlength="200"></textarea><div class="counter"><span id="articleCount">0</span>/200</div></div>
+        <div class="field"><div class="label">选择标签</div><div class="picker"><span class="pill">家庭教育</span><span style="color:var(--ink-3)">›</span></div></div>
+        <button class="btn" onclick="submitArticle()">发布经验</button>
+      </div>
+    </div>
+    <div class="tabbar"><div class="tb">首页</div><div class="tb">任务</div><div class="tb">发现</div><div class="tb on">我的</div></div>
+  </div>
+
+<script>
+  function showForm(mode){
+    if(mode==='feed'){
+      document.getElementById('feedScreen').classList.add('hidden');
+      document.getElementById('feedForm').classList.remove('hidden');
+    }else{
+      document.getElementById('articleScreen').classList.add('hidden');
+      document.getElementById('articleForm').classList.remove('hidden');
+    }
+  }
+  document.getElementById('feedText').addEventListener('input',e=>document.getElementById('feedCount').textContent=e.target.value.length);
+  document.getElementById('articleText').addEventListener('input',e=>document.getElementById('articleCount').textContent=e.target.value.length);
+  function submitFeed(){
+    const t=document.getElementById('feedText').value;
+    if(!t.trim()){alert('请输入内容');return;}
+    alert('动态已发布（真机会写入本地并显示在成长圈顶部）');
+    document.getElementById('feedText').value='';
+    document.getElementById('feedCount').textContent='0';
+    document.getElementById('feedForm').classList.add('hidden');
+    document.getElementById('feedScreen').classList.remove('hidden');
+  }
+  function submitArticle(){
+    const ti=document.getElementById('articleTitle').value;
+    const t=document.getElementById('articleText').value;
+    if(!ti.trim()){alert('请输入标题');return;}
+    if(!t.trim()){alert('请输入正文');return;}
+    alert('经验已发布（真机会写入本地并显示在育儿干货顶部）');
+    document.getElementById('articleTitle').value='';
+    document.getElementById('articleText').value='';
+    document.getElementById('articleCount').textContent='0';
+    document.getElementById('articleForm').classList.add('hidden');
+    document.getElementById('articleScreen').classList.remove('hidden');
+  }
+</script>
+</body>
+</html>
