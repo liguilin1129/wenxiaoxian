@@ -1,1 +1,16 @@
 /* 积分明细样式复用 app.wxss */
+
+.points-summary {
+  display: flex; align-items: stretch; justify-content: space-between;
+  margin-bottom: 24rpx; padding: 24rpx 12rpx;
+  border-radius: var(--radius-sm); background: var(--surface);
+}
+.points-summary-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8rpx; min-width: 0; }
+.points-summary-label { font-size: 21rpx; color: var(--ink-3); }
+.points-summary-value { font-size: 28rpx; font-weight: 750; color: var(--brand-700); }
+.points-summary-used { color: var(--ink-2); }
+.points-summary-divider { width: 1rpx; margin: 4rpx 0; background: var(--sep); }
+.points-date-group { margin-bottom: 28rpx; }
+.points-date { margin: 0 6rpx 12rpx; font-size: 23rpx; font-weight: 650; color: var(--ink-3); }
+.points-date-group .task { margin-bottom: 12rpx; }
+.points-empty { padding: 84rpx 0; text-align: center; font-size: 26rpx; color: var(--ink-3); }

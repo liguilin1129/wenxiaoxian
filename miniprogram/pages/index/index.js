@@ -122,6 +122,7 @@ Page({
     wx.navigateTo({ url: '/pages/login/login' });
   },
   goReport() { wx.navigateTo({ url: '/pages/report/report' }); },
+  goPoints() { wx.navigateTo({ url: '/pages/points/points' }); },
   goCheckin() { wx.navigateTo({ url: '/pages/checkin/checkin' }); },
   goClassics() { wx.navigateTo({ url: '/pages/classics/classics' }); },
   goTasks() { wx.switchTab({ url: '/pages/tasks/tasks' }); },

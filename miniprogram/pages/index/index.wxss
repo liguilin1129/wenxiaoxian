@@ -14,6 +14,39 @@
 .top-bar-name { font-size: 32rpx; font-weight: 700; color: var(--ink-1); line-height: 1.2; }
 .top-bar-sub { font-size: 24rpx; color: var(--ink-3); line-height: 1.2; }
 
+/* 首屏成长仪表盘：复用既有品牌色，不改变全局配色 */
+.growth-dashboard {
+  margin: 16rpx 32rpx 0;
+  padding: 30rpx;
+  border-radius: var(--radius);
+  color: #fff;
+  background: linear-gradient(135deg, #6E6CF0, #5E5CE6);
+  box-shadow: 0 10rpx 30rpx rgba(94, 92, 230, .22);
+}
+.growth-top, .growth-person, .growth-progress-label, .growth-metrics {
+  display: flex; align-items: center;
+}
+.growth-top { justify-content: space-between; }
+.growth-person { gap: 16rpx; min-width: 0; }
+.growth-dashboard .avatar {
+  width: 72rpx; height: 72rpx; font-size: 30rpx;
+  background: rgba(255, 255, 255, .22);
+  box-shadow: none;
+}
+.growth-level { font-size: 30rpx; font-weight: 750; line-height: 1.3; }
+.growth-sub { margin-top: 3rpx; font-size: 22rpx; opacity: .78; }
+.growth-points { font-size: 42rpx; font-weight: 800; line-height: 1; white-space: nowrap; }
+.growth-points-unit { margin-left: 4rpx; font-size: 22rpx; font-weight: 600; opacity: .8; }
+.growth-progress-label { justify-content: space-between; margin-top: 28rpx; font-size: 22rpx; opacity: .9; }
+.growth-progress { height: 12rpx; margin-top: 10rpx; overflow: hidden; border-radius: 999rpx; background: rgba(255, 255, 255, .26); }
+.growth-progress-fill { height: 100%; min-width: 8rpx; border-radius: inherit; background: #fff; }
+.growth-metrics { justify-content: space-between; margin-top: 28rpx; padding-top: 22rpx; border-top: 1rpx solid rgba(255, 255, 255, .2); }
+.growth-metrics > view { display: flex; flex-direction: column; gap: 5rpx; }
+.growth-metrics > view:nth-child(2) { align-items: center; }
+.growth-metrics > view:last-child { align-items: flex-end; }
+.growth-metric-num { font-size: 27rpx; font-weight: 700; }
+.growth-metric-label { font-size: 20rpx; opacity: .74; }
+
 /* 分组标题栏：左侧蓝条 + 标题 + 右侧“全部”入口 */
 .ghead {
   display: flex; align-items: center; justify-content: space-between;

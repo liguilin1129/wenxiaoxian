@@ -67,6 +67,30 @@
 
   <!-- 已登录：正常内容（iOS 分组列表） -->
   <block wx:else>
+    <!-- 成长仪表盘：将等级、升级进度与当日目标放在首屏 -->
+    <view class="growth-dashboard tap" bindtap="goPoints">
+      <view class="growth-top">
+        <view class="growth-person">
+          <view class="avatar">{{child.avatar}}</view>
+          <view>
+            <view class="growth-level">Lv.{{child.levelNum}} · {{child.levelName}}</view>
+            <view class="growth-sub">{{child.name}}的成长记录</view>
+          </view>
+        </view>
+        <view class="growth-points"><text>{{child.points}}</text><text class="growth-points-unit">分</text></view>
+      </view>
+      <view class="growth-progress-label">
+        <text>距离 Lv.{{nextLevel}} 还差 {{need}} 分</text>
+        <text>{{levelPct}}%</text>
+      </view>
+      <view class="growth-progress"><view class="growth-progress-fill" style="width:{{levelPct}}%"></view></view>
+      <view class="growth-metrics">
+        <view><text class="growth-metric-num">{{doneCount}}/{{total}}</text><text class="growth-metric-label">今日打卡</text></view>
+        <view><text class="growth-metric-num">{{child.streak}} 天</text><text class="growth-metric-label">连续坚持</text></view>
+        <view><text class="growth-metric-num">+{{child.weekGain}}</text><text class="growth-metric-label">本周积分</text></view>
+      </view>
+    </view>
+
     <!-- 荣誉墙 -->
     <view class="igroup">
       <view class="ghead">

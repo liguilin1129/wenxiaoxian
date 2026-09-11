@@ -1,5 +1,12 @@
 /* 今日打卡样式复用 app.wxss */
 
+.checkin-section { margin: 30rpx 4rpx 14rpx; }
+.checkin-section-title { font-size: 27rpx; font-weight: 700; color: var(--ink-1); }
+.checkin-section-title text { margin-left: 8rpx; color: var(--ink-3); font-size: 23rpx; }
+.checkin-done-title { margin-top: 38rpx; }
+.checkin-completed { opacity: .7; }
+.checkin-completed .tn { text-decoration: line-through; color: var(--ink-3); }
+
 .all-done {
   background: linear-gradient(135deg, #ECFDF5, #EEEDFE);
   border: 1px solid var(--brand-soft);

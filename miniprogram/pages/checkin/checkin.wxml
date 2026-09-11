@@ -9,10 +9,10 @@
     <view class="num">+{{gain}}</view>
     <view class="row between" style="margin-top:8rpx">
       <text class="lv">已完成 {{done}} / {{total}}</text>
-      <text style="font-size:22rpx;opacity:.9">{{done === total ? '今日圆满 🎉' : '继续加油'}}</text>
+      <text style="font-size:22rpx;opacity:.9">{{encouragement}}</text>
     </view>
     <view class="bar" style="margin-top:18rpx">
-      <view class="fill" style="width:{{total ? (done / total * 100) : 0}}%"></view>
+      <view class="fill" style="width:{{progressPct}}%"></view>
     </view>
   </view>
 
@@ -20,14 +20,31 @@
     ✨ 全部完成！好习惯正在悄悄长成 🌱
   </view>
 
-  <view wx:for="{{tasks}}" wx:key="id" class="task" data-index="{{index}}" bindtap="toggle">
+  <view class="checkin-section" wx:if="{{pendingTasks.length}}">
+    <view class="checkin-section-title">待完成 <text>{{pendingTasks.length}}</text></view>
+  </view>
+  <view wx:for="{{pendingTasks}}" wx:for-item="task" wx:key="id" class="task" data-index="{{task.index}}" bindtap="toggle">
     <view class="row between">
-      <text class="tn">{{item.name}}</text>
-      <view class="check {{item.done ? 'on' : ''}}">{{item.done ? '✓' : ''}}</view>
+      <text class="tn">{{task.name}}</text>
+      <view class="check"></view>
     </view>
     <view class="chips">
-      <text class="pill pill-{{item.dim}}">{{dimName[item.dim]}}</text>
-      <text class="pill">+{{item.points}}</text>
+      <text class="pill pill-{{task.dim}}">{{dimName[task.dim]}}</text>
+      <text class="pill">+{{task.points}}</text>
+    </view>
+  </view>
+
+  <view class="checkin-section checkin-done-title" wx:if="{{completedTasks.length}}">
+    <view class="checkin-section-title">已完成 <text>{{completedTasks.length}}</text></view>
+  </view>
+  <view wx:for="{{completedTasks}}" wx:for-item="task" wx:key="id" class="task checkin-completed" data-index="{{task.index}}" bindtap="toggle">
+    <view class="row between">
+      <text class="tn">{{task.name}}</text>
+      <view class="check on">✓</view>
+    </view>
+    <view class="chips">
+      <text class="pill pill-{{task.dim}}">{{dimName[task.dim]}}</text>
+      <text class="pill">+{{task.points}}</text>
     </view>
   </view>
 </view>

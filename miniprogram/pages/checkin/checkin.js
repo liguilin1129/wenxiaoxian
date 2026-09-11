@@ -10,17 +10,27 @@ function dimNameMap() {
 }
 
 Page({
-  data: { tasks: [], gain: 0, done: 0, total: 0, dimName: {}, today: '' },
+  data: { tasks: [], pendingTasks: [], completedTasks: [], gain: 0, done: 0, total: 0, progressPct: 0, encouragement: '', dimName: {}, today: '' },
   onShow() { this.refresh(); },
   refresh() {
     const g = app.globalData;
     const d = new Date();
     const today = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2) + ' ' + WEEK[d.getDay()];
+    const tasks = g.todayTasks;
+    const done = store.todayDoneCount();
+    const total = tasks.length;
+    const indexedTasks = tasks.map((task, index) => Object.assign({ index: index }, task));
+    const progressPct = total ? Math.round(done / total * 100) : 0;
+    const encouragement = total === 0 ? '今天还没有安排任务' : (done === total ? '今日圆满，明天继续保持' : ('再完成 ' + (total - done) + ' 项，就能点亮今天'));
     this.setData({
-      tasks: g.todayTasks,
+      tasks: tasks,
+      pendingTasks: indexedTasks.filter(task => !task.done),
+      completedTasks: indexedTasks.filter(task => task.done),
       gain: store.todayGain(),
-      done: store.todayDoneCount(),
-      total: g.todayTasks.length,
+      done: done,
+      total: total,
+      progressPct: progressPct,
+      encouragement: encouragement,
       dimName: dimNameMap(),
       today: today
     });
