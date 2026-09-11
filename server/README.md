@@ -17,4 +17,6 @@
 }
 ```
 
+登录成功后，小程序会将返回的 `token` 放入 `Authorization: Bearer <token>` 请求头；可通过 `GET /api/auth/me` 获取当前已授权用户的昵称、头像等公开资料。该接口用于应用启动时核验本地登录缓存。
+
 生产环境必须使用 HTTPS，将服务域名加入微信公众平台的“request 合法域名”，并把 `server/data/users.json` 替换为受访问控制的数据库。

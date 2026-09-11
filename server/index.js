@@ -41,7 +41,7 @@ function json(res, status, body) {
     'Cache-Control': 'no-store',
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS'
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
   });
   res.end(JSON.stringify(body));
 }
@@ -138,6 +138,31 @@ function signToken(payload) {
   return header + '.' + body + '.' + signature;
 }
 
+function verifyToken(token) {
+  if (!TOKEN_SECRET || typeof token !== 'string') return null;
+  const parts = token.split('.');
+  if (parts.length !== 3) return null;
+  const signed = parts[0] + '.' + parts[1];
+  const expected = crypto.createHmac('sha256', TOKEN_SECRET).update(signed).digest('base64url');
+  const actual = parts[2];
+  if (actual.length !== expected.length || !crypto.timingSafeEqual(Buffer.from(actual), Buffer.from(expected))) return null;
+  try {
+    const payload = JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8'));
+    if (!payload.sub || !payload.exp || payload.exp <= Math.floor(Date.now() / 1000)) return null;
+    return payload;
+  } catch (error) {
+    return null;
+  }
+}
+
+function getAuthorizedUser(req) {
+  const header = String(req.headers.authorization || '');
+  const token = header.startsWith('Bearer ') ? header.slice(7) : '';
+  const payload = verifyToken(token);
+  if (!payload) return null;
+  return readUsers()[payload.sub] || null;
+}
+
 function publicUser(user) {
   return {
     id: user.id,
@@ -194,9 +219,16 @@ async function login(req, res) {
   }
 }
 
+function getCurrentUser(req, res) {
+  const user = getAuthorizedUser(req);
+  if (!user) return fail(res, 401, 'UNAUTHORIZED', '登录已失效，请重新授权');
+  return json(res, 200, { ok: true, user: publicUser(user) });
+}
+
 const server = http.createServer(async (req, res) => {
   if (req.method === 'OPTIONS') return json(res, 204, {});
   if (req.method === 'POST' && req.url === '/api/auth/wechat/login') return login(req, res);
+  if (req.method === 'GET' && req.url === '/api/auth/me') return getCurrentUser(req, res);
   if (req.method === 'GET' && req.url === '/health') return json(res, 200, { ok: true });
   return fail(res, 404, 'NOT_FOUND', '接口不存在');
 });
