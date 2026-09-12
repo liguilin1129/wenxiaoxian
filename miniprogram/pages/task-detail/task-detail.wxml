@@ -32,9 +32,10 @@
     <view class="small">{{detail.methods}}</view>
   </view>
 
-  <button class="btn {{done ? 'btn-done' : ''}}" style="margin-top:8rpx" bindtap="checkin">
-    <block wx:if="{{done}}">今日已打卡 ✓</block>
-    <block wx:else>今日打卡 +{{points}}</block>
+  <button class="btn {{status === 'approved' ? 'btn-done' : ''}} {{status === 'pending' ? 'btn-pending' : ''}}" style="margin-top:8rpx" bindtap="checkin">
+    <block wx:if="{{status === 'approved'}}">家长已确认 · +{{points}} 分</block>
+    <block wx:elif="{{status === 'pending'}}">已提交，等待家长确认</block>
+    <block wx:else>提交打卡，等待家长确认</block>
   </button>
 </view>
 

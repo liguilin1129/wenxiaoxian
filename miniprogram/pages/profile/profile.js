@@ -8,6 +8,7 @@ Page({
     // 会员数据为占位/mock 时先隐藏，接入真实数据后改为 true
     showVip: false,
     showMember: false,
+    pendingApprovals: 0,
     stats: [
       { num: 0, label: '我的任务', action: 'goTasks' },
       { num: 0, label: '账户(¥)', action: 'goPoints' },
@@ -42,7 +43,7 @@ Page({
     stats[3].num = child.points || 0;
     const todayDone = (app.globalData.todayTasks || []).filter(t => t.done).length;
     stats[0].num = todayDone;
-    this.setData({ signed: true, child: child, stats: stats });
+    this.setData({ signed: true, child: child, stats: stats, pendingApprovals: store.getPendingApprovals().length });
   },
   goLogin() { wx.navigateTo({ url: '/pages/login/login' }); },
   editProfile() { wx.navigateTo({ url: '/pages/profile-edit/profile-edit' }); },
@@ -52,6 +53,7 @@ Page({
   goPoints() { wx.navigateTo({ url: '/pages/points/points' }); },
   goTasks() { wx.switchTab({ url: '/pages/tasks/tasks' }); },
   goMembers() { wx.navigateTo({ url: '/pages/family/family' }); },
+  goApprovals() { wx.navigateTo({ url: '/pages/approvals/approvals' }); },
   goSettings() { wx.showToast({ title: '提醒 · 主题', icon: 'none' }); },
   logout() {
     wx.showModal({

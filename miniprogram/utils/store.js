@@ -20,7 +20,8 @@ mock.tasks.forEach(g => {
     centerMap[t.id] = {
       points: t.rewards.reduce((s, r) => s + r.points, 0),
       dim: g.dim,
-      name: t.name
+      name: t.name,
+      rewards: t.rewards
     };
   });
 });
@@ -61,6 +62,10 @@ function load() {
   }
   if (!st.daily) st.daily = {};
   if (!st.center) st.center = {};
+  // 兼容旧版本以日期字符串保存的任务中心打卡：它们视为已确认。
+  Object.keys(st.center).forEach((id) => {
+    if (typeof st.center[id] === 'string') st.center[id] = { status: 'approved', date: st.center[id] };
+  });
   if (!st.redeemed) st.redeemed = [];
   if (!st.aiRecords) st.aiRecords = [];
   // 跨天：清空「今日习惯」打卡（任务中心为累积行为，保留）
@@ -105,9 +110,10 @@ function recompute(s, st) {
   });
   Object.keys(st.center).forEach(id => {
     const m = centerMap[id];
-    if (m) {
+    const record = st.center[id];
+    if (m && record && record.status === 'approved') {
       pts += m.points;
-      hist.push({ title: m.name, dim: m.dim, date: st.center[id], delta: m.points });
+      hist.push({ title: m.name, dim: m.dim, date: record.date, delta: m.points });
     }
   });
   (st.redeemed || []).forEach(r => {
@@ -131,7 +137,13 @@ function initCheckIns(appInstance) {
   const st = load();
   s.todayTasks.forEach(t => { t.done = !!st.daily[t.id]; });
   s.centerTasksDone = {};
-  Object.keys(st.center).forEach(id => { s.centerTasksDone[id] = st.center[id]; });
+  s.centerTaskStatus = {};
+  Object.keys(st.center).forEach(id => {
+    const record = st.center[id];
+    if (!record) return;
+    s.centerTaskStatus[id] = record.status;
+    if (record.status === 'approved') s.centerTasksDone[id] = record.date;
+  });
   recompute(s, st);
   s._ci = st;
   // 恢复家庭会议列表
@@ -176,9 +188,16 @@ function toggleCenter(id) {
   const m = centerMap[id];
   if (!m) return null;
   const done = !s.centerTasksDone[id];
-  if (done) s.centerTasksDone[id] = formatToday(); else delete s.centerTasksDone[id];
+  if (done) {
+    s.centerTasksDone[id] = formatToday();
+    s.centerTaskStatus[id] = 'approved';
+    s._ci.center[id] = { status: 'approved', date: formatToday() };
+  } else {
+    delete s.centerTasksDone[id];
+    delete s.centerTaskStatus[id];
+    delete s._ci.center[id];
+  }
   const st = s._ci;
-  if (done) st.center[id] = formatToday(); else delete st.center[id];
   recompute(s, st);
   save(st);
   return { done: done, delta: done ? m.points : -m.points };
@@ -190,6 +209,63 @@ function toggleCenter(id) {
 function isCenterDone(id) {
   ensure();
   return !!state().centerTasksDone[id];
+}
+
+function getCenterStatus(id) {
+  ensure();
+  return state().centerTaskStatus[id] || 'todo';
+}
+
+function submitCenter(id) {
+  ensure();
+  const s = state();
+  if (!centerMap[id]) return null;
+  const status = getCenterStatus(id);
+  if (status !== 'todo') return { status: status, changed: false };
+  const record = { status: 'pending', date: formatToday() };
+  s._ci.center[id] = record;
+  s.centerTaskStatus[id] = record.status;
+  save(s._ci);
+  return { status: record.status, changed: true };
+}
+
+function approveCenter(id) {
+  ensure();
+  const s = state();
+  const record = s._ci.center[id];
+  if (!record || record.status !== 'pending') return null;
+  record.status = 'approved';
+  s.centerTaskStatus[id] = 'approved';
+  s.centerTasksDone[id] = record.date;
+  recompute(s, s._ci);
+  save(s._ci);
+  return { points: centerMap[id].points, status: 'approved' };
+}
+
+function rejectCenter(id) {
+  ensure();
+  const s = state();
+  const record = s._ci.center[id];
+  if (!record || record.status !== 'pending') return false;
+  delete s._ci.center[id];
+  delete s.centerTaskStatus[id];
+  save(s._ci);
+  return true;
+}
+
+function getPendingApprovals() {
+  ensure();
+  const s = state();
+  return Object.keys(s._ci.center)
+    .filter(id => s._ci.center[id] && s._ci.center[id].status === 'pending' && centerMap[id])
+    .map(id => ({
+      id: id,
+      name: centerMap[id].name,
+      dim: centerMap[id].dim,
+      points: centerMap[id].points,
+      rewards: centerMap[id].rewards,
+      date: s._ci.center[id].date
+    }));
 }
 
 function todayDoneCount() {
@@ -395,7 +471,7 @@ function toggleCaseFav(id) {
 module.exports = {
   state, dimMeta, initCheckIns,
   toggleDaily, toggleCenter, toggleTodayTask: toggleDaily,
-  isCenterDone, todayDoneCount, todayGain,
+  isCenterDone, getCenterStatus, submitCenter, approveCenter, rejectCenter, getPendingApprovals, todayDoneCount, todayGain,
   redeem, login, isSigned, recordBonus,
   aiRecordBonus, addDailyTask,
   getRewards, saveRewards,

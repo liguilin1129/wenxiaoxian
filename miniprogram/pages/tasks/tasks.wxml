@@ -28,9 +28,10 @@
           <text>{{r.name}}</text><text class="pts-pos">+{{r.points}}</text>
         </view>
       </view>
-      <view class="check-btn {{t.done ? 'on' : ''}}" data-id="{{t.id}}" catchtap="toggleCenter">
-        <text wx:if="{{t.done}}">✓</text>
-        <text wx:else>打卡</text>
+      <view class="check-btn {{t.status === 'approved' ? 'on' : ''}} {{t.status === 'pending' ? 'pending' : ''}}" data-id="{{t.id}}" catchtap="toggleCenter">
+        <text wx:if="{{t.status === 'approved'}}">✓</text>
+        <text wx:elif="{{t.status === 'pending'}}">待确认</text>
+        <text wx:else>提交</text>
       </view>
     </view>
   </block>

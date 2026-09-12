@@ -1,0 +1,30 @@
+<view class="scr-head">
+  <view class="greet">家长确认</view>
+  <view class="title">待确认打卡</view>
+</view>
+
+<view class="scr-body">
+  <view class="approval-note">确认后积分才会计入孩子的成长记录。</view>
+  <view wx:if="{{list.length}}">
+    <view wx:for="{{list}}" wx:key="id" class="approval-card">
+      <view class="row between">
+        <view>
+          <view class="tn">{{item.name}}</view>
+          <view class="muted">{{dimName[item.dim]}} · {{item.date}} 提交</view>
+        </view>
+        <text class="pts-pos">+{{item.points}}</text>
+      </view>
+      <view class="approval-actions">
+        <button class="approval-reject" data-id="{{item.id}}" bindtap="reject">退回</button>
+        <button class="approval-approve" data-id="{{item.id}}" bindtap="approve">确认打卡</button>
+      </view>
+    </view>
+  </view>
+  <view wx:else class="approval-empty">
+    <view class="approval-empty-icon">✓</view>
+    <view class="approval-empty-title">暂时没有待确认打卡</view>
+    <view class="approval-empty-desc">孩子提交任务后，会在这里等待确认。</view>
+  </view>
+</view>
+
+<ai-assistant />

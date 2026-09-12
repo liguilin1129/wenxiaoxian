@@ -2,7 +2,7 @@ const app = getApp();
 const store = require('../../utils/store');
 
 Page({
-  data: { task: {}, detail: {}, meta: {}, points: 0, done: false },
+  data: { task: {}, detail: {}, meta: {}, points: 0, status: 'todo' },
   onLoad(query) {
     const id = query.id;
     const g = app.globalData;
@@ -20,13 +20,13 @@ Page({
     });
     const detail = g.taskDetail[id] || { purpose: '', neigong: '—', classic: '—', rewards: [], methods: '' };
     const dim = g.dimensions.find(d => d.key === (task ? task.dim : '')) || {};
-    const done = store.isCenterDone(id);
+    const status = store.getCenterStatus(id);
     this.setData({
       task: task,
       detail: detail,
       meta: { dimName: dimName, dark: dim.dark || '#4F46E5' },
       points: total,
-      done: done
+      status: status
     });
     if (task) {
       wx.setNavigationBarTitle({ title: task.name });
@@ -37,15 +37,20 @@ Page({
       wx.showToast({ title: '该任务暂无积分奖励', icon: 'none' });
       return;
     }
-    const res = store.toggleCenter(this.data.task.id);
+    if (this.data.status === 'approved') {
+      wx.showToast({ title: '家长已确认，积分已入账', icon: 'none' });
+      return;
+    }
+    if (this.data.status === 'pending') {
+      wx.showToast({ title: '已提交，等待家长确认', icon: 'none' });
+      return;
+    }
+    const res = store.submitCenter(this.data.task.id);
     if (!res) {
       wx.showToast({ title: '任务不存在', icon: 'none' });
       return;
     }
-    this.setData({ done: res.done });
-    wx.showToast({
-      title: res.done ? ('已打卡 +' + res.delta + ' 分') : '已取消打卡',
-      icon: 'none'
-    });
+    this.setData({ status: res.status });
+    wx.showToast({ title: '已提交，等待家长确认', icon: 'none' });
   }
 });

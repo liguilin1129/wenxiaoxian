@@ -79,6 +79,10 @@
     <view class="mt"><text class="mi">👨‍👩‍👦</text>我的家庭</view>
     <text class="mv">家庭会议 · 公约 ›</text>
   </view>
+  <view class="menu" bindtap="goApprovals">
+    <view class="mt"><text class="mi">✅</text>家长确认</view>
+    <text class="mv">{{pendingApprovals ? ('待确认 ' + pendingApprovals + ' 项') : '暂无待确认'}} ›</text>
+  </view>
 
   <button class="btn soft" style="margin-top:8rpx" bindtap="logout">退出成长花园</button>
   </block>

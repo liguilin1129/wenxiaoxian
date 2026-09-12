@@ -5,3 +5,8 @@
   background: #E7F7EE;
   color: #0F9D6B;
 }
+
+.btn-pending {
+  background: var(--surface-2);
+  color: var(--ink-2);
+}

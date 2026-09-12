@@ -4,6 +4,7 @@
     "pages/login/login",
     "pages/tasks/tasks",
     "pages/task-detail/task-detail",
+    "pages/approvals/approvals",
     "pages/checkin/checkin",
     "pages/points/points",
     "pages/classics/classics",
