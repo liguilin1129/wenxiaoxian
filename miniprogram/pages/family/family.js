@@ -31,5 +31,8 @@ Page({
   },
   editMember(e) {
     wx.navigateTo({ url: '/pages/family/member-edit?id=' + e.currentTarget.dataset.id });
+  },
+  addMember() {
+    wx.navigateTo({ url: '/pages/family/member-edit?mode=add' });
   }
 });

@@ -17,6 +17,11 @@
         <view class="member-role">{{item.role}}</view>
         <view class="member-edit-hint">编辑</view>
       </view>
+      <view class="member member-add" bindtap="addMember">
+        <view class="member-avatar member-add-avatar">＋</view>
+        <view class="member-name">添加成员</view>
+        <view class="member-role">家长或孩子</view>
+      </view>
     </view>
   </view>
 

@@ -1,6 +1,7 @@
-<view class="scr-head"><view class="greet">家庭成员</view><view class="title">编辑资料</view></view>
-<view class="scr-body" wx:if="{{member}}">
-  <view class="member-preview"><view class="member-avatar" style="background:{{member.bg}};color:{{member.color}}">{{previewAvatar}}</view><view><view class="tn">{{name || '未命名成员'}}</view><view class="muted">{{role}}</view></view></view>
+<view class="scr-head"><view class="greet">家庭成员</view><view class="title">{{mode === 'add' ? '添加成员' : '编辑资料'}}</view></view>
+<view class="scr-body" wx:if="{{member || mode === 'add'}}">
+  <view class="member-preview"><view class="member-avatar" style="background:{{member ? member.bg : '#EEF2FF'}};color:{{member ? member.color : '#4338CA'}}">{{previewAvatar}}</view><view><view class="tn">{{name || '未命名成员'}}</view><view class="muted">{{role}}</view></view></view>
   <view class="card"><view class="field-label">成员名称</view><input class="field-input" placeholder="例如：爸爸" maxlength="12" value="{{name}}" bindinput="onName" /><view class="field-label" style="margin-top:28rpx">家庭角色</view><radio-group class="role-group" bindchange="onRole"><label class="role-option"><radio value="家长" checked="{{role === '家长'}}" color="#5E5CE6" />家长</label><label class="role-option"><radio value="孩子" checked="{{role === '孩子'}}" color="#5E5CE6" />孩子</label></radio-group></view>
-  <button class="btn" style="margin-top:32rpx" bindtap="save">保存修改</button>
+  <button class="btn" style="margin-top:32rpx" bindtap="save">{{mode === 'add' ? '添加成员' : '保存修改'}}</button>
+  <button wx:if="{{mode !== 'add'}}" class="delete-member" bindtap="remove">删除此成员</button>
 </view>
