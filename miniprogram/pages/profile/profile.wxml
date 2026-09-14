@@ -1,91 +1,28 @@
 <view class="profile-page">
-  <!-- 顶部用户信息：已登录 -->
   <view class="profile-header" wx:if="{{signed}}">
     <view class="avatar lg">{{child.avatar}}</view>
-    <view class="profile-info">
-      <view class="profile-name">{{child.name}}</view>
-      <view class="profile-level">{{child.levelName}} · Lv.{{child.levelNum}}</view>
-    </view>
+    <view class="profile-info"><view class="profile-name">{{child.name}}</view><view class="profile-level">{{child.levelName}} · Lv.{{child.levelNum}}</view></view>
+    <view class="profile-points" bindtap="goPoints"><text>{{child.points}}</text><text>积分 ›</text></view>
     <view class="profile-edit" bindtap="editProfile">编辑</view>
   </view>
-
-  <!-- 未登录：登录引导 -->
   <view class="guest-login" wx:else bindtap="goLogin">
-    <view class="guest-login-avatar">👤</view>
-    <view class="flex1">
-      <view class="guest-login-title">登录 · 签订成长合约</view>
-      <view class="muted" style="font-size:24rpx;margin-top:6rpx">登录后查看我的任务、积分与成长记录</view>
-    </view>
-    <view class="guest-login-arrow">›</view>
+    <view class="guest-login-avatar">👤</view><view class="flex1"><view class="guest-login-title">登录 · 开启成长花园</view><view class="muted" style="font-size:24rpx;margin-top:6rpx">登录后查看任务、积分与成长记录</view></view><view class="guest-login-arrow">›</view>
   </view>
-
-  <!-- 已登录：其余模块 -->
   <block wx:if="{{signed}}">
-  <!-- VIP 超级会员卡（无真实数据时隐藏） -->
-  <view class="vip-card" wx:if="{{showVip}}">
-    <view class="vip-left">
-      <view class="vip-title">VIP 超级会员</view>
-      <view class="vip-desc">畅享专属成长权益</view>
+    <view class="stats-card"><view wx:for="{{stats}}" wx:key="label" class="stat-item" bindtap="{{item.action}}"><view class="stat-num">{{item.num}}<text wx:if="{{item.suffix}}" class="stat-suffix">{{item.suffix}}</text></view><view class="stat-label">{{item.label}}</view></view></view>
+    <view class="profile-section tools-section">
+      <view class="section-head"><view class="section-title">成长工具</view><view class="section-sub">记录每一步成长</view></view>
+      <view class="tools-grid"><view wx:for="{{tools}}" wx:key="name" class="tool-item" bindtap="{{item.action}}"><view class="tool-icon-wrap"><view class="tool-icon" style="background:{{item.bg}};color:{{item.color}}">{{item.icon}}</view><text wx:if="{{item.badge}}" class="tool-badge">{{item.badge}}</text></view><view class="tool-name">{{item.name}}</view></view></view>
     </view>
-    <view class="vip-btn">立即续费</view>
-  </view>
-
-  <!-- 会员等级条（无真实数据时隐藏） -->
-  <view class="level-bar" bindtap="goMembers" wx:if="{{showMember}}">
-    <view class="level-left">
-      <text class="level-icon">💎</text>
-      <text class="level-name">普通会员</text>
-      <text class="level-tag">未解锁</text>
-    </view>
-    <view class="level-right">0元入会，享专属等级权益 ›</view>
-  </view>
-
-  <!-- 数据指标 -->
-  <view class="stats-card">
-    <view
-      wx:for="{{stats}}"
-      wx:key="label"
-      class="stat-item"
-      bindtap="{{item.action}}"
-    >
-      <view class="stat-num">{{item.num}}</view>
-      <view class="stat-label">{{item.label}}</view>
-    </view>
-  </view>
-
-  <!-- 必备工具 -->
-  <view class="tools-section">
-    <view class="section-title">必备工具</view>
-    <view class="tools-grid">
-      <view
-        wx:for="{{tools}}"
-        wx:key="name"
-        class="tool-item"
-        bindtap="{{item.action}}"
-      >
-        <view class="tool-icon" style="background:{{item.bg}};color:{{item.color}}">{{item.icon}}</view>
-        <view class="tool-name">{{item.name}}</view>
+    <view class="profile-section">
+      <view class="section-head"><view class="section-title">账户与家庭</view></view>
+      <view class="profile-group">
+        <view class="profile-row" bindtap="editProfile"><view class="profile-row-left"><text class="profile-row-icon">✏️</text><text>编辑个人资料</text></view><text class="profile-row-right">›</text></view>
+        <view class="profile-row" bindtap="goMembers"><view class="profile-row-left"><text class="profile-row-icon">👨‍👩‍👦</text><text>我的家庭</text></view><text class="profile-row-note">家庭会议 · 公约</text><text class="profile-row-right">›</text></view>
+        <view class="profile-row" bindtap="goApprovals"><view class="profile-row-left"><text class="profile-row-icon">✅</text><text>家长确认</text></view><text class="profile-row-note">{{pendingApprovals ? ('待确认 ' + pendingApprovals + ' 项') : '暂无待确认'}}</text><text class="profile-row-right">›</text></view>
       </view>
     </view>
-  </view>
-
-  <!-- 更多服务 -->
-  <view class="section-title" style="margin-top:8rpx">更多服务</view>
-  <view class="menu" bindtap="goClassics">
-    <view class="mt"><text class="mi">📖</text>经典书架</view>
-    <text class="mv">17 部 ›</text>
-  </view>
-  <view class="menu" bindtap="goMembers">
-    <view class="mt"><text class="mi">👨‍👩‍👦</text>我的家庭</view>
-    <text class="mv">家庭会议 · 公约 ›</text>
-  </view>
-  <view class="menu" bindtap="goApprovals">
-    <view class="mt"><text class="mi">✅</text>家长确认</view>
-    <text class="mv">{{pendingApprovals ? ('待确认 ' + pendingApprovals + ' 项') : '暂无待确认'}} ›</text>
-  </view>
-
-  <button class="btn soft" style="margin-top:8rpx" bindtap="logout">退出成长花园</button>
+    <button class="btn soft profile-logout" bindtap="logout">退出成长花园</button>
   </block>
 </view>
-
 <ai-assistant />

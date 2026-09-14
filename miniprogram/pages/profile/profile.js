@@ -5,25 +5,17 @@ Page({
   data: {
     signed: false,
     child: {},
-    // 会员数据为占位/mock 时先隐藏，接入真实数据后改为 true
-    showVip: false,
-    showMember: false,
     pendingApprovals: 0,
     stats: [
-      { num: 0, label: '我的任务', action: 'goTasks' },
-      { num: 0, label: '账户(¥)', action: 'goPoints' },
-      { num: 0, label: '会员卡', action: 'goMembers' },
-      { num: 0, label: '积分', action: 'goPoints' },
-      { num: 0, label: '券码', action: 'goRewards' },
-      { num: 0, label: '收藏', action: 'goClassics' }
+      { num: 0, label: '今日任务', action: 'goTasks' },
+      { num: 0, label: '成长积分', action: 'goPoints' },
+      { num: 0, suffix: '天', label: '连续打卡', action: 'goReport' }
     ],
     tools: [
-      { icon: '🏆', name: '我的成就', action: 'goReport', bg: '#FFF1F3', color: '#E11D6F' },
-      { icon: '🎁', name: '我的奖品', action: 'goRewards', bg: '#ECFDF5', color: '#0F9D6B' },
-      { icon: '⚙️', name: '账号设置', action: 'goSettings', bg: '#F5F3FF', color: '#7C3AED' },
-      { icon: '🧾', name: '积分明细', action: 'goPoints', bg: '#EEF2FF', color: '#4338CA' },
       { icon: '📊', name: '成长报告', action: 'goReport', bg: '#FFFBEB', color: '#B7791F' },
-      { icon: '✏️', name: '编辑资料', action: 'editProfile', bg: '#F0FDFA', color: '#0D9488' }
+      { icon: '🎁', name: '奖励兑换', action: 'goRewards', bg: '#ECFDF5', color: '#0F9D6B' },
+      { icon: '✅', name: '家长确认', action: 'goApprovals', bg: '#F5F3FF', color: '#7C3AED' },
+      { icon: '📖', name: '经典书架', action: 'goClassics', bg: '#EEF2FF', color: '#4338CA' }
     ]
   },
   onShow() {
@@ -38,12 +30,16 @@ Page({
       return;
     }
     const child = app.globalData.child || {};
-    const stats = this.data.stats.slice();
-    // 把实际积分和今日已完成任务数展示出来
-    stats[3].num = child.points || 0;
+    const stats = this.data.stats.map(item => Object.assign({}, item));
     const todayDone = (app.globalData.todayTasks || []).filter(t => t.done).length;
     stats[0].num = todayDone;
-    this.setData({ signed: true, child: child, stats: stats, pendingApprovals: store.getPendingApprovals().length });
+    stats[1].num = child.points || 0;
+    stats[2].num = child.streak || 0;
+    const pendingApprovals = store.getPendingApprovals().length;
+    const tools = this.data.tools.map(item => Object.assign({}, item, {
+      badge: item.action === 'goApprovals' && pendingApprovals ? pendingApprovals : 0
+    }));
+    this.setData({ signed: true, child: child, stats: stats, tools: tools, pendingApprovals: pendingApprovals });
   },
   goLogin() { wx.navigateTo({ url: '/pages/login/login' }); },
   editProfile() { wx.navigateTo({ url: '/pages/profile-edit/profile-edit' }); },
