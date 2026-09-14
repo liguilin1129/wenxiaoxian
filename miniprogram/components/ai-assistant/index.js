@@ -248,25 +248,32 @@ Component({
 
     // 识别“完成任务 + 打卡 + 积分”的自然语言，返回需要用户确认的打卡动作。
     parseCheckinCommand(text) {
-      if (!/(?:打卡|完成了?|做完了?|做了|做到)/.test(text) || !/(?:积分|\d+\s*分)/.test(text)) return null;
+      // 先统一空格和中英文标点，避免口述输入的格式差异导致落入普通聊天回复。
+      const source = String(text || '').replace(/\s+/g, '').replace(/[，,。；;！!？?]/g, '，');
+      if (!/(?:打卡|完成了?|做完了?|做了|做到)/.test(source) || !/(?:积分|\d+\s*分)/.test(source)) return null;
 
-      const pointMatch = text.match(/(?:积分|奖励|加)\s*([1-9]\d{0,3})\s*(?:个)?(?:积分|分)?|([1-9]\d{0,3})\s*(?:个)?积分|([1-9]\d{0,3})\s*分/);
+      const pointMatch = source.match(/(?:积分|奖励|加)\s*([1-9]\d{0,3})\s*(?:个)?(?:积分|分)?|([1-9]\d{0,3})\s*(?:个)?积分|([1-9]\d{0,3})\s*分/);
       const points = pointMatch && parseInt(pointMatch[1] || pointMatch[2] || pointMatch[3], 10);
       if (!points || points > 1000) return null;
 
       const patterns = [
-        /(?:完成了?|做完了?|打卡(?:了|一下)?|帮我打卡)\s*([^，。！!？?\d]{1,18}?)(?:任务)?(?=，|,|。|！|!|？|\?|$)/,
-        /(?:任务[是：:]?|打卡[：:]?)\s*([^，。！!？?\d]{1,18}?)(?:任务)?(?=，|,|。|！|!|？|\?|$)/
+        /(?:帮我)?打卡[：:]?\s*([^，\d]{1,18}?)(?:任务)?(?=，|$)/,
+        /([^，\d]{1,18}?)(?:任务)?(?:完成了?|做完了?)(?=，|$)/,
+        /(?:完成了?|做完了?)\s*([^，\d]{1,18}?)(?:任务)?(?=，|$)/,
+        /(?:任务[是：:]?)\s*([^，\d]{1,18}?)(?:任务)?(?=，|$)/
       ];
       let rawName = '';
       for (let i = 0; i < patterns.length; i++) {
-        const match = text.match(patterns[i]);
+        const match = source.match(patterns[i]);
         if (match) {
           rawName = match[1];
           break;
         }
       }
-      const name = rawName.replace(/^(?:今天|我今天|一下)/, '').replace(/任务$/, '').trim();
+      // 任务关键词优先于泛化正则，避免“我扫地完成了”误把“了”当成任务名。
+      const taskMatch = source.match(/(扫地|拖地|洗碗|整理书桌|整理玩具|倒垃圾|阅读|背诵|练字|运动)/);
+      if (taskMatch) rawName = taskMatch[1];
+      const name = rawName.replace(/^(?:我今天|今天|我|一下|：|:)/, '').replace(/任务$/, '').trim();
       if (!name || name.length > 12) return null;
 
       return {
@@ -345,7 +352,7 @@ Component({
      */
     getMockReply(text) {
       if (/打扫|卫生|整理|主动|帮忙|做了好事/.test(text)) {
-        return '哇！小贤真棒呀！自己主动打扫卫生，这可是特别好的习惯呢！🧹✨\n\n我来帮你记一下：今天小贤自己打扫了卫生，奖励 10 个积分，对不对？点下面的按钮就能真正记到小贤的账户里～\n\n对了，打扫卫生这个习惯特别好，要不要我帮你给小贤设一个「每日小管家」的任务呀？比如每天整理自己的玩具或者书桌，完成一次就能攒积分，小贤会越来越有责任感呢！☀️';
+        return '小贤真棒！🧹 如果要直接记入积分，请告诉我任务和分数，例如：\n“我完成了扫地任务，帮我打卡 10 分”。\n我会生成确认按钮，确认后立即写入积分流水。';
       }
       if (/打卡|完成|做了|做到/.test(text)) {
         return '收到～（这是界面演示，接入真实模型后我可以帮你一键打卡 ✅）';
