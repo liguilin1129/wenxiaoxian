@@ -10,7 +10,7 @@ function dimNameMap() {
 }
 
 Page({
-  data: { tasks: [], pendingTasks: [], completedTasks: [], gain: 0, done: 0, total: 0, progressPct: 0, encouragement: '', dimName: {}, today: '' },
+  data: { tasks: [], pendingTasks: [], completedTasks: [], recentRecords: [], gain: 0, done: 0, total: 0, progressPct: 0, encouragement: '', dimName: {}, today: '' },
   onShow() { this.refresh(); },
   refresh() {
     const g = app.globalData;
@@ -26,6 +26,7 @@ Page({
       tasks: tasks,
       pendingTasks: indexedTasks.filter(task => !task.done),
       completedTasks: indexedTasks.filter(task => task.done),
+      recentRecords: store.getAiCheckinRecords(8),
       gain: store.todayGain(),
       done: done,
       total: total,
@@ -39,6 +40,10 @@ Page({
     const index = e.currentTarget.dataset.index;
     const res = store.toggleTodayTask(index);
     if (res) {
+      if (res.locked) {
+        wx.showToast({ title: 'AI 打卡记录不能在此取消', icon: 'none' });
+        return;
+      }
       const tip = res.delta > 0 ? '打卡 +' + res.delta + ' 分' : '已取消打卡';
       wx.showToast({ title: tip, icon: 'none' });
       this.refresh();

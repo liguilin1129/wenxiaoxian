@@ -70,6 +70,7 @@ function load() {
   });
   if (!st.redeemed) st.redeemed = [];
   if (!st.aiRecords) st.aiRecords = [];
+  if (!st.aiCheckins) st.aiCheckins = [];
   // 跨天：清空「今日习惯」打卡（任务中心为累积行为，保留）
   if (st.date !== today) {
     st.date = today;
@@ -212,7 +213,6 @@ function initCheckIns(appInstance) {
     s.centerTaskStatus[id] = record.status;
     if (record.status === 'approved') s.centerTasksDone[id] = record.date;
   });
-  recompute(s, st);
   s._ci = st;
   // 恢复家庭会议列表
   s.meetings = loadMeetings();
@@ -225,6 +225,20 @@ function initCheckIns(appInstance) {
     if (!exists) s.todayTasks.push(t);
   });
   if (validMt.length !== mtList.length) saveMeetingTasks(validMt);
+
+  // 恢复 AI 创建的当天打卡项；旧日记录仍保留在打卡历史和积分流水中。
+  s.todayTasks = s.todayTasks.filter(t => !t.fromAiCheckin);
+  (st.aiCheckins || []).filter(item => item.date === formatToday()).forEach(item => {
+    s.todayTasks.push({
+      id: item.id,
+      name: item.name,
+      dim: 'habit',
+      points: item.points,
+      done: true,
+      fromAiCheckin: true
+    });
+  });
+  recompute(s, st);
 }
 
 // 自愈：开发者工具热重载 app.js 时 onLaunch 不一定重跑，
@@ -241,6 +255,7 @@ function toggleDaily(index) {
   const s = state();
   const t = s.todayTasks[index];
   if (!t) return null;
+  if (t.fromAiCheckin) return { locked: true, done: true, delta: 0 };
   const was = t.done;
   t.done = !t.done;
   const st = s._ci;
@@ -384,7 +399,7 @@ function isSigned() {
   return state().signed;
 }
 
-// AI 记录积分（持久化到 aiRecords，重启不丢）
+// AI 打卡：一份数据同步生成「今日已完成」「历史记录」和积分流水，重启不丢。
 function aiRecordBonus(name, points) {
   ensure();
   const s = state();
@@ -393,10 +408,32 @@ function aiRecordBonus(name, points) {
   const safePoints = Number(points);
   if (!safeName || !Number.isInteger(safePoints) || safePoints < 1 || safePoints > 1000) return null;
   if (!st.aiRecords) st.aiRecords = [];
-  st.aiRecords.push({ name: safeName, points: safePoints, date: formatToday() });
+  if (!st.aiCheckins) st.aiCheckins = [];
+  const checkin = {
+    id: 'ai_checkin_' + Date.now(),
+    name: safeName,
+    points: safePoints,
+    date: formatToday()
+  };
+  st.aiRecords.push({ name: safeName, points: safePoints, date: checkin.date });
+  st.aiCheckins.unshift(checkin);
+  s.todayTasks.push({
+    id: checkin.id,
+    name: safeName,
+    dim: 'habit',
+    points: safePoints,
+    done: true,
+    fromAiCheckin: true
+  });
   recompute(s, st);
   save(st);
   return { points: s.child.points };
+}
+
+function getAiCheckinRecords(limit) {
+  ensure();
+  const max = Number(limit) || 10;
+  return (state()._ci.aiCheckins || []).slice(0, max).map(item => Object.assign({}, item));
 }
 
 // AI 添加今日任务（仅当前会话有效，原型阶段）
@@ -544,7 +581,7 @@ module.exports = {
   toggleDaily, toggleCenter, toggleTodayTask: toggleDaily,
   isCenterDone, getCenterStatus, submitCenter, approveCenter, rejectCenter, getPendingApprovals, todayDoneCount, todayGain,
   redeem, login, isSigned, recordBonus,
-  aiRecordBonus, addDailyTask,
+  aiRecordBonus, getAiCheckinRecords, addDailyTask,
   getRewards, saveRewards,
   getMeetings, createMeeting, updateMeeting, closeMeeting,
   getFamilyMembers, updateFamilyMember, addFamilyMember, removeFamilyMember, getFamilyConvention, saveFamilyConvention,

@@ -43,8 +43,20 @@
       <view class="check on">✓</view>
     </view>
     <view class="chips">
+      <text wx:if="{{task.fromAiCheckin}}" class="pill pill-ai">AI 打卡</text>
       <text class="pill pill-{{task.dim}}">{{dimName[task.dim]}}</text>
       <text class="pill">+{{task.points}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{recentRecords.length}}" class="checkin-section record-section">
+    <view class="checkin-section-title">最近 AI 打卡记录 <text>{{recentRecords.length}}</text></view>
+    <view wx:for="{{recentRecords}}" wx:for-item="record" wx:key="id" class="checkin-record">
+      <view>
+        <view class="record-name">{{record.name}}</view>
+        <view class="record-date">{{record.date}} · AI 助手确认</view>
+      </view>
+      <view class="record-points">+{{record.points}}</view>
     </view>
   </view>
 </view>

@@ -6,6 +6,19 @@
 .checkin-done-title { margin-top: 38rpx; }
 .checkin-completed { opacity: .7; }
 .checkin-completed .tn { text-decoration: line-through; color: var(--ink-3); }
+.pill-ai { color: #4F46E5; background: #EEEDFE; }
+
+.record-section { margin-top: 42rpx; }
+.checkin-record {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22rpx 4rpx;
+  border-bottom: 1rpx solid var(--line);
+}
+.record-name { font-size: 28rpx; color: var(--ink-1); font-weight: 600; }
+.record-date { margin-top: 7rpx; font-size: 22rpx; color: var(--ink-3); }
+.record-points { font-size: 30rpx; color: var(--brand-600); font-weight: 700; }
 
 .all-done {
   background: linear-gradient(135deg, #ECFDF5, #EEEDFE);
