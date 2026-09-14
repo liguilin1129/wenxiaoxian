@@ -38,6 +38,10 @@
   margin-bottom: 12rpx;
 }
 .field-input {
+  display: block;
+  width: 100%;
+  min-height: 88rpx;
+  line-height: 48rpx;
   background: var(--surface-2);
   border-radius: var(--radius-xs);
   padding: 20rpx 24rpx;
@@ -47,6 +51,7 @@
   box-sizing: border-box;
 }
 .field-textarea {
+  display: block;
   background: var(--surface-2);
   border-radius: var(--radius-xs);
   padding: 20rpx 24rpx;
@@ -54,6 +59,8 @@
   color: var(--ink-1);
   width: 100%;
   height: 180rpx;
+  box-sizing: border-box;
+  line-height: 1.55;
 }
 
 .template-row {
@@ -84,6 +91,9 @@
   margin-bottom: 8rpx;
 }
 .topic-title {
+  display: block;
+  min-height: 72rpx;
+  line-height: 44rpx;
   font-size: 30rpx;
   font-weight: 700;
   color: var(--ink-1);
@@ -98,6 +108,9 @@
   margin-bottom: 8rpx;
 }
 .topic-content {
+  display: block;
+  min-height: 76rpx;
+  line-height: 40rpx;
   font-size: 26rpx;
   color: var(--ink-2);
   margin-top: 12rpx;
@@ -108,6 +121,9 @@
   box-sizing: border-box;
 }
 .topic-input-sm {
+  display: block;
+  min-height: 76rpx;
+  line-height: 40rpx;
   flex: 1;
   width: 0;
   min-width: 0;
@@ -115,6 +131,7 @@
   border-radius: var(--radius-xs);
   padding: 16rpx 20rpx;
   font-size: 28rpx;
+  box-sizing: border-box;
 }
 .topic-editor-row { align-items: flex-start; gap: 16rpx; }
 .topic-editor-main { flex: 1; min-width: 0; }
