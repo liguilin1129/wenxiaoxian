@@ -12,6 +12,8 @@ const BASE_POINTS = mock.child.points - DEFAULT_DONE_POINTS;
 
 const MEETINGS_KEY = 'familyMeetings';
 const MEETING_TASKS_KEY = 'meetingTasks'; // 今日任务中来自会议的新增项
+const FAMILY_MEMBERS_KEY = 'familyMembers';
+const FAMILY_CONVENTION_KEY = 'familyConvention';
 
 // 任务中心扁平表：id -> { points(奖励总和), dim, name }
 const centerMap = {};
@@ -92,6 +94,48 @@ function loadMeetingTasks() {
 
 function saveMeetingTasks(list) {
   wx.setStorageSync(MEETING_TASKS_KEY, list);
+}
+
+function defaultFamilyMembers() {
+  const child = state().child || {};
+  return [
+    { id: 'father', name: '爸爸', role: '家长', avatar: '爸', bg: '#EEF2FF', color: '#4338CA' },
+    { id: 'mother', name: '妈妈', role: '家长', avatar: '妈', bg: '#FFF1F3', color: '#E11D6F' },
+    { id: 'child', name: child.name || '文小贤', role: '孩子', avatar: (child.name || '贤').slice(0, 1), bg: '#ECFDF5', color: '#0F9D6B' }
+  ];
+}
+
+function getFamilyMembers() {
+  const list = wx.getStorageSync(FAMILY_MEMBERS_KEY);
+  return Array.isArray(list) && list.length ? list : defaultFamilyMembers();
+}
+
+function saveFamilyMembers(list) {
+  wx.setStorageSync(FAMILY_MEMBERS_KEY, list);
+}
+
+function updateFamilyMember(member) {
+  const list = getFamilyMembers();
+  const index = list.findIndex(item => item.id === member.id);
+  if (index < 0) return false;
+  const name = typeof member.name === 'string' ? member.name.trim().slice(0, 12) : '';
+  if (!name) return false;
+  list[index] = Object.assign({}, list[index], { name: name, role: member.role === '孩子' ? '孩子' : '家长', avatar: name.slice(0, 1) });
+  saveFamilyMembers(list);
+  return true;
+}
+
+function getFamilyConvention() {
+  const saved = wx.getStorageSync(FAMILY_CONVENTION_KEY);
+  return saved && typeof saved === 'object' ? saved : { title: '文小贤家的成长公约', content: '', updatedAt: '' };
+}
+
+function saveFamilyConvention(convention) {
+  const title = typeof convention.title === 'string' ? convention.title.trim().slice(0, 24) : '';
+  const content = typeof convention.content === 'string' ? convention.content.trim().slice(0, 1000) : '';
+  const data = { title: title || '文小贤家的成长公约', content: content, updatedAt: formatToday() };
+  wx.setStorageSync(FAMILY_CONVENTION_KEY, data);
+  return data;
 }
 
 function save(st) {
@@ -476,5 +520,6 @@ module.exports = {
   aiRecordBonus, addDailyTask,
   getRewards, saveRewards,
   getMeetings, createMeeting, updateMeeting, closeMeeting,
+  getFamilyMembers, updateFamilyMember, getFamilyConvention, saveFamilyConvention,
   isCaseLiked, isCaseFaved, toggleCaseLike, toggleCaseFav
 };

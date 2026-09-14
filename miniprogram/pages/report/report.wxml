@@ -4,12 +4,25 @@
 </view>
 
 <view class="scr-body">
+  <view class="report-hero">
+    <view class="report-hero-top"><view><view class="report-hero-label">当前成长积分</view><view class="report-hero-points">{{points}} <text>分</text></view></view><view class="report-streak">🔥 {{streak}}<text>天连续打卡</text></view></view>
+    <view class="report-progress-label"><text>今日任务完成</text><text>{{done}} / {{total}} · {{completionPct}}%</text></view><view class="report-progress"><view style="width:{{completionPct}}%"></view></view>
+  </view>
+
+  <view class="report-metrics"><view><text>+{{weekGain}}</text><text>本周积分</text></view><view><text>{{recordCount}}</text><text>积分记录</text></view><view><text>+{{earned}}</text><text>累计获得</text></view></view>
+
   <view class="card">
     <view class="h3">四维表现</view>
     <view wx:for="{{dims}}" wx:key="key" class="rep-bar">
       <view class="rl"><text>{{item.name}}</text><text style="color:{{item.dark}};font-weight:700">{{item.pct}}</text></view>
       <view class="bar"><view class="fill" style="width:{{item.pct}}%;background:{{item.color}}"></view></view>
     </view>
+  </view>
+
+  <view class="card report-observation">
+    <view class="h3">本周观察</view>
+    <view class="observation-row"><view class="observation-icon good">★</view><view><view class="observation-title">表现亮点 · {{strength.name}}</view><view class="small">当前综合表现 {{strength.pct}}%，继续保持稳定节奏。</view></view></view>
+    <view class="observation-row"><view class="observation-icon focus">◎</view><view><view class="observation-title">成长重点 · {{focus.name}}</view><view class="small">当前综合表现 {{focus.pct}}%，{{suggestion}}</view></view></view>
   </view>
 
   <view class="card">
@@ -20,9 +33,9 @@
     </view>
   </view>
 
-  <view class="card" style="text-align:center">
-    <view class="muted">本周累计获得</view>
-    <view style="font-size:52rpx;font-weight:800;color:var(--brand-700);margin-top:4rpx">+{{weekGain}} 分</view>
+  <view class="card report-points-card">
+    <view><view class="muted">本周累计获得</view><view class="report-week-points">+{{weekGain}} 分</view></view>
+    <view class="report-points-detail"><text>历史获得 +{{earned}}</text><text>已兑换 -{{spent}}</text></view>
   </view>
 </view>
 

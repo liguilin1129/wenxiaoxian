@@ -42,8 +42,8 @@
     <!-- 议题列表 -->
     <view wx:if="{{form.topics.length}}" class="section-title">待决议议题</view>
     <view wx:for="{{form.topics}}" wx:key="id" class="topic-card">
-      <view class="row between">
-        <view>
+      <view class="row between topic-editor-row">
+        <view class="topic-editor-main">
           <view class="topic-type">{{topicTypeName(item.type)}}</view>
           <input class="topic-title" placeholder="议题标题" value="{{item.title}}" data-idx="{{index}}" data-field="title" bindinput="onTopic" />
         </view>

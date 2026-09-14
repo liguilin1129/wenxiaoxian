@@ -43,6 +43,8 @@
   padding: 20rpx 24rpx;
   font-size: 30rpx;
   color: var(--ink-1);
+  width: 100%;
+  box-sizing: border-box;
 }
 .field-textarea {
   background: var(--surface-2);
@@ -86,6 +88,8 @@
   font-weight: 700;
   color: var(--ink-1);
   margin-bottom: 8rpx;
+  width: 100%;
+  box-sizing: border-box;
 }
 .topic-title-static {
   font-size: 30rpx;
@@ -100,14 +104,20 @@
   background: var(--surface-2);
   border-radius: var(--radius-xs);
   padding: 16rpx 20rpx;
+  width: 100%;
+  box-sizing: border-box;
 }
 .topic-input-sm {
   flex: 1;
+  width: 0;
+  min-width: 0;
   background: var(--surface-2);
   border-radius: var(--radius-xs);
   padding: 16rpx 20rpx;
   font-size: 28rpx;
 }
+.topic-editor-row { align-items: flex-start; gap: 16rpx; }
+.topic-editor-main { flex: 1; min-width: 0; }
 .topic-target {
   margin-top: 12rpx;
   font-size: 24rpx;

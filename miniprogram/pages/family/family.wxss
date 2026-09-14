@@ -29,6 +29,7 @@
   color: var(--ink-3);
   margin-top: 4rpx;
 }
+.member-edit-hint { margin-top: 6rpx; padding: 3rpx 12rpx; border-radius: 999rpx; background: var(--surface-2); color: var(--ink-3); font-size: 20rpx; }
 .badge {
   display: inline-block;
   background: var(--c-heart);

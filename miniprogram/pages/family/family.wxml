@@ -8,13 +8,14 @@
   <view class="card">
     <view class="row between" style="margin-bottom:20rpx">
       <view class="tn">家庭成员</view>
-      <text class="muted">3 人</text>
+      <text class="muted">{{members.length}} 人 · 点击成员编辑</text>
     </view>
     <view class="member-row">
-      <view class="member" wx:for="{{members}}" wx:key="name">
+      <view class="member" wx:for="{{members}}" wx:key="id" data-id="{{item.id}}" bindtap="editMember">
         <view class="member-avatar" style="background:{{item.bg}};color:{{item.color}}">{{item.avatar}}</view>
         <view class="member-name">{{item.name}}</view>
         <view class="member-role">{{item.role}}</view>
+        <view class="member-edit-hint">编辑</view>
       </view>
     </view>
   </view>

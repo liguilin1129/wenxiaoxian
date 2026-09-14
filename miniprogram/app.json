@@ -23,6 +23,8 @@
     "pages/profile-edit/profile-edit",
     "pages/family/family",
     "pages/family/meeting",
+    "pages/family/member-edit",
+    "pages/family/convention",
     "pages/case-list/case-list",
     "pages/case-detail/case-detail"
   ],
