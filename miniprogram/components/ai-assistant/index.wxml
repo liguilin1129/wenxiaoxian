@@ -68,16 +68,8 @@
 
       <!-- 输入栏（微信风格） -->
       <view class="chat-input-bar" catchtouchmove="preventMove">
-        <view
-          class="voice-btn {{voiceRecording ? 'voice-recording' : ''}}"
-          catchtouchstart="startVoiceInput"
-          catchtouchend="stopVoiceInput"
-          catchtouchcancel="stopVoiceInput"
-        >
-          <text>{{voiceRecording ? '松开' : '按住'}}</text>
-          <text class="voice-icon">🎙</text>
-        </view>
-        <view class="chat-input-box">
+        <view wx:if="{{inputMode === 'text'}}" class="text-input-mode">
+          <view class="chat-input-box">
           <input
             class="chat-input"
             value="{{draft}}"
@@ -87,14 +79,27 @@
             bindfocus="onKbFocus"
             bindblur="onKbBlur"
             bindkeyboardheightchange="onKbHeightChange"
-            placeholder="{{voiceRecording ? '正在聆听，请说话…' : '发送消息…'}}"
+            placeholder="发送消息…"
             placeholder-class="chat-ph"
             confirm-type="send"
             bindconfirm="onSend"
             cursor-spacing="10"
           />
+            <view class="input-mic" bindtap="switchToVoice" aria-label="切换语音输入">
+              <view class="mic-symbol"></view>
+            </view>
+          </view>
+          <view class="send-btn {{draft ? 'send-on' : ''}}" bindtap="onSend">发送</view>
         </view>
-        <view class="send-btn {{draft ? 'send-on' : ''}}" bindtap="onSend">发送</view>
+        <view wx:else class="voice-input-mode">
+          <view class="mode-switch" bindtap="switchToText" aria-label="切换键盘输入">⌨</view>
+          <view
+            class="voice-hold {{voiceRecording ? 'voice-recording' : ''}}"
+            catchtouchstart="startVoiceInput"
+            catchtouchend="stopVoiceInput"
+            catchtouchcancel="stopVoiceInput"
+          >{{voiceRecording ? '松开结束' : '按住 说话'}}</view>
+        </view>
       </view>
     </view>
   </view>

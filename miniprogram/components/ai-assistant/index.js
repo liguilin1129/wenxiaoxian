@@ -12,6 +12,7 @@ Component({
     draft: '',
     typing: false,
     voiceRecording: false,
+    inputMode: 'text',
     scrollTarget: '',
     kbBottom: '0px',
     bodyHeight: 0,
@@ -125,6 +126,17 @@ Component({
       this.setData({ draft: e.detail.value });
     },
 
+    switchToVoice() {
+      if (this.data.typing) return;
+      wx.hideKeyboard({});
+      this.setData({ inputMode: 'voice' });
+    },
+
+    switchToText() {
+      if (this.data.voiceRecording) this.stopVoiceInput();
+      this.setData({ inputMode: 'text' });
+    },
+
     // 微信同声传译插件提供实时语音转文字；插件未开通时不影响普通文字聊天。
     initVoiceRecognition() {
       if (this._recordManager) return true;
@@ -138,7 +150,7 @@ Component({
         };
         manager.onStop = (res) => {
           const result = String((res && res.result) || '').trim();
-          this.setData({ voiceRecording: false });
+          this.setData({ voiceRecording: false, inputMode: 'text' });
           if (result) {
             this.setData({ draft: result });
           } else if (!this.data.draft) {
