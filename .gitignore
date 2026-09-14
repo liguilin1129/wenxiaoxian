@@ -18,4 +18,5 @@ project.private.config.json
 .env
 server/.env
 server/data/users.json
+server/data/app-state.json
 miniprogram/utils/ai-config.secret.js

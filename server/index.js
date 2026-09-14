@@ -16,7 +16,9 @@ const APP_ID = process.env.WECHAT_APP_ID || '';
 const APP_SECRET = process.env.WECHAT_APP_SECRET || '';
 const TOKEN_SECRET = process.env.AUTH_TOKEN_SECRET || '';
 const USERS_PATH = path.join(__dirname, 'data', 'users.json');
+const APP_STATE_PATH = path.join(__dirname, 'data', 'app-state.json');
 const TOKEN_TTL_SECONDS = 7 * 24 * 60 * 60;
+const MAX_STATE_BYTES = 128 * 1024;
 
 if (!APP_ID || !APP_SECRET || !TOKEN_SECRET) {
   console.warn('[auth] 缺少微信或令牌配置；请复制 .env.example 为 .env 后填写。');
@@ -41,7 +43,7 @@ function json(res, status, body) {
     'Cache-Control': 'no-store',
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, OPTIONS'
   });
   res.end(JSON.stringify(body));
 }
@@ -82,6 +84,22 @@ function saveUsers(users) {
   const temp = USERS_PATH + '.tmp';
   fs.writeFileSync(temp, JSON.stringify(users, null, 2), { mode: 0o600 });
   fs.renameSync(temp, USERS_PATH);
+}
+
+function readAppStates() {
+  try {
+    const states = JSON.parse(fs.readFileSync(APP_STATE_PATH, 'utf8'));
+    return states && typeof states === 'object' ? states : {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function saveAppStates(states) {
+  fs.mkdirSync(path.dirname(APP_STATE_PATH), { recursive: true });
+  const temp = APP_STATE_PATH + '.tmp';
+  fs.writeFileSync(temp, JSON.stringify(states, null, 2), { mode: 0o600 });
+  fs.renameSync(temp, APP_STATE_PATH);
 }
 
 async function wechatJson(url, options) {
@@ -163,6 +181,22 @@ function getAuthorizedUser(req) {
   return readUsers()[payload.sub] || null;
 }
 
+function normalizeAppState(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
+  const allowed = ['checkInState', 'childProfile', 'parentRewards', 'familyMeetings', 'meetingTasks', 'classicVisited'];
+  const state = {};
+  allowed.forEach((key) => {
+    if (Object.prototype.hasOwnProperty.call(value, key)) state[key] = value[key];
+  });
+  try {
+    const text = JSON.stringify(state);
+    if (Buffer.byteLength(text, 'utf8') > MAX_STATE_BYTES) return null;
+    return JSON.parse(text);
+  } catch (error) {
+    return null;
+  }
+}
+
 function publicUser(user) {
   return {
     id: user.id,
@@ -225,10 +259,39 @@ function getCurrentUser(req, res) {
   return json(res, 200, { ok: true, user: publicUser(user) });
 }
 
+function getAppState(req, res) {
+  const user = getAuthorizedUser(req);
+  if (!user) return fail(res, 401, 'UNAUTHORIZED', '登录已失效，请重新授权');
+  const record = readAppStates()[user.id];
+  return json(res, 200, {
+    ok: true,
+    state: record && record.state ? record.state : null,
+    updatedAt: record && record.updatedAt ? record.updatedAt : null
+  });
+}
+
+async function saveAppState(req, res) {
+  const user = getAuthorizedUser(req);
+  if (!user) return fail(res, 401, 'UNAUTHORIZED', '登录已失效，请重新授权');
+  let input;
+  try { input = await readJson(req); } catch (error) {
+    return fail(res, 400, error.message, '请求内容无效');
+  }
+  const state = normalizeAppState(input.state);
+  if (!state) return fail(res, 400, 'INVALID_APP_STATE', '成长数据格式无效或超过大小限制');
+  const states = readAppStates();
+  const updatedAt = new Date().toISOString();
+  states[user.id] = { state, updatedAt };
+  saveAppStates(states);
+  return json(res, 200, { ok: true, updatedAt });
+}
+
 const server = http.createServer(async (req, res) => {
   if (req.method === 'OPTIONS') return json(res, 204, {});
   if (req.method === 'POST' && req.url === '/api/auth/wechat/login') return login(req, res);
   if (req.method === 'GET' && req.url === '/api/auth/me') return getCurrentUser(req, res);
+  if (req.method === 'GET' && req.url === '/api/app/state') return getAppState(req, res);
+  if (req.method === 'PUT' && req.url === '/api/app/state') return saveAppState(req, res);
   if (req.method === 'GET' && req.url === '/health') return json(res, 200, { ok: true });
   return fail(res, 404, 'NOT_FOUND', '接口不存在');
 });

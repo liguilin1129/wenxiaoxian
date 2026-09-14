@@ -19,4 +19,10 @@
 
 登录成功后，小程序会将返回的 `token` 放入 `Authorization: Bearer <token>` 请求头；可通过 `GET /api/auth/me` 获取当前已授权用户的昵称、头像等公开资料。该接口用于应用启动时核验本地登录缓存。
 
+## 个人成长数据（开发阶段）
+
+`GET /api/app/state` 与 `PUT /api/app/state` 需要携带同一登录令牌。它们按微信用户 ID 保存一份成长状态快照，包含打卡状态、资料、奖励、家庭会议和经典阅读进度；数据文件位于 `server/data/app-state.json`，已被 Git 忽略，不会提交到仓库。
+
+这是开发阶段的轻量存储。正式上线前应迁移到具备访问控制、备份与并发保障的数据库。
+
 生产环境必须使用 HTTPS，将服务域名加入微信公众平台的“request 合法域名”，并把 `server/data/users.json` 替换为受访问控制的数据库。
