@@ -68,6 +68,15 @@
 
       <!-- 输入栏（微信风格） -->
       <view class="chat-input-bar" catchtouchmove="preventMove">
+        <view
+          class="voice-btn {{voiceRecording ? 'voice-recording' : ''}}"
+          catchtouchstart="startVoiceInput"
+          catchtouchend="stopVoiceInput"
+          catchtouchcancel="stopVoiceInput"
+        >
+          <text>{{voiceRecording ? '松开' : '按住'}}</text>
+          <text class="voice-icon">🎙</text>
+        </view>
         <view class="chat-input-box">
           <input
             class="chat-input"
@@ -78,7 +87,7 @@
             bindfocus="onKbFocus"
             bindblur="onKbBlur"
             bindkeyboardheightchange="onKbHeightChange"
-            placeholder="发送消息…"
+            placeholder="{{voiceRecording ? '正在聆听，请说话…' : '发送消息…'}}"
             placeholder-class="chat-ph"
             confirm-type="send"
             bindconfirm="onSend"

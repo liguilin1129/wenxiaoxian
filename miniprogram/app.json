@@ -48,6 +48,12 @@
       { "pagePath": "pages/profile/profile", "text": "我的" }
     ]
   },
+  "plugins": {
+    "WechatSI": {
+      "version": "0.3.4",
+      "provider": "wx069ba97219f66d99"
+    }
+  },
   "sitemapLocation": "sitemap.json",
   "style": "v2"
 }

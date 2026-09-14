@@ -11,6 +11,7 @@ Component({
     showPanel: false,
     draft: '',
     typing: false,
+    voiceRecording: false,
     scrollTarget: '',
     kbBottom: '0px',
     bodyHeight: 0,
@@ -29,6 +30,7 @@ Component({
   lifetimes: {
     detached() {
       clearTimeout(this._keyboardTimer);
+      if (this._recordManager && this.data.voiceRecording) this._recordManager.stop();
     }
   },
 
@@ -121,6 +123,69 @@ Component({
 
     onInput(e) {
       this.setData({ draft: e.detail.value });
+    },
+
+    // 微信同声传译插件提供实时语音转文字；插件未开通时不影响普通文字聊天。
+    initVoiceRecognition() {
+      if (this._recordManager) return true;
+      try {
+        const plugin = requirePlugin('WechatSI');
+        const manager = plugin.getRecordRecognitionManager();
+        manager.onRecognize = (res) => {
+          if (!this.data.voiceRecording) return;
+          const result = String((res && res.result) || '').trim();
+          if (result) this.setData({ draft: result });
+        };
+        manager.onStop = (res) => {
+          const result = String((res && res.result) || '').trim();
+          this.setData({ voiceRecording: false });
+          if (result) {
+            this.setData({ draft: result });
+          } else if (!this.data.draft) {
+            wx.showToast({ title: '没有识别到内容，请再试一次', icon: 'none' });
+          }
+        };
+        manager.onError = (err) => {
+          console.error('[AI] 语音识别失败', err);
+          this.setData({ voiceRecording: false });
+          wx.showToast({ title: '语音识别失败，请检查网络或权限', icon: 'none' });
+        };
+        this._recordManager = manager;
+        return true;
+      } catch (err) {
+        console.error('[AI] 微信同声传译插件不可用', err);
+        wx.showModal({
+          title: '语音输入暂不可用',
+          content: '请先在小程序后台的“设置 → 第三方服务 → 插件管理”添加“微信同声传译”插件，然后重新编译。',
+          showCancel: false
+        });
+        return false;
+      }
+    },
+
+    startVoiceInput() {
+      if (this.data.typing || this.data.voiceRecording) return;
+      wx.authorize({
+        scope: 'scope.record',
+        success: () => {
+          if (!this.initVoiceRecognition()) return;
+          this.setData({ voiceRecording: true });
+          this._recordManager.start({ lang: 'zh_CN' });
+        },
+        fail: () => {
+          wx.showModal({
+            title: '需要麦克风权限',
+            content: '请允许使用麦克风，才能把语音转换成文字。',
+            confirmText: '去设置',
+            success: (res) => { if (res.confirm) wx.openSetting(); }
+          });
+        }
+      });
+    },
+
+    stopVoiceInput() {
+      if (!this.data.voiceRecording || !this._recordManager) return;
+      this._recordManager.stop();
     },
 
     // 焦点事件用于首帧兜底；实际高度以 keyboardheightchange 为准，避免不同设备键盘高度不一致。
