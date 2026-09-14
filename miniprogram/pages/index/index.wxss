@@ -219,6 +219,14 @@
 .ov-stat-unit { font-size: 24rpx; color: var(--ink-3); font-weight: 600; }
 .ov-stat-label { font-size: 24rpx; color: var(--ink-3); }
 
+/* 经典今日推荐：保证文字区在小屏下有足够空间，不被右侧按钮挤压 */
+.classic-today-card { padding: 28rpx; }
+.classic-today-row { gap: 20rpx; }
+.classic-today-copy { flex: 1; min-width: 0; }
+.classic-today-title { font-size: 32rpx; font-weight: 700; color: var(--ink-1); line-height: 1.35; }
+.classic-today-sub { margin-top: 8rpx; font-size: 26rpx; color: var(--ink-3); line-height: 1.45; }
+.classic-read-btn { flex: none; margin: 0; white-space: nowrap; }
+
 /* 未登录游客态 */
 .guest-hero {
   background: linear-gradient(135deg, #6E6CF0, #5E5CE6);

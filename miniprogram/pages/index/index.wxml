@@ -217,13 +217,13 @@
         <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">经典今日推荐</view></view>
         <view class="ghead-more" bindtap="goClassics">全部经典 <text class="chev">›</text></view>
       </view>
-      <view class="igroup-card tap" bindtap="goClassics">
-        <view class="row between">
-          <view>
-            <view class="tn" style="font-size:28rpx">《{{classicToday.name}}》</view>
-            <view class="muted" style="margin-top:6rpx">已读 {{classicToday.read}} / {{classicToday.total}} 章 · 继续诵读</view>
+      <view class="igroup-card tap classic-today-card" bindtap="goClassics">
+        <view class="row between classic-today-row">
+          <view class="classic-today-copy">
+            <view class="classic-today-title">《{{classicToday.name}}》</view>
+            <view class="classic-today-sub">已读 {{classicToday.read}} / {{classicToday.total}} 章 · 继续诵读</view>
           </view>
-          <text class="btn sm" style="margin:0">诵读</text>
+          <text class="btn sm classic-read-btn">诵读</text>
         </view>
       </view>
     </view>
