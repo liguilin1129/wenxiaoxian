@@ -277,6 +277,11 @@
 .msg-action:active {
   background: #E6F7ED;
 }
+.msg-action.done {
+  color: #5B6B61;
+  background: #E6F7ED;
+  border-color: #B8DCC5;
+}
 
 /* ---- 输入栏（微信风格） ---- */
 .chat-input-bar {

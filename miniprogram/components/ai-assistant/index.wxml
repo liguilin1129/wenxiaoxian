@@ -47,7 +47,7 @@
                 wx:for="{{item.actions}}"
                 wx:for-item="act"
                 wx:key="label"
-                class="msg-action"
+                class="msg-action {{act.done ? 'done' : ''}}"
                 data-action="{{act}}"
                 bindtap="handleAction"
               >{{act.label}}</view>

@@ -166,6 +166,18 @@ Component({
       const messages = this.data.messages.concat([{ id: uid, role: 'user', content: text }]);
       this.setData({ messages, draft: '', typing: true, scrollTarget: 'msg-' + uid });
 
+      // 打卡指令由本地规则直接处理，不依赖模型是否可用。
+      // 例如：我今天完成了扫地任务，帮我打卡扫地任务，积分10分
+      const checkinAction = this.parseCheckinCommand(text);
+      if (checkinAction) {
+        this.appendAiReply(
+          '已识别到「' + checkinAction.name + '」打卡，奖励 ' + checkinAction.points +
+          ' 分。确认后会写入积分流水。',
+          [checkinAction]
+        );
+        return;
+      }
+
       // 根据配置选择真实模型或本地模拟
       if (aiConfig.AI_MODE === 'deepseek') {
         this.callDeepSeek(text);
@@ -227,11 +239,43 @@ Component({
     },
 
     // 把 AI 回复追加到消息列表，并解析可执行动作
-    appendAiReply(reply) {
+    appendAiReply(reply, providedActions) {
       const aid = ++this.data._seq;
-      const actions = this.parseActions(reply);
+      const actions = Array.isArray(providedActions) ? providedActions : this.parseActions(reply);
       const list = this.data.messages.concat([{ id: aid, role: 'ai', content: reply, actions: actions }]);
       this.setData({ messages: list, typing: false, scrollTarget: 'msg-' + aid });
+    },
+
+    // 识别“完成任务 + 打卡 + 积分”的自然语言，返回需要用户确认的打卡动作。
+    parseCheckinCommand(text) {
+      if (!/(?:打卡|完成了?|做完了?|做了|做到)/.test(text) || !/(?:积分|\d+\s*分)/.test(text)) return null;
+
+      const pointMatch = text.match(/(?:积分|奖励|加)\s*([1-9]\d{0,3})\s*(?:个)?(?:积分|分)?|([1-9]\d{0,3})\s*(?:个)?积分|([1-9]\d{0,3})\s*分/);
+      const points = pointMatch && parseInt(pointMatch[1] || pointMatch[2] || pointMatch[3], 10);
+      if (!points || points > 1000) return null;
+
+      const patterns = [
+        /(?:完成了?|做完了?|打卡(?:了|一下)?|帮我打卡)\s*([^，。！!？?\d]{1,18}?)(?:任务)?(?=，|,|。|！|!|？|\?|$)/,
+        /(?:任务[是：:]?|打卡[：:]?)\s*([^，。！!？?\d]{1,18}?)(?:任务)?(?=，|,|。|！|!|？|\?|$)/
+      ];
+      let rawName = '';
+      for (let i = 0; i < patterns.length; i++) {
+        const match = text.match(patterns[i]);
+        if (match) {
+          rawName = match[1];
+          break;
+        }
+      }
+      const name = rawName.replace(/^(?:今天|我今天|一下)/, '').replace(/任务$/, '').trim();
+      if (!name || name.length > 12) return null;
+
+      return {
+        id: 'checkin_' + Date.now(),
+        type: 'checkin',
+        name: name,
+        points: points,
+        label: '确认打卡「' + name + '」+ ' + points + ' 分'
+      };
     },
 
     // 从 AI 文本中提取可执行动作（积分、任务）
@@ -257,14 +301,36 @@ Component({
     // 执行 AI 建议动作
     handleAction(e) {
       const act = e.currentTarget.dataset.action;
-      if (!act) return;
-      if (act.type === 'record') {
+      if (!act || act.done) return;
+      if (act.type === 'checkin') {
+        const res = store.aiRecordBonus(act.name, act.points);
+        if (!res) {
+          wx.showToast({ title: '打卡信息无效，请重新发送', icon: 'none' });
+          return;
+        }
+        this.markActionDone(act.id, '已打卡「' + act.name + '」✓');
+        wx.showToast({ title: '已打卡 +' + act.points + ' 分，当前 ' + res.points + ' 分', icon: 'none' });
+      } else if (act.type === 'record') {
         const res = store.aiRecordBonus('AI记录', act.points);
-        wx.showToast({ title: '已记 ' + act.points + ' 分，当前 ' + res.points + ' 分', icon: 'none' });
+        if (res) wx.showToast({ title: '已记 ' + act.points + ' 分，当前 ' + res.points + ' 分', icon: 'none' });
       } else if (act.type === 'addTask') {
         store.addDailyTask(act.name, act.points || 5);
         wx.showToast({ title: '已添加「' + act.name + '」', icon: 'none' });
       }
+    },
+
+    // 已完成的确认按钮就地变为状态文字，避免用户重复点击记分。
+    markActionDone(actionId, label) {
+      const messages = this.data.messages.map((message) => {
+        if (!message.actions || !message.actions.length) return message;
+        return Object.assign({}, message, {
+          actions: message.actions.map((action) => {
+            if (action.id !== actionId) return action;
+            return Object.assign({}, action, { done: true, label: label });
+          })
+        });
+      });
+      this.setData({ messages: messages });
     },
 
     // 本地模拟回复（兜底/演示）

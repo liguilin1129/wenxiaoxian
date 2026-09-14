@@ -389,8 +389,11 @@ function aiRecordBonus(name, points) {
   ensure();
   const s = state();
   const st = s._ci;
+  const safeName = String(name || '').trim().slice(0, 24);
+  const safePoints = Number(points);
+  if (!safeName || !Number.isInteger(safePoints) || safePoints < 1 || safePoints > 1000) return null;
   if (!st.aiRecords) st.aiRecords = [];
-  st.aiRecords.push({ name: name, points: points, date: formatToday() });
+  st.aiRecords.push({ name: safeName, points: safePoints, date: formatToday() });
   recompute(s, st);
   save(st);
   return { points: s.child.points };
