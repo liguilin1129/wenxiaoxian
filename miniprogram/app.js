@@ -1,6 +1,7 @@
 const mock = require('./utils/mock.js');
 const store = require('./utils/store.js');
 const apiConfig = require('./utils/api-config.js');
+const cloudHosting = require('./utils/cloud-hosting.js');
 
 App({
   globalData: {
@@ -21,6 +22,7 @@ App({
   },
 
   onLaunch() {
+    if (apiConfig.USE_CLOUD_HOSTING) cloudHosting.init();
     const signed = wx.getStorageSync('signed');
     if (signed) {
       this.globalData.signed = true;
@@ -56,8 +58,7 @@ App({
     const token = wx.getStorageSync('authToken');
     const expiresAt = Number(wx.getStorageSync('authExpiresAt'));
     if (!token || !expiresAt || expiresAt <= Math.floor(Date.now() / 1000)) return;
-    wx.request({
-      url: apiConfig.BASE_URL + '/api/auth/me',
+    const requestOptions = {
       method: 'GET',
       header: { Authorization: 'Bearer ' + token },
       success: (response) => {
@@ -72,6 +73,13 @@ App({
         this.globalData.child = Object.assign({}, this.globalData.child, profile);
         wx.setStorageSync('childProfile', profile);
       }
-    });
+    };
+    if (apiConfig.USE_CLOUD_HOSTING) {
+      requestOptions.path = '/api/auth/me';
+      cloudHosting.request(requestOptions);
+    } else {
+      requestOptions.url = apiConfig.BASE_URL + '/api/auth/me';
+      wx.request(requestOptions);
+    }
   }
 });

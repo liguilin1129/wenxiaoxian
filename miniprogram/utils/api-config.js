@@ -6,5 +6,6 @@ try {
 } catch (error) {}
 
 module.exports = {
-  BASE_URL: isDevtools ? 'http://127.0.0.1:3000' : 'https://wenxiaoxian.com'
+  BASE_URL: isDevtools ? 'http://127.0.0.1:3000' : '',
+  USE_CLOUD_HOSTING: !isDevtools
 };
