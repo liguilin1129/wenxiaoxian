@@ -23,7 +23,17 @@ Page({
           header: { 'Content-Type': 'application/json' },
           data: { loginCode: loginResult.code, profile: { nickname: this.data.nickname, avatarUrl: this.data.avatarUrl } },
           success: (response) => this.finishLogin(response.data),
-          fail: () => this.finishLoginError('无法连接登录服务，请稍后重试')
+          fail: (error) => {
+            const detail = (error && error.errMsg) || 'unknown error';
+            // 云托管连接失败时，保留平台返回的诊断信息；不要记录登录码或令牌。
+            console.error('[login] 登录服务请求失败:', detail);
+            this.finishLoginError('无法连接登录服务，请稍后重试');
+            wx.showModal({
+              title: '登录服务连接失败',
+              content: detail.slice(0, 180),
+              showCancel: false
+            });
+          }
         };
         if (apiConfig.USE_CLOUD_HOSTING) {
           requestOptions.path = '/api/auth/wechat/login';
@@ -33,7 +43,10 @@ Page({
           wx.request(requestOptions);
         }
       },
-      fail: () => this.finishLoginError('微信登录失败，请重试')
+      fail: (error) => {
+        console.error('[login] wx.login 失败:', (error && error.errMsg) || 'unknown error');
+        this.finishLoginError('微信登录失败，请重试');
+      }
     });
   },
   finishLogin(result) {
