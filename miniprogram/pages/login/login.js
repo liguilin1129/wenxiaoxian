@@ -15,6 +15,22 @@ Page({
     if (!this.data.nickname) return wx.showToast({ title: '请先填写昵称', icon: 'none' });
     if (!apiConfig.USE_CLOUD_HOSTING && !apiConfig.BASE_URL) return wx.showToast({ title: '登录服务尚未配置', icon: 'none' });
     this.setData({ submitting: true });
+    if (apiConfig.USE_CLOUD_HOSTING) {
+      return cloudHosting.request({
+        path: '/health',
+        method: 'GET',
+        success: (response) => {
+          if (!response.data || !response.data.ok) {
+            return this.handleServiceError({ errMsg: '云托管健康检查返回异常' });
+          }
+          this.requestWechatLogin();
+        },
+        fail: (error) => this.handleServiceError(error, '云托管健康检查失败')
+      });
+    }
+    this.requestWechatLogin();
+  },
+  requestWechatLogin() {
     wx.login({
       success: (loginResult) => {
         if (!loginResult.code) return this.finishLoginError('微信登录失败，请重试');
@@ -23,17 +39,7 @@ Page({
           header: { 'Content-Type': 'application/json' },
           data: { loginCode: loginResult.code, profile: { nickname: this.data.nickname, avatarUrl: this.data.avatarUrl } },
           success: (response) => this.finishLogin(response.data),
-          fail: (error) => {
-            const detail = (error && error.errMsg) || 'unknown error';
-            // 云托管连接失败时，保留平台返回的诊断信息；不要记录登录码或令牌。
-            console.error('[login] 登录服务请求失败:', detail);
-            this.finishLoginError('无法连接登录服务，请稍后重试');
-            wx.showModal({
-              title: '登录服务连接失败',
-              content: detail.slice(0, 180),
-              showCancel: false
-            });
-          }
+          fail: (error) => this.handleServiceError(error)
         };
         if (apiConfig.USE_CLOUD_HOSTING) {
           requestOptions.path = '/api/auth/wechat/login';
@@ -47,6 +53,17 @@ Page({
         console.error('[login] wx.login 失败:', (error && error.errMsg) || 'unknown error');
         this.finishLoginError('微信登录失败，请重试');
       }
+    });
+  },
+  handleServiceError(error, title) {
+    const detail = (error && error.errMsg) || 'unknown error';
+    // 云托管连接失败时，保留平台返回的诊断信息；不要记录登录码或令牌。
+    console.error('[login] 登录服务请求失败:', detail);
+    this.finishLoginError('无法连接登录服务，请稍后重试');
+    wx.showModal({
+      title: title || '登录服务连接失败',
+      content: detail.slice(0, 180),
+      showCancel: false
     });
   },
   finishLogin(result) {

@@ -103,14 +103,20 @@ function saveAppStates(states) {
 }
 
 async function wechatJson(url, options) {
-  const response = await fetch(url, options);
-  const body = await response.json();
-  if (!response.ok || body.errcode) {
-    const error = new Error('WECHAT_API_ERROR');
-    error.detail = body;
-    throw error;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
+  try {
+    const response = await fetch(url, { ...(options || {}), signal: controller.signal });
+    const body = await response.json();
+    if (!response.ok || body.errcode) {
+      const error = new Error('WECHAT_API_ERROR');
+      error.detail = body;
+      throw error;
+    }
+    return body;
+  } finally {
+    clearTimeout(timeout);
   }
-  return body;
 }
 
 async function exchangeLoginCode(code) {
@@ -287,6 +293,10 @@ async function saveAppState(req, res) {
 }
 
 const server = http.createServer(async (req, res) => {
+  if (req.url === '/health' || req.url === '/api/auth/wechat/login') {
+    // 只记录方法与路径，避免把登录码、令牌或用户资料写入云托管日志。
+    console.log('[request]', req.method, req.url);
+  }
   if (req.method === 'OPTIONS') return json(res, 204, {});
   if (req.method === 'POST' && req.url === '/api/auth/wechat/login') return login(req, res);
   if (req.method === 'GET' && req.url === '/api/auth/me') return getCurrentUser(req, res);
