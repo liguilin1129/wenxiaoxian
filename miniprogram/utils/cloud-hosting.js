@@ -28,7 +28,11 @@ function request(options) {
     path: options.path,
     method: options.method || 'GET',
     data: options.data || {},
-    header: Object.assign({ 'X-WX-SERVICE': CLOUD_SERVICE }, options.header || {}),
+    header: Object.assign({
+      'X-WX-SERVICE': CLOUD_SERVICE,
+      // 请求云托管网关注入可信的微信用户身份，服务端从 x-wx-openid 读取。
+      'X-WX-INCLUDE-CREDENTIALS': 'openid,unionid'
+    }, options.header || {}),
     success: options.success,
     fail: options.fail
   });
