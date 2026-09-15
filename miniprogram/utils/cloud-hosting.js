@@ -1,5 +1,6 @@
-// 微信云托管内部调用配置。服务与小程序绑定后，真机无需公网域名和 HTTPS 白名单。
-const CLOUD_ENV_ID = 'prod-d1goyv6t9dd0a4923';
+// 云函数属于小程序已关联的云开发环境；云托管服务则位于独立的托管环境。
+const CLOUD_FUNCTION_ENV_ID = 'cloud1-d6gz2xo6tac43e3eb';
+const CLOUD_HOSTING_ENV_ID = 'prod-d1goyv6t9dd0a4923';
 const CLOUD_SERVICE = 'express-3rxq';
 
 function isAvailable() {
@@ -9,7 +10,7 @@ function isAvailable() {
 function init() {
   if (!isAvailable()) return false;
   try {
-    wx.cloud.init({ env: CLOUD_ENV_ID, traceUser: true });
+    wx.cloud.init({ env: CLOUD_FUNCTION_ENV_ID, traceUser: true });
     return true;
   } catch (error) {
     console.error('[cloud-hosting] 初始化失败', error);
@@ -24,7 +25,7 @@ function request(options) {
     return;
   }
   wx.cloud.callContainer({
-    config: { env: CLOUD_ENV_ID },
+    config: { env: CLOUD_HOSTING_ENV_ID },
     path: options.path,
     method: options.method || 'GET',
     data: options.data || {},
@@ -38,4 +39,4 @@ function request(options) {
   });
 }
 
-module.exports = { CLOUD_ENV_ID, CLOUD_SERVICE, init, request };
+module.exports = { CLOUD_FUNCTION_ENV_ID, CLOUD_HOSTING_ENV_ID, CLOUD_SERVICE, init, request };
