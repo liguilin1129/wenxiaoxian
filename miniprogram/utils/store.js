@@ -73,6 +73,7 @@ function load() {
   if (!st.redeemed) st.redeemed = [];
   if (!st.aiRecords) st.aiRecords = [];
   if (!st.aiCheckins) st.aiCheckins = [];
+  if (!st.customTasks) st.customTasks = [];
   // 跨天：清空「今日习惯」打卡（任务中心为累积行为，保留）
   if (st.date !== today) {
     st.date = today;
@@ -242,6 +243,9 @@ function initCheckIns(appInstance) {
       done: true,
       fromAiCheckin: true
     });
+  });
+  (st.customTasks || []).filter(item => item.active && item.date === formatToday()).forEach(item => {
+    if (!s.todayTasks.some(task => task.id === item.id)) s.todayTasks.push(Object.assign({}, item, { done: !!st.daily[item.id], fromCustomTask: true }));
   });
   recompute(s, st);
 }
@@ -498,6 +502,20 @@ function addDailyTask(name, points, dim) {
   return task;
 }
 
+function getCustomTasks() { ensure(); return (state()._ci.customTasks || []).slice(); }
+function addCustomTask(input) {
+  ensure();
+  const name = cleanText(input && input.name, 24);
+  const points = Number(input && input.points);
+  const dim = ['heart', 'body', 'habit', 'taste'].indexOf(input && input.dim) >= 0 ? input.dim : 'habit';
+  if (!name || !Number.isInteger(points) || points < 1 || points > 100) return null;
+  const task = { id: 'custom_' + Date.now(), name, points, dim, date: formatToday(), active: true };
+  state()._ci.customTasks.unshift(task); save(state()._ci);
+  state().todayTasks.push(Object.assign({}, task, { done: false, fromCustomTask: true }));
+  return task;
+}
+function removeCustomTask(id) { ensure(); const st = state()._ci; const item = (st.customTasks || []).find(task => task.id === id); if (!item) return false; item.active = false; state().todayTasks = state().todayTasks.filter(task => task.id !== id); delete st.daily[id]; save(st); recompute(state(), st); return true; }
+
 // 保留旧接口（仅累加，不持久化），避免其它页面报错
 function recordBonus(name, points) {
   const s = state();
@@ -636,6 +654,7 @@ module.exports = {
   getScoreRules,
   redeem, login, isSigned, recordBonus,
   aiRecordBonus, getAiCheckinRecords, addDailyTask,
+  getCustomTasks, addCustomTask, removeCustomTask,
   getRewards, saveRewards,
   getMeetings, createMeeting, updateMeeting, closeMeeting,
   getFamilyMembers, updateFamilyMember, addFamilyMember, removeFamilyMember, getFamilyConvention, saveFamilyConvention,

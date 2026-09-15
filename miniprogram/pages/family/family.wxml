@@ -25,6 +25,8 @@
     </view>
   </view>
 
+  <view class="menu" bindtap="goTaskManage"><view class="mt"><text class="mi" style="background:var(--c-heart-bg);color:var(--c-heart-d)">📝</text>家长任务管理</view><view class="mv">创建与分配 ›</view></view>
+
   <!-- 家庭会议入口 -->
   <view class="menu" bindtap="goMeeting">
     <view class="mt">

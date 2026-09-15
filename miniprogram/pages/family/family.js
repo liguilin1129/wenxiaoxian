@@ -29,6 +29,7 @@ Page({
   goConvention() {
     wx.navigateTo({ url: '/pages/family/convention' });
   },
+  goTaskManage() { wx.navigateTo({ url: '/pages/task-manage/task-manage' }); },
   editMember(e) {
     wx.navigateTo({ url: '/pages/family/member-edit?id=' + e.currentTarget.dataset.id });
   },
