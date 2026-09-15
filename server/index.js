@@ -254,7 +254,9 @@ async function login(req, res) {
     return json(res, 200, { ok: true, token, expiresAt, user: publicUser(user) });
   } catch (error) {
     // 不返回微信原始报错，以免泄露 AppID、请求参数或会话信息。
-    console.error('[auth] 微信授权交换失败:', error.message);
+    // 仅记录网络错误码，用于区分 DNS、TLS 与出口连接问题。
+    const networkCode = error && error.cause && error.cause.code;
+    console.error('[auth] 微信授权交换失败:', error.message, networkCode ? '(' + networkCode + ')' : '');
     return fail(res, 502, 'WECHAT_AUTH_FAILED', '微信授权失败，请重新授权后再试');
   }
 }
