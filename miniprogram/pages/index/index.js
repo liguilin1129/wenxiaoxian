@@ -112,9 +112,9 @@ Page({
       classicToday: mock.classicToday,
       reminders: reminders,
       // 荣誉墙：加载成就勋章 + 已点亮数量
-      badges: mock.badges,
-      badgeGot: mock.badges.filter(b => b.got).length,
-      badgeTotal: mock.badges.length
+      badges: store.getBadges().slice(0, 4),
+      badgeGot: store.getBadges().filter(b => b.got).length,
+      badgeTotal: store.getBadges().length
     });
   },
   goLogin() {
@@ -127,8 +127,7 @@ Page({
   goClassics() { wx.navigateTo({ url: '/pages/classics/classics' }); },
   goTasks() { wx.switchTab({ url: '/pages/tasks/tasks' }); },
   goBadges() {
-    // 勋章墙详情页暂未独立，先用 toast 提示；后续可新建 pages/badges/badges
-    wx.showToast({ title: '勋章墙详情即将上线', icon: 'none' });
+    wx.navigateTo({ url: '/pages/badges/badges' });
   },
   goReminders() {
     wx.showToast({ title: '全部提醒即将上线', icon: 'none' });

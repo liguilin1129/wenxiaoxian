@@ -359,6 +359,32 @@ function todayGain() {
   return state().todayTasks.filter(t => t.done).reduce((s, t) => s + t.points, 0);
 }
 
+// ---------- 荣誉墙 / 勋章 ----------
+function getBadges() {
+  ensure();
+  const s = state();
+  const completed = (s.pointsHistory || []).filter(item => item.delta > 0);
+  const taskCount = completed.length;
+  const readCount = (s.classics || []).reduce((sum, item) => sum + (Number(item.read) || 0), 0);
+  const points = Number((s.child || {}).points) || 0;
+  const streak = Number((s.child || {}).streak) || 0;
+  const dims = s.dimensions || [];
+  const allRound = dims.length > 0 && dims.every(item => Number(item.pct) >= 80);
+  const defs = [
+    { id: 'first-checkin', name: '打卡新星', icon: '🌟', desc: '完成第 1 次任务打卡', value: taskCount, target: 1, unit: '次打卡' },
+    { id: 'habit-master', name: '好习惯王', icon: '🌱', desc: '累计完成 7 次任务打卡', value: taskCount, target: 7, unit: '次打卡' },
+    { id: 'reading-star', name: '诵读小达人', icon: '📖', desc: '累计诵读经典 10 章', value: readCount, target: 10, unit: '章' },
+    { id: 'points-rookie', name: '积分达人', icon: '⭐', desc: '成长积分达到 500 分', value: points, target: 500, unit: '分' },
+    { id: 'persistence', name: '坚持不懈', icon: '🔥', desc: '连续打卡 7 天', value: streak, target: 7, unit: '天' },
+    { id: 'task-champion', name: '任务冠军', icon: '🏅', desc: '累计完成 50 次任务打卡', value: taskCount, target: 50, unit: '次打卡' },
+    { id: 'all-round', name: '全能少年', icon: '👑', desc: '四维成长均达到 80%', value: allRound ? 80 : Math.min.apply(null, dims.map(item => Number(item.pct) || 0)), target: 80, unit: '%' }
+  ];
+  return defs.map(item => {
+    const value = Math.max(0, Number(item.value) || 0);
+    return Object.assign({}, item, { got: value >= item.target, progress: Math.min(100, Math.round(value / item.target * 100)), displayValue: Math.min(value, item.target) });
+  });
+}
+
 // ---------- 兑换 / 签约 / 奖励 ----------
 
 function redeem(reward) {
@@ -580,6 +606,7 @@ module.exports = {
   state, dimMeta, initCheckIns,
   toggleDaily, toggleCenter, toggleTodayTask: toggleDaily,
   isCenterDone, getCenterStatus, submitCenter, approveCenter, rejectCenter, getPendingApprovals, todayDoneCount, todayGain,
+  getBadges,
   redeem, login, isSigned, recordBonus,
   aiRecordBonus, getAiCheckinRecords, addDailyTask,
   getRewards, saveRewards,

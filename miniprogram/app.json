@@ -2,6 +2,7 @@
   "pages": [
     "pages/index/index",
     "pages/login/login",
+    "pages/badges/badges",
     "pages/tasks/tasks",
     "pages/task-detail/task-detail",
     "pages/approvals/approvals",
