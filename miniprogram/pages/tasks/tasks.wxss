@@ -10,6 +10,8 @@
   font-size: 34rpx;
   margin: 0 4rpx;
 }
+.task-section-title { display:flex; align-items:center; gap:12rpx; margin:34rpx 2rpx 16rpx; color:var(--ink-1); font-size:30rpx; font-weight:700; }
+.task-section-bar { width:6rpx; height:28rpx; border-radius:4rpx; background:var(--brand); }
 
 .task {
   display: flex;

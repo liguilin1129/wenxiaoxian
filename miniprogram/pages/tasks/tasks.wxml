@@ -17,7 +17,7 @@
   </view>
 
   <block wx:for="{{groups}}" wx:key="dim">
-    <view class="h3" style="color:{{dimColor[item.dim]}}">{{item.dimName}}</view>
+    <view class="task-section-title"><view class="task-section-bar"></view><text>{{item.dimName}}</text></view>
     <view wx:for="{{item.list}}" wx:for-item="t" wx:key="id" class="task {{t.done ? 'task-done' : ''}}" data-id="{{t.id}}" bindtap="goDetail">
       <view class="task-main">
         <view class="tn">{{t.name}}</view>
