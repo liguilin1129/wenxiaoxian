@@ -123,8 +123,8 @@
 .badge-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 22rpx 12rpx;
-  padding: 0 28rpx 26rpx;
+  gap: 26rpx 12rpx;
+  padding: 0 28rpx 30rpx;
 }
 .badge { display: flex; flex-direction: column; align-items: center; }
 .badge-ic {
@@ -141,7 +141,7 @@
   opacity: .55;
 }
 .badge-name {
-  margin-top: 12rpx; font-size: 22rpx; color: var(--ink-2);
+  margin-top: 13rpx; font-size: 23rpx; color: var(--ink-2);
   text-align: center;
 }
 .badge.off .badge-name { color: var(--ink-3); }

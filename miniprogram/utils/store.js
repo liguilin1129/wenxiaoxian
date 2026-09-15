@@ -369,15 +369,26 @@ function getBadges() {
   const points = Number((s.child || {}).points) || 0;
   const streak = Number((s.child || {}).streak) || 0;
   const dims = s.dimensions || [];
+  const meetingsDone = (s.meetings || []).filter(item => item.status === 'done').length;
+  const redeemedCount = (s._ci.redeemed || []).length;
+  const aiCount = (s._ci.aiCheckins || []).length;
+  const lowestDim = dims.length ? Math.min.apply(null, dims.map(item => Number(item.pct) || 0)) : 0;
   const allRound = dims.length > 0 && dims.every(item => Number(item.pct) >= 80);
   const defs = [
     { id: 'first-checkin', name: '打卡新星', icon: '🌟', desc: '完成第 1 次任务打卡', value: taskCount, target: 1, unit: '次打卡' },
     { id: 'habit-master', name: '好习惯王', icon: '🌱', desc: '累计完成 7 次任务打卡', value: taskCount, target: 7, unit: '次打卡' },
+    { id: 'morning-power', name: '晨光行动派', icon: '🌤️', desc: '累计完成 15 次任务打卡', value: taskCount, target: 15, unit: '次打卡' },
     { id: 'reading-star', name: '诵读小达人', icon: '📖', desc: '累计诵读经典 10 章', value: readCount, target: 10, unit: '章' },
+    { id: 'bookworm', name: '书香少年', icon: '📚', desc: '累计诵读经典 30 章', value: readCount, target: 30, unit: '章' },
     { id: 'points-rookie', name: '积分达人', icon: '⭐', desc: '成长积分达到 500 分', value: points, target: 500, unit: '分' },
+    { id: 'points-master', name: '积分大师', icon: '💎', desc: '成长积分达到 1500 分', value: points, target: 1500, unit: '分' },
     { id: 'persistence', name: '坚持不懈', icon: '🔥', desc: '连续打卡 7 天', value: streak, target: 7, unit: '天' },
+    { id: 'self-discipline', name: '自律标兵', icon: '⏱️', desc: '连续打卡 21 天', value: streak, target: 21, unit: '天' },
     { id: 'task-champion', name: '任务冠军', icon: '🏅', desc: '累计完成 50 次任务打卡', value: taskCount, target: 50, unit: '次打卡' },
-    { id: 'all-round', name: '全能少年', icon: '👑', desc: '四维成长均达到 80%', value: allRound ? 80 : Math.min.apply(null, dims.map(item => Number(item.pct) || 0)), target: 80, unit: '%' }
+    { id: 'family-partner', name: '家庭小主人', icon: '🏠', desc: '完成 3 次家庭会议', value: meetingsDone, target: 3, unit: '次会议' },
+    { id: 'wish-achiever', name: '心愿实现家', icon: '🎁', desc: '完成 3 次心愿兑换', value: redeemedCount, target: 3, unit: '次兑换' },
+    { id: 'ai-companion', name: 'AI 好伙伴', icon: '🤖', desc: '通过 AI 完成 5 次打卡', value: aiCount, target: 5, unit: '次 AI 打卡' },
+    { id: 'all-round', name: '全能少年', icon: '👑', desc: '四维成长均达到 80%', value: allRound ? 80 : lowestDim, target: 80, unit: '%' }
   ];
   return defs.map(item => {
     const value = Math.max(0, Number(item.value) || 0);
