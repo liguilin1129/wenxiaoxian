@@ -511,7 +511,8 @@ function addCustomTask(input) {
   if (!name || !Number.isInteger(points) || points < 1 || points > 100) return null;
   const frequency = input && input.frequency === 'daily' ? 'daily' : 'once';
   const deadline = typeof (input && input.deadline) === 'string' ? input.deadline : '';
-  const task = { id: 'custom_' + Date.now(), name, points, dim, date: formatToday(), frequency, deadline, active: true };
+  const assignee = cleanText(input && input.assignee, 32) || (state().child && state().child.name) || '孩子';
+  const task = { id: 'custom_' + Date.now(), name, points, dim, date: formatToday(), frequency, deadline, assignee, active: true };
   state()._ci.customTasks.unshift(task); save(state()._ci);
   state().todayTasks.push(Object.assign({}, task, { done: false, fromCustomTask: true }));
   return task;
