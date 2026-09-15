@@ -215,20 +215,26 @@ function publicUser(user) {
 }
 
 async function login(req, res) {
-  if (!APP_ID || !APP_SECRET || !TOKEN_SECRET) {
-    return fail(res, 503, 'AUTH_NOT_CONFIGURED', '服务端尚未配置微信登录凭证');
-  }
   let input;
   try { input = await readJson(req); } catch (error) {
     return fail(res, 400, error.message, '请求内容无效');
   }
   const loginCode = cleanText(input.loginCode, 256);
   const phoneCode = cleanText(input.phoneCode, 256);
-  if (!loginCode) {
+  // wx.cloud.callContainer 会由平台注入 x-wx-openid，可避免云托管再次访问微信公网接口。
+  const cloudOpenId = cleanText(req.headers['x-wx-openid'], 128);
+  const cloudUnionId = cleanText(req.headers['x-wx-unionid'], 128);
+  if (!TOKEN_SECRET || (!cloudOpenId && (!APP_ID || !APP_SECRET))) {
+    return fail(res, 503, 'AUTH_NOT_CONFIGURED', '服务端尚未配置微信登录凭证');
+  }
+  if (!cloudOpenId && !loginCode) {
     return fail(res, 400, 'AUTHORIZATION_REQUIRED', '请先完成微信登录授权');
   }
   try {
-    const session = await exchangeLoginCode(loginCode);
+    if (cloudOpenId) console.log('[auth] 使用云托管微信身份完成登录');
+    const session = cloudOpenId
+      ? { openid: cloudOpenId, unionid: cloudUnionId }
+      : await exchangeLoginCode(loginCode);
     const phoneInfo = phoneCode ? await exchangePhoneCode(phoneCode) : null;
     if (!session.openid) {
       return fail(res, 401, 'WECHAT_AUTH_FAILED', '微信授权信息无效或已过期');
