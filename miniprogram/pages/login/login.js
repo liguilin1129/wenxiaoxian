@@ -15,20 +15,32 @@ Page({
     if (!this.data.nickname) return wx.showToast({ title: '请先填写昵称', icon: 'none' });
     if (!apiConfig.USE_CLOUD_HOSTING && !apiConfig.BASE_URL) return wx.showToast({ title: '登录服务尚未配置', icon: 'none' });
     this.setData({ submitting: true });
-    if (apiConfig.USE_CLOUD_HOSTING) {
-      return cloudHosting.request({
-        path: '/health',
-        method: 'GET',
-        success: (response) => {
-          if (!response.data || !response.data.ok) {
-            return this.handleServiceError({ errMsg: '云托管健康检查返回异常' });
-          }
-          this.requestWechatLogin();
-        },
-        fail: (error) => this.handleServiceError(error, '云托管健康检查失败')
-      });
-    }
+    if (apiConfig.USE_CLOUD_HOSTING) return this.loginWithCloudFunction();
     this.requestWechatLogin();
+  },
+  loginWithCloudFunction() {
+    wx.cloud.callFunction({
+      name: 'wechatLogin',
+      success: (response) => {
+        const result = response && response.result;
+        if (!result || !result.ok || !result.user || !result.user.id) {
+          return this.finishLoginError((result && result.error && result.error.message) || '微信授权失败，请重试');
+        }
+        const profile = {
+          avatar: this.data.nickname.slice(0, 1) || '贤',
+          avatarUrl: this.data.avatarUrl || '',
+          name: this.data.nickname,
+          phoneNumber: ''
+        };
+        // 业务数据目前保存在小程序本地；后续接入云数据库时以 user.id 作为用户唯一标识。
+        wx.setStorageSync('wechatOpenId', result.user.id);
+        wx.setStorageSync('childProfile', profile);
+        app.globalData.child = Object.assign({}, app.globalData.child, profile);
+        store.login();
+        wx.reLaunch({ url: '/pages/index/index' });
+      },
+      fail: (error) => this.handleServiceError(error, '微信云函数登录失败')
+    });
   },
   requestWechatLogin() {
     wx.login({
