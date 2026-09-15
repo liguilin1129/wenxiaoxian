@@ -39,7 +39,9 @@ Page({
     const tools = this.data.tools.map(item => Object.assign({}, item, {
       badge: item.action === 'goApprovals' && pendingApprovals ? pendingApprovals : 0
     }));
-    this.setData({ signed: true, child: child, stats: stats, tools: tools, pendingApprovals: pendingApprovals });
+    const age = child.birthday ? Math.max(0, new Date().getFullYear() - Number(String(child.birthday).slice(0, 4))) : '';
+    const bmi = child.height && child.weight ? (Number(child.weight) / Math.pow(Number(child.height) / 100, 2)).toFixed(1) : '';
+    this.setData({ signed: true, child: Object.assign({}, child, { age: age, bmi: bmi }), stats: stats, tools: tools, pendingApprovals: pendingApprovals });
   },
   goLogin() { wx.navigateTo({ url: '/pages/login/login' }); },
   editProfile() { wx.navigateTo({ url: '/pages/profile-edit/profile-edit' }); },

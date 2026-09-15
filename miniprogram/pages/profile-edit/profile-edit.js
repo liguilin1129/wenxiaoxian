@@ -12,6 +12,8 @@ Page({
     name: '',
     genderIndex: 0,
     birthday: '',
+    height: '',
+    weight: '',
     motto: ''
   },
 
@@ -24,6 +26,8 @@ Page({
       name: c.name || '',
       genderIndex: gi,
       birthday: c.birthday || '',
+      height: c.height || '',
+      weight: c.weight || '',
       motto: c.motto || ''
     });
   },
@@ -35,6 +39,8 @@ Page({
   onName(e) { this.setData({ name: e.detail.value }); },
   onGender(e) { this.setData({ genderIndex: Number(e.detail.value) }); },
   onBirthday(e) { this.setData({ birthday: e.detail.value }); },
+  onHeight(e) { this.setData({ height: e.detail.value }); },
+  onWeight(e) { this.setData({ weight: e.detail.value }); },
   onMotto(e) { this.setData({ motto: e.detail.value }); },
 
   save() {
@@ -48,6 +54,8 @@ Page({
       name: d.name.trim(),
       gender: d.genders[d.genderIndex],
       birthday: d.birthday,
+      height: Number(d.height) || '',
+      weight: Number(d.weight) || '',
       motto: d.motto.trim()
     };
     // 同步到全局 + 本地持久化（刷新不丢）

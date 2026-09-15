@@ -40,6 +40,9 @@
     </picker>
   </view>
 
+  <view class="pe-field"><text class="pe-label">身高</text><view class="row"><input class="pe-input" type="digit" value="{{height}}" placeholder="未设置" bindinput="onHeight"/><text class="muted">cm</text></view></view>
+  <view class="pe-field"><text class="pe-label">体重</text><view class="row"><input class="pe-input" type="digit" value="{{weight}}" placeholder="未设置" bindinput="onWeight"/><text class="muted">kg</text></view></view>
+
   <!-- 个性签名 -->
   <view class="pe-sec">
     <view class="pe-sec-t">个性签名</view>
@@ -48,5 +51,5 @@
     <view class="pe-count">{{motto.length}}/30</view>
   </view>
 
-  <view class="pe-tip">资料仅保存在本机，用于个性化展示。</view>
+  <view class="pe-tip">身体数据仅用于成长记录与展示，不作医疗判断。</view>
 </scroll-view>
