@@ -244,7 +244,7 @@ function initCheckIns(appInstance) {
       fromAiCheckin: true
     });
   });
-  (st.customTasks || []).filter(item => item.active && item.date === formatToday()).forEach(item => {
+  (st.customTasks || []).filter(item => item.active && (item.frequency === 'daily' ? (!item.deadline || todayStr() <= item.deadline) : item.date === formatToday())).forEach(item => {
     if (!s.todayTasks.some(task => task.id === item.id)) s.todayTasks.push(Object.assign({}, item, { done: !!st.daily[item.id], fromCustomTask: true }));
   });
   recompute(s, st);
@@ -509,7 +509,9 @@ function addCustomTask(input) {
   const points = Number(input && input.points);
   const dim = ['heart', 'body', 'habit', 'taste'].indexOf(input && input.dim) >= 0 ? input.dim : 'habit';
   if (!name || !Number.isInteger(points) || points < 1 || points > 100) return null;
-  const task = { id: 'custom_' + Date.now(), name, points, dim, date: formatToday(), active: true };
+  const frequency = input && input.frequency === 'daily' ? 'daily' : 'once';
+  const deadline = typeof (input && input.deadline) === 'string' ? input.deadline : '';
+  const task = { id: 'custom_' + Date.now(), name, points, dim, date: formatToday(), frequency, deadline, active: true };
   state()._ci.customTasks.unshift(task); save(state()._ci);
   state().todayTasks.push(Object.assign({}, task, { done: false, fromCustomTask: true }));
   return task;
