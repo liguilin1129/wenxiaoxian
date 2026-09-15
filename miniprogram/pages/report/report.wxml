@@ -14,10 +14,12 @@
   <view class="card">
     <view class="h3">四维表现</view>
     <view wx:for="{{dims}}" wx:key="key" class="rep-bar">
-      <view class="rl"><text>{{item.name}}</text><text style="color:{{item.dark}};font-weight:700">{{item.pct}}</text></view>
+      <view class="rl"><text>{{item.name}}</text><text style="color:{{item.dark}};font-weight:700">{{item.pct}}% · {{item.score || 0}} 成长值</text></view>
       <view class="bar"><view class="fill" style="width:{{item.pct}}%;background:{{item.color}}"></view></view>
     </view>
   </view>
+
+  <view class="card"><view class="h3">积分规则</view><view wx:for="{{rules}}" wx:key="key" class="rule-row"><view><view class="rule-name">{{item.name}} <text>{{item.weight}}</text></view><view class="small">{{item.tip}}</view></view><text class="rule-arrow">›</text></view></view>
 
   <view class="card report-observation">
     <view class="h3">本周观察</view>

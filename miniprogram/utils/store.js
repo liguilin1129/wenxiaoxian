@@ -9,6 +9,8 @@ const KEY = 'checkInState';
 // 这样首次启动播种默认打卡后重建出来的总分仍等于原 mock 值（1280），避免重复累加。
 const DEFAULT_DONE_POINTS = mock.todayTasks.filter(t => t.done).reduce((s, t) => s + t.points, 0);
 const BASE_POINTS = mock.child.points - DEFAULT_DONE_POINTS;
+const DIMENSION_BASELINES = mock.dimensions.reduce((result, item) => { result[item.key] = Number(item.pct) || 0; return result; }, {});
+const DIMENSION_MULTIPLIERS = { heart: 2, body: 1.5, habit: 1.3, taste: 1 };
 
 const MEETINGS_KEY = 'familyMeetings';
 const MEETING_TASKS_KEY = 'meetingTasks'; // 今日任务中来自会议的新增项
@@ -196,6 +198,9 @@ function recompute(s, st) {
   hist.sort((a, b) => b.date.localeCompare(a.date));
   s.child.points = pts;
   s.pointsHistory = hist;
+  const contribution = { heart: 0, body: 0, habit: 0, taste: 0 };
+  hist.filter(item => item.delta > 0 && Object.prototype.hasOwnProperty.call(contribution, item.dim)).forEach(item => { contribution[item.dim] += item.delta * DIMENSION_MULTIPLIERS[item.dim]; });
+  s.dimensions.forEach(item => { const value = contribution[item.key] || 0; item.score = Math.round(value * 10) / 10; item.pct = Math.min(100, DIMENSION_BASELINES[item.key] + Math.floor(value / 20)); });
 }
 
 // 在 app.js onLaunch 中调用：恢复打卡状态 + 重建积分/历史。
@@ -394,6 +399,15 @@ function getBadges() {
     const value = Math.max(0, Number(item.value) || 0);
     return Object.assign({}, item, { got: value >= item.target, progress: Math.min(100, Math.round(value / item.target * 100)), displayValue: Math.min(value, item.target) });
   });
+}
+
+function getScoreRules() {
+  return [
+    { key: 'heart', name: '好身心', weight: '×2', tip: '德育与经典学习，成长贡献加倍' },
+    { key: 'body', name: '好身体', weight: '×1.5', tip: '饮食、睡眠与运动，成长贡献加权' },
+    { key: 'habit', name: '好习惯', weight: '×1.3', tip: '整理、规划与自律，成长贡献加权' },
+    { key: 'taste', name: '好品味', weight: '×1', tip: '阅读、审美与创造，按原始积分计入' }
+  ];
 }
 
 // ---------- 兑换 / 签约 / 奖励 ----------
@@ -618,6 +632,7 @@ module.exports = {
   toggleDaily, toggleCenter, toggleTodayTask: toggleDaily,
   isCenterDone, getCenterStatus, submitCenter, approveCenter, rejectCenter, getPendingApprovals, todayDoneCount, todayGain,
   getBadges,
+  getScoreRules,
   redeem, login, isSigned, recordBonus,
   aiRecordBonus, getAiCheckinRecords, addDailyTask,
   getRewards, saveRewards,
