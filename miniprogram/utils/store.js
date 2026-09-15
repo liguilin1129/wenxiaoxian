@@ -304,13 +304,13 @@ function getCenterStatus(id) {
   return state().centerTaskStatus[id] || 'todo';
 }
 
-function submitCenter(id) {
+function submitCenter(id, note) {
   ensure();
   const s = state();
   if (!centerMap[id]) return null;
   const status = getCenterStatus(id);
   if (status !== 'todo') return { status: status, changed: false };
-  const record = { status: 'pending', date: formatToday() };
+  const record = { status: 'pending', date: formatToday(), note: cleanText(note, 80) };
   s._ci.center[id] = record;
   s.centerTaskStatus[id] = record.status;
   save(s._ci);
@@ -352,7 +352,8 @@ function getPendingApprovals() {
       dim: centerMap[id].dim,
       points: centerMap[id].points,
       rewards: centerMap[id].rewards,
-      date: s._ci.center[id].date
+      date: s._ci.center[id].date,
+      note: s._ci.center[id].note || ''
     }));
 }
 

@@ -32,6 +32,11 @@
     <view class="small">{{detail.methods}}</view>
   </view>
 
+  <view class="card" wx:if="{{status === 'todo'}}">
+    <view class="h3">完成小记 <text class="muted">可选</text></view>
+    <textarea class="checkin-note" placeholder="例如：我完成了 20 分钟运动，今天感觉很有精神。" maxlength="80" value="{{note}}" bindinput="onNoteInput" />
+  </view>
+
   <button class="btn {{status === 'approved' ? 'btn-done' : ''}} {{status === 'pending' ? 'btn-pending' : ''}}" style="margin-top:8rpx" bindtap="checkin">
     <block wx:if="{{status === 'approved'}}">家长已确认 · +{{points}} 分</block>
     <block wx:elif="{{status === 'pending'}}">已提交，等待家长确认</block>

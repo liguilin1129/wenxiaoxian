@@ -2,7 +2,7 @@ const app = getApp();
 const store = require('../../utils/store');
 
 Page({
-  data: { task: {}, detail: {}, meta: {}, points: 0, status: 'todo' },
+  data: { task: {}, detail: {}, meta: {}, points: 0, status: 'todo', note: '' },
   onLoad(query) {
     const id = query.id;
     const g = app.globalData;
@@ -45,12 +45,15 @@ Page({
       wx.showToast({ title: '已提交，等待家长确认', icon: 'none' });
       return;
     }
-    const res = store.submitCenter(this.data.task.id);
+    const res = store.submitCenter(this.data.task.id, this.data.note);
     if (!res) {
       wx.showToast({ title: '任务不存在', icon: 'none' });
       return;
     }
     this.setData({ status: res.status });
     wx.showToast({ title: '已提交，等待家长确认', icon: 'none' });
+  },
+  onNoteInput(e) {
+    this.setData({ note: (e.detail.value || '').slice(0, 80) });
   }
 });
