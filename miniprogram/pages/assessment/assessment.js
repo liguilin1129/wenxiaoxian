@@ -20,9 +20,49 @@ const OPTIONS = [
   { value: '0', label: '从不' }, { value: '1', label: '偶尔' }, { value: '2', label: '经常' }, { value: '3', label: '基本做到' }
 ];
 
+const TASK_TEMPLATES = {
+  heart: [
+    { name: '今天主动说一句谢谢', points: 5, frequency: 'daily', deadlineDays: 7 },
+    { name: '睡前分享一件开心或烦恼的事', points: 5, frequency: 'daily', deadlineDays: 7 }
+  ],
+  body: [
+    { name: '完成 20 分钟户外运动', points: 10, frequency: 'daily', deadlineDays: 7 },
+    { name: '今晚按约定时间准备睡觉', points: 5, frequency: 'daily', deadlineDays: 7 }
+  ],
+  habit: [
+    { name: '完成后整理自己的物品', points: 5, frequency: 'daily', deadlineDays: 7 },
+    { name: '按约定时长使用电子产品', points: 10, frequency: 'daily', deadlineDays: 7 }
+  ],
+  taste: [
+    { name: '阅读或听故事 15 分钟', points: 10, frequency: 'daily', deadlineDays: 7 },
+    { name: '完成一次小创作或手工', points: 10, frequency: 'once', deadlineDays: 1 }
+  ]
+};
+
+function deadlineAfter(days) {
+  const date = new Date();
+  date.setDate(date.getDate() + days);
+  return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
+}
+
+function buildRecommendations(result) {
+  if (!result || !Array.isArray(result.dimensions)) return [];
+  return result.dimensions.slice().sort((a, b) => a.score - b.score).slice(0, 2).reduce((list, dim) => {
+    return list.concat((TASK_TEMPLATES[dim.key] || []).map((task, index) => Object.assign({}, task, {
+      id: dim.key + '_' + index,
+      dim: dim.key,
+      dimName: dim.name,
+      deadline: deadlineAfter(task.deadlineDays)
+    })));
+  }, []);
+}
+
 Page({
-  data: { questions: QUESTIONS, options: OPTIONS, answers: {}, result: null },
-  onLoad() { this.setData({ result: store.getAssessment() }); },
+  data: { questions: QUESTIONS, options: OPTIONS, answers: {}, result: null, recommendations: [], addedNames: {} },
+  onLoad() {
+    const result = store.getAssessment();
+    this.setData({ result: result, recommendations: buildRecommendations(result) });
+  },
   choose(e) {
     const index = e.currentTarget.dataset.index;
     const answers = Object.assign({}, this.data.answers, { [index]: e.detail.value });
@@ -45,9 +85,25 @@ Page({
     });
     const result = store.saveAssessment({ dimensions: dimensions });
     app.globalData.assessment = result;
-    this.setData({ result: result });
+    this.setData({ result: result, recommendations: buildRecommendations(result), addedNames: {} });
     wx.showToast({ title: '初评已生成', icon: 'success' });
   },
-  retake() { this.setData({ result: null, answers: {} }); },
+  retake() { this.setData({ result: null, answers: {}, recommendations: [], addedNames: {} }); },
+  addRecommendation(e) {
+    const id = e.currentTarget.dataset.id;
+    const task = this.data.recommendations.find(item => item.id === id);
+    if (!task) return;
+    const exists = store.getCustomTasks().some(item => item.active && item.name === task.name);
+    if (exists) {
+      wx.showToast({ title: '该任务已在任务列表中', icon: 'none' });
+      return;
+    }
+    const child = app.globalData.child || {};
+    const created = store.addCustomTask({ name: task.name, points: task.points, dim: task.dim, frequency: task.frequency, deadline: task.deadline, assignee: child.name || '孩子' });
+    if (!created) return wx.showToast({ title: '添加失败，请稍后重试', icon: 'none' });
+    this.setData({ addedNames: Object.assign({}, this.data.addedNames, { [task.name]: true }) });
+    wx.showToast({ title: task.frequency === 'daily' ? '已加入每日打卡' : '已加入今日打卡', icon: 'success' });
+  },
+  goTaskManage() { wx.navigateTo({ url: '/pages/task-manage/task-manage' }); },
   goReport() { wx.navigateTo({ url: '/pages/report/report' }); }
 });
