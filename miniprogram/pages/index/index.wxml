@@ -1,10 +1,12 @@
 <view class="scr-head">
-  <!-- iOS 大标题 -->
-  <view class="title">成长花园</view>
-  <view class="greet">{{dateText}}</view>
+  <view class="home-nav">
+    <view><view class="title">成长花园</view><view class="greet">{{dateText}}</view></view>
+    <view class="search-trigger" bindtap="openSearch"><text>🔍</text><text>搜索</text></view>
+  </view>
 
-  <!-- 搜索栏（iOS 灰底风格） -->
-  <view class="search-bar">
+  <!-- 点击搜索后才展开输入区域，避免占用首页导航空间 -->
+  <view wx:if="{{searchOpen}}" class="search-drawer">
+    <view class="search-bar">
     <text class="search-ic">🔍</text>
     <input
       class="search-input"
@@ -13,9 +15,11 @@
       value="{{searchKey}}"
       bindinput="onSearchInput"
       confirm-type="search"
+      focus="{{searchOpen}}"
     />
     <text wx:if="{{searchKey}}" class="search-clear" bindtap="clearSearch">✕</text>
-  </view>
+    <text class="search-close" bindtap="closeSearch">取消</text>
+    </view>
 
   <!-- 实时搜索结果 -->
   <view wx:if="{{searchKey}}" class="search-panel">
@@ -36,6 +40,7 @@
       </view>
     </block>
     <view wx:else class="search-empty">未找到相关内容</view>
+  </view>
   </view>
 </view>
 

@@ -70,9 +70,16 @@
 .dot { width: 18rpx; height: 18rpx; border-radius: 50%; display: inline-block; flex: none; }
 
 /* 顶部搜索栏（iOS 灰底） */
+.scr-head { padding: 6rpx 32rpx 6rpx; }
+.scr-body { padding-top: 0; }
+.home-nav { display:flex; align-items:center; justify-content:space-between; min-height:78rpx; }
+.home-nav .title { margin-top:0; }
+.search-trigger { display:flex; align-items:center; gap:8rpx; padding:14rpx 18rpx; border-radius:999rpx; background:var(--surface); border:1rpx solid var(--line); color:var(--ink-2); font-size:24rpx; box-shadow:0 2rpx 6rpx rgba(17,17,26,.04); }
+.search-trigger text:first-child { font-size:26rpx; }
+.search-drawer { margin-top:10rpx; }
 .search-bar {
   display: flex; align-items: center; gap: 12rpx;
-  margin: 18rpx 0 4rpx;
+  margin: 0;
   padding: 14rpx 22rpx;
   background: var(--fill);
   border-radius: 14rpx;
@@ -84,6 +91,7 @@
   font-size: 30rpx; color: var(--ink-3);
   padding: 0 6rpx; flex: none;
 }
+.search-close { flex:none; color:var(--brand); font-size:24rpx; white-space:nowrap; }
 
 /* 搜索结果面板（白卡） */
 .search-panel {

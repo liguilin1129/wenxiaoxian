@@ -36,6 +36,7 @@ Page({
     classicToday: {},
     quickEntries: QUICK_ENTRIES,
     reminders: [],
+    searchOpen: false,
     searchKey: '',
     searchResults: [],
     badges: [],
@@ -137,6 +138,12 @@ Page({
     wx.switchTab({ url: '/pages/profile/profile' });
   },
   // 顶部搜索：实时过滤本地 mock 数据（任务 / 经典 / 商城 / 文章 / 案例）
+  openSearch() {
+    this.setData({ searchOpen: true });
+  },
+  closeSearch() {
+    this.setData({ searchOpen: false, searchKey: '', searchResults: [] });
+  },
   onSearchInput(e) {
     const key = (e.detail.value || '').trim();
     this.setData({ searchKey: key });
