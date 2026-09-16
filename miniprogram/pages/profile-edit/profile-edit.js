@@ -58,9 +58,11 @@ Page({
       weight: Number(d.weight) || '',
       motto: d.motto.trim()
     };
-    // 同步到全局 + 本地持久化（刷新不丢）
-    app.globalData.child = Object.assign({}, app.globalData.child, profile);
-    wx.setStorageSync('childProfile', profile);
+    // 资料编辑只更新本页字段，保留微信授权头像地址等其它已缓存资料。
+    const saved = wx.getStorageSync('childProfile');
+    const fullProfile = Object.assign({}, saved && typeof saved === 'object' ? saved : {}, profile);
+    app.globalData.child = Object.assign({}, app.globalData.child, fullProfile);
+    wx.setStorageSync('childProfile', fullProfile);
     wx.showToast({ title: '已保存', icon: 'success' });
     setTimeout(() => wx.navigateBack(), 600);
   },

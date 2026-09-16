@@ -66,12 +66,14 @@ App({
       success: (response) => {
         const user = response.data && response.data.user;
         if (!response.data || !response.data.ok || !user) return;
-        const profile = {
+        // 服务器只返回微信授权资料；合并已保存的成长资料，避免覆盖生日、身高、体重等字段。
+        const savedProfile = wx.getStorageSync('childProfile');
+        const profile = Object.assign({}, savedProfile && typeof savedProfile === 'object' ? savedProfile : {}, {
           avatar: user.nickname ? user.nickname.slice(0, 1) : '贤',
           avatarUrl: user.avatarUrl || '',
           name: user.nickname || '微信用户',
           phoneNumber: user.phoneNumber || ''
-        };
+        });
         this.globalData.child = Object.assign({}, this.globalData.child, profile);
         wx.setStorageSync('childProfile', profile);
       }
