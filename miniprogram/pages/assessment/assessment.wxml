@@ -3,7 +3,7 @@
 
   <view wx:if="{{!result}}">
     <view class="assessment-tip">共 12 题，约需 3 分钟。没有标准答案，如实选择即可。</view>
-    <view class="question-card" wx:for="{{questions}}" wx:key="index"><view class="question-title"><text>{{index + 1}}.</text>{{item.title}}</view><radio-group data-index="{{index}}" bindchange="choose"><label class="option" wx:for="{{options}}" wx:for-item="option" wx:key="value"><radio value="{{option.value}}" checked="{{answers[index] == option.value}}" color="#5E5CE6"/><text>{{option.label}}</text></label></radio-group></view>
+    <view class="question-card" wx:for="{{questions}}" wx:for-index="questionIndex" wx:key="index"><view class="question-title"><text>{{questionIndex + 1}}.</text>{{item.title}}</view><radio-group data-index="{{questionIndex}}" bindchange="choose"><label class="option" wx:for="{{options}}" wx:for-item="option" wx:for-index="optionIndex" wx:key="value"><radio value="{{option.value}}" checked="{{answers[questionIndex] == option.value}}" color="#5E5CE6"/><text>{{option.label}}</text></label></radio-group></view>
     <button class="assessment-submit" bindtap="submit">生成成长初评</button>
   </view>
 
