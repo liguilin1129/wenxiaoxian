@@ -1,0 +1,11 @@
+<scroll-view class="assessment-page" scroll-y>
+  <view class="assessment-hero"><view class="assessment-kicker">家长成长初评</view><view class="assessment-title">一起发现孩子的成长起点</view><view class="assessment-desc">请依据近 2 周的日常情况选择。结果用于推荐家庭成长任务，不作医疗或心理诊断。</view></view>
+
+  <view wx:if="{{!result}}">
+    <view class="assessment-tip">共 12 题，约需 3 分钟。没有标准答案，如实选择即可。</view>
+    <view class="question-card" wx:for="{{questions}}" wx:key="index"><view class="question-title"><text>{{index + 1}}.</text>{{item.title}}</view><radio-group data-index="{{index}}" bindchange="choose"><label class="option" wx:for="{{options}}" wx:for-item="option" wx:key="value"><radio value="{{option.value}}" checked="{{answers[index] == option.value}}" color="#5E5CE6"/><text>{{option.label}}</text></label></radio-group></view>
+    <button class="assessment-submit" bindtap="submit">生成成长初评</button>
+  </view>
+
+  <view wx:else class="result-card"><view class="result-caption">当前成长等级</view><view class="result-level">{{result.levelName}}</view><view class="result-score">{{result.overall}}<text> 分</text></view><view class="result-note">{{result.levelNote}}</view><view class="result-dims"><view wx:for="{{result.dimensions}}" wx:key="key" class="result-dim"><text>{{item.name}}</text><text>{{item.score}} 分</text></view></view><view class="result-insight">优势项：{{result.strength.name}} · 可优先练习：{{result.focus.name}}</view><view class="result-disclaimer">这是家庭成长记录与目标建议，不是医疗、心理或教育诊断结果。</view><view class="result-actions"><button class="secondary" bindtap="retake">重新填写</button><button class="primary" bindtap="goReport">查看成长报告</button></view></view>
+</scroll-view>

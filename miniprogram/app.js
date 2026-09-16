@@ -39,6 +39,8 @@ App({
     }
     // 恢复打卡状态并重建积分/历史（必须在 childProfile 之后，points 由其确定性重建）
     store.initCheckIns(this);
+    // 初评与任务积分分开保存：初评用于成长起点、等级与推荐，不影响兑换积分。
+    this.globalData.assessment = store.getAssessment();
 
     // 同步经典阅读进度：已读章节集合 → 已读章数；统一 total 为可读章节数（重启不丢）
     const visited = wx.getStorageSync('classicVisited') || {};

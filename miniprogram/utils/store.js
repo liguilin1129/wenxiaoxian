@@ -16,6 +16,15 @@ const MEETINGS_KEY = 'familyMeetings';
 const MEETING_TASKS_KEY = 'meetingTasks'; // 今日任务中来自会议的新增项
 const FAMILY_MEMBERS_KEY = 'familyMembers';
 const FAMILY_CONVENTION_KEY = 'familyConvention';
+const ASSESSMENT_KEY = 'growthAssessment';
+
+const ASSESSMENT_LEVELS = [
+  { min: 90, name: '成长榜样', note: '四维习惯表现稳定，可以尝试更有挑战的成长目标。' },
+  { min: 75, name: '自律能手', note: '已经形成不少好习惯，保持节奏就会越来越棒。' },
+  { min: 60, name: '习惯小达人', note: '正在稳步成长，选择一两个重点持续练习。' },
+  { min: 40, name: '探索幼苗', note: '每一次小行动都很重要，从容易做到的目标开始。' },
+  { min: 0, name: '成长新芽', note: '成长刚刚开始，和家长一起发现适合自己的节奏。' }
+];
 
 // 任务中心扁平表：id -> { points(奖励总和), dim, name }
 const centerMap = {};
@@ -168,6 +177,35 @@ function saveFamilyConvention(convention) {
 
 function save(st) {
   wx.setStorageSync(KEY, st);
+}
+
+function getAssessment() {
+  const saved = wx.getStorageSync(ASSESSMENT_KEY);
+  return saved && typeof saved === 'object' && Array.isArray(saved.dimensions) ? saved : null;
+}
+
+function saveAssessment(data) {
+  const input = data || {};
+  const dimensions = (input.dimensions || []).map(item => ({
+    key: item.key,
+    name: item.name,
+    score: Math.max(0, Math.min(100, Math.round(Number(item.score) || 0))),
+    answerCount: Math.max(0, Number(item.answerCount) || 0)
+  }));
+  const overall = dimensions.length ? Math.round(dimensions.reduce((sum, item) => sum + item.score, 0) / dimensions.length) : 0;
+  const level = ASSESSMENT_LEVELS.find(item => overall >= item.min) || ASSESSMENT_LEVELS[ASSESSMENT_LEVELS.length - 1];
+  const strengths = dimensions.slice().sort((a, b) => b.score - a.score);
+  const result = {
+    completedAt: input.completedAt || todayStr(),
+    overall: overall,
+    levelName: level.name,
+    levelNote: level.note,
+    dimensions: dimensions,
+    strength: strengths[0] || null,
+    focus: strengths[dimensions.length - 1] || null
+  };
+  wx.setStorageSync(ASSESSMENT_KEY, result);
+  return result;
 }
 
 // 由持久化状态确定性重建积分与历史，避免累计漂移
@@ -655,6 +693,7 @@ module.exports = {
   isCenterDone, getCenterStatus, submitCenter, approveCenter, rejectCenter, getPendingApprovals, todayDoneCount, todayGain,
   getBadges,
   getScoreRules,
+  getAssessment, saveAssessment,
   redeem, login, isSigned, recordBonus,
   aiRecordBonus, getAiCheckinRecords, addDailyTask,
   getCustomTasks, addCustomTask, removeCustomTask,

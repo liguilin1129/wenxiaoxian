@@ -6,6 +6,7 @@ Page({
     signed: false,
     child: {},
     pendingApprovals: 0,
+    assessment: null,
     stats: [
       { num: 0, label: '今日任务', action: 'goTasks' },
       { num: 0, label: '成长积分', action: 'goPoints' },
@@ -41,7 +42,7 @@ Page({
     }));
     const age = child.birthday ? Math.max(0, new Date().getFullYear() - Number(String(child.birthday).slice(0, 4))) : '';
     const bmi = child.height && child.weight ? (Number(child.weight) / Math.pow(Number(child.height) / 100, 2)).toFixed(1) : '';
-    this.setData({ signed: true, child: Object.assign({}, child, { age: age, bmi: bmi }), stats: stats, tools: tools, pendingApprovals: pendingApprovals });
+    this.setData({ signed: true, child: Object.assign({}, child, { age: age, bmi: bmi }), stats: stats, tools: tools, pendingApprovals: pendingApprovals, assessment: store.getAssessment() });
   },
   goLogin() { wx.navigateTo({ url: '/pages/login/login' }); },
   editProfile() { wx.navigateTo({ url: '/pages/profile-edit/profile-edit' }); },
@@ -52,6 +53,7 @@ Page({
   goTasks() { wx.switchTab({ url: '/pages/tasks/tasks' }); },
   goMembers() { wx.navigateTo({ url: '/pages/family/family' }); },
   goApprovals() { wx.navigateTo({ url: '/pages/approvals/approvals' }); },
+  goAssessment() { wx.navigateTo({ url: '/pages/assessment/assessment' }); },
   goSettings() { wx.showToast({ title: '提醒 · 主题', icon: 'none' }); },
   logout() {
     wx.showModal({
