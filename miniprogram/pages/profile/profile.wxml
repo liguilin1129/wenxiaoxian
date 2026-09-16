@@ -1,7 +1,7 @@
 <view class="profile-page">
   <view class="profile-header" wx:if="{{signed}}">
     <view class="avatar lg">{{child.avatar}}</view>
-    <view class="profile-info"><view class="profile-name">{{child.name}}</view><view class="profile-level">{{child.levelName}} · Lv.{{child.levelNum}}</view></view>
+    <view class="profile-info"><view class="profile-name">{{child.name}}</view><view class="profile-level">{{child.levelName}} · Lv.{{child.levelNum}}</view><view wx:if="{{assessment}}" class="profile-assessment" bindtap="goAssessment">🧭 {{assessment.levelName}} · 初评 {{assessment.overall}} 分 ›</view></view>
     <view class="profile-points" bindtap="goPoints"><text>{{child.points}}</text><text>积分 ›</text></view>
     <view class="profile-edit" bindtap="editProfile">编辑</view>
   </view>

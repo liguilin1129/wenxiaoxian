@@ -39,6 +39,7 @@ Page({
     searchOpen: false,
     searchKey: '',
     searchResults: [],
+    assessment: null,
     badges: [],
     badgeGot: 0,
     badgeTotal: 0,
@@ -72,7 +73,7 @@ Page({
       // 未登录/未签约：不加载任何用户信息，只展示游客引导
       this.setData({
         signed: false, child: {}, dims: [], today: [], doneCount: 0,
-        total: 0, ovPct: 0, levelPct: 0, need: 0, reminders: []
+        total: 0, ovPct: 0, levelPct: 0, need: 0, reminders: [], assessment: null
       });
       return;
     }
@@ -107,6 +108,7 @@ Page({
       total: total,
       ovPct: ovPct,
       dimName: buildDimName(),
+      assessment: store.getAssessment(),
       levelPct: levelPct,
       nextLevel: child.levelNum + 1,
       need: need,

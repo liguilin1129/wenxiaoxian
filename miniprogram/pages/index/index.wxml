@@ -80,6 +80,7 @@
           <view>
             <view class="growth-level">Lv.{{child.levelNum}} · {{child.levelName}}</view>
             <view class="growth-sub">{{child.name}}的成长记录</view>
+            <view wx:if="{{assessment}}" class="growth-assessment" catchtap="goReport">🧭 {{assessment.levelName}} · 初评 {{assessment.overall}} 分 ›</view>
           </view>
         </view>
         <view class="growth-points"><text>{{child.points}}</text><text class="growth-points-unit">分</text></view>

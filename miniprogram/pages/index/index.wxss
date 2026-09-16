@@ -35,6 +35,7 @@
 }
 .growth-level { font-size: 30rpx; font-weight: 750; line-height: 1.3; }
 .growth-sub { margin-top: 3rpx; font-size: 22rpx; opacity: .78; }
+.growth-assessment { display:inline-flex; margin-top:10rpx; padding:5rpx 12rpx; border-radius:999rpx; background:rgba(255,255,255,.2); font-size:20rpx; line-height:1.35; }
 .growth-points { font-size: 42rpx; font-weight: 800; line-height: 1; white-space: nowrap; }
 .growth-points-unit { margin-left: 4rpx; font-size: 22rpx; font-weight: 600; opacity: .8; }
 .growth-progress-label { justify-content: space-between; margin-top: 28rpx; font-size: 22rpx; opacity: .9; }

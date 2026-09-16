@@ -3,7 +3,7 @@
 .guest-login-avatar { width:96rpx; height:96rpx; border-radius:50%; background:var(--surface); display:flex; align-items:center; justify-content:center; font-size:48rpx; flex:none; box-shadow:0 2rpx 8rpx rgba(17,17,26,.05); }
 .guest-login-title { font-size:32rpx; font-weight:700; color:var(--ink-1); }.guest-login-arrow { font-size:44rpx; color:var(--ink-3); flex:none; }
 .profile-header { display:flex; align-items:center; gap:20rpx; padding:42rpx 32rpx 58rpx; background:linear-gradient(180deg,#FFF7ED 0%,#FFEDD5 100%); }
-.profile-info { flex:1; min-width:0; }.profile-name { font-size:40rpx; font-weight:800; color:#1A1A2E; }.profile-level { margin-top:8rpx; font-size:25rpx; color:#8B6F4E; }
+.profile-info { flex:1; min-width:0; }.profile-name { font-size:40rpx; font-weight:800; color:#1A1A2E; }.profile-level { margin-top:8rpx; font-size:25rpx; color:#8B6F4E; }.profile-assessment { display:inline-flex; margin-top:10rpx; padding:5rpx 12rpx; border-radius:999rpx; background:rgba(94,92,230,.12); color:#5046B8; font-size:21rpx; white-space:nowrap; }
 .profile-points { display:flex; flex-direction:column; gap:3rpx; text-align:right; color:#8B5A2B; font-size:21rpx; white-space:nowrap; }.profile-points text:first-child { font-size:31rpx; font-weight:800; line-height:1; }
 .profile-edit { flex:none; padding:10rpx 20rpx; border:1rpx solid rgba(139,90,43,.12); border-radius:999rpx; background:rgba(255,255,255,.65); color:#8B5A2B; font-size:24rpx; }
 .stats-card { display:flex; margin:-24rpx 32rpx 0; position:relative; z-index:1; padding:24rpx 0; border:1rpx solid var(--line); border-radius:var(--radius-sm); background:var(--surface); box-shadow:0 6rpx 18rpx rgba(17,17,26,.06); }
