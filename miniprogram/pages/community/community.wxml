@@ -2,12 +2,12 @@
 
 <view class="scr-body">
   <view class="feed">
-    <view wx:for="{{feed}}" wx:key="id" class="post">
+    <view wx:for="{{feed}}" wx:key="id" class="post" data-id="{{item.id}}" bindtap="goPost">
       <view class="avatar sm">{{item.avatar}}</view>
       <view class="pbody">
         <view class="phead">
-          <text class="pname">{{item.name}}</text>
-          <text class="ptime">{{item.time}}</text>
+          <view><text class="pname">{{item.name}}</text><text wx:if="{{item.tag}}" class="ptag"># {{item.tag}}</text><view class="ptime">{{item.time}}</view></view>
+          <text class="post-more">•••</text>
         </view>
         <view class="ptext">{{item.text}}</view>
 
@@ -21,7 +21,7 @@
             class="pm-item {{item.media.length === 1 ? 'pm-one' : ''}}"
             data-list="{{item.media}}"
             data-index="{{mi}}"
-            bindtap="previewMedia"
+            catchtap="previewMedia"
           >
             <image class="pm-thumb" src="{{m.thumb}}" mode="aspectFill" />
             <view wx:if="{{m.type === 'video'}}" class="pm-play">▶</view>
@@ -29,10 +29,10 @@
         </view>
 
         <view class="pactions">
-          <view class="act {{item.liked ? 'liked' : ''}}" data-id="{{item.id}}" bindtap="toggleLike">
+          <view class="act {{item.liked ? 'liked' : ''}}" data-id="{{item.id}}" catchtap="toggleLike">
             {{item.liked ? '❤️' : '🤍'}} {{item.likes}}
           </view>
-          <view class="act">💬 {{item.comments}}</view>
+          <view class="act" catchtap="goPost" data-id="{{item.id}}">💬 {{item.comments}}</view>
         </view>
       </view>
     </view>

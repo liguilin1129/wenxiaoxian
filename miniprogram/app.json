@@ -13,6 +13,7 @@
     "pages/classic-read/classic-read",
     "pages/discover/discover",
     "pages/community/community",
+    "pages/community/post-detail",
     "pages/community/articles",
     "pages/community/rank",
     "pages/community-publish/community-publish",

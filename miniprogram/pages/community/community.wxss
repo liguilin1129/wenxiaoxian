@@ -3,18 +3,24 @@
 /* ---- 成长圈动态流 ---- */
 .feed .post {
   display: flex;
-  padding: 24rpx 0;
-  border-bottom: 1rpx solid var(--line);
+  margin-bottom: 20rpx;
+  padding: 26rpx 24rpx 22rpx;
+  border: 1rpx solid var(--line);
+  border-radius: 24rpx;
+  background: var(--surface);
+  box-shadow: 0 3rpx 10rpx rgba(17, 17, 26, .035);
 }
-.feed .post:last-child { border-bottom: none; }
+.feed .post:last-child { margin-bottom: 0; }
 
 .pbody { flex: 1; margin-left: 18rpx; min-width: 0; }
-.phead { display: flex; justify-content: space-between; align-items: center; }
+.phead { display: flex; justify-content: space-between; align-items: flex-start; }
 .pname { font-size: 28rpx; font-weight: 700; color: var(--ink-1); }
-.ptime { font-size: 22rpx; color: var(--ink-3); }
+.ptime { margin-top: 5rpx; font-size: 21rpx; color: var(--ink-3); }
+.ptag { display: inline-block; margin-left: 10rpx; padding: 3rpx 9rpx; border-radius: 999rpx; background: var(--brand-soft); color: var(--brand-700); font-size: 19rpx; }
+.post-more { color: var(--ink-3); font-size: 26rpx; letter-spacing: 3rpx; }
 .ptext { font-size: 27rpx; color: var(--ink-2); margin-top: 10rpx; line-height: 1.55; }
-.pactions { display: flex; gap: 40rpx; margin-top: 16rpx; }
-.act { font-size: 24rpx; color: var(--ink-3); display: flex; align-items: center; gap: 6rpx; }
+.pactions { display: flex; gap: 20rpx; margin-top: 20rpx; padding-top: 16rpx; border-top: 1rpx solid var(--sep); }
+.act { min-width:112rpx; padding:8rpx 12rpx; border-radius:999rpx; background:var(--surface-2); font-size: 23rpx; color: var(--ink-3); display: flex; align-items: center; justify-content:center; gap: 6rpx; }
 .act.liked { color: var(--c-heart-d); }
 
 /* ---- 动态图片/视频 ---- */
