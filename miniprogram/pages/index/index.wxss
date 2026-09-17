@@ -206,6 +206,7 @@
 }
 .reminder-ic { font-size: 30rpx; flex: none; }
 .reminder-txt { font-size: 26rpx; color: var(--ink-2); }
+.reminder-arrow { margin-left:auto; color:var(--ink-3); font-size:32rpx; }
 
 /* 今日概览（igroup-card 内） */
 .ov-card { padding: 28rpx; }

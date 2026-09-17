@@ -9,6 +9,7 @@
     "pages/approvals/approvals",
     "pages/checkin/checkin",
     "pages/checkin-record/checkin-record",
+    "pages/reminders/reminders",
     "pages/points/points",
     "pages/classics/classics",
     "pages/classic-read/classic-read",

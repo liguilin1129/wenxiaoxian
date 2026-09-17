@@ -80,19 +80,7 @@ Page({
     const doneCount = store.todayDoneCount();
     const ovPct = total ? Math.round(doneCount / total * 100) : 0;
 
-    // 智能提醒：基于现有数据生成（不依赖后端）
-    const reminders = [];
-    const undone = total - doneCount;
-    if (undone > 0) {
-      reminders.push({ icon: '✅', text: `今天还有 ${undone} 项任务待打卡` });
-    }
-    try {
-      const meetings = store.getMeetings() || [];
-      const pending = meetings.filter(m => m.status === 'open').length;
-      if (pending > 0) {
-        reminders.push({ icon: '🪑', text: `有 ${pending} 个家庭会议待召开` });
-      }
-    } catch (e) { /* getMeetings 不可用时忽略 */ }
+    const reminders = store.getSmartReminders().slice(0, 2);
 
     this.setData({
       signed: true,
@@ -128,7 +116,12 @@ Page({
     wx.navigateTo({ url: '/pages/badges/badges' });
   },
   goReminders() {
-    wx.showToast({ title: '全部提醒即将上线', icon: 'none' });
+    wx.navigateTo({ url: '/pages/reminders/reminders' });
+  },
+  goReminderTarget(e) {
+    const target = e.currentTarget.dataset.target;
+    const routes = { checkin: '/pages/checkin/checkin', approvals: '/pages/approvals/approvals', family: '/pages/family/meeting', assessment: '/pages/assessment/assessment' };
+    if (routes[target]) wx.navigateTo({ url: routes[target] });
   },
   goSettings() {
     // 轻量设置：暂用「我的」页承载（会员/资料/退出入口齐全）

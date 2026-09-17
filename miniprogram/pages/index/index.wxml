@@ -147,9 +147,10 @@
         <view class="ghead-more" bindtap="goReminders">全部提醒 <text class="chev">›</text></view>
       </view>
       <view class="igroup-card">
-        <view class="reminder-item" wx:for="{{reminders}}" wx:key="text">
+        <view class="reminder-item" wx:for="{{reminders}}" wx:key="id" data-target="{{item.target}}" bindtap="goReminderTarget">
           <text class="reminder-ic">{{item.icon}}</text>
           <text class="reminder-txt">{{item.text}}</text>
+          <text class="reminder-arrow">›</text>
         </view>
       </view>
     </view>

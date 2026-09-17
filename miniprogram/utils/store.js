@@ -19,6 +19,7 @@ const FAMILY_MEMBERS_KEY = 'familyMembers';
 const FAMILY_CONVENTION_KEY = 'familyConvention';
 const FAMILY_PROFILE_KEY = 'familyProfile';
 const ASSESSMENT_KEY = 'growthAssessment';
+const REMINDER_READ_KEY = 'reminderReadState';
 
 const ASSESSMENT_LEVELS = [
   { min: 90, name: '成长榜样', note: '四维习惯表现稳定，可以尝试更有挑战的成长目标。' },
@@ -231,6 +232,38 @@ function save(st) {
 function getAssessment() {
   const saved = wx.getStorageSync(ASSESSMENT_KEY);
   return saved && typeof saved === 'object' && Array.isArray(saved.dimensions) ? saved : null;
+}
+
+function getReminderReadState() {
+  const saved = wx.getStorageSync(REMINDER_READ_KEY);
+  return saved && typeof saved === 'object' ? saved : {};
+}
+
+function getSmartReminders() {
+  ensure();
+  const s = state();
+  const read = getReminderReadState();
+  const reminders = [];
+  const pendingTasks = (s.todayTasks || []).filter(task => !task.done).length;
+  if (pendingTasks) reminders.push({ id: 'daily-' + todayStr(), icon: '✅', title: '今日任务待打卡', text: '今天还有 ' + pendingTasks + ' 项任务等待完成', target: 'checkin' });
+  const approvals = getPendingApprovals();
+  if (approvals.length) reminders.push({ id: 'approval-' + approvals.map(item => item.id).join('-'), icon: '👨‍👩‍👦', title: '等待家长确认', text: approvals.length + ' 项孩子打卡等待家长确认', target: 'approvals' });
+  const meetings = (s.meetings || []).filter(item => item.status === 'pending');
+  if (meetings.length) reminders.push({ id: 'meeting-' + meetings.map(item => item.id).join('-'), icon: '🪑', title: '家庭会议待召开', text: '有 ' + meetings.length + ' 场家庭会议等待处理', target: 'family' });
+  if (!getAssessment()) reminders.push({ id: 'assessment', icon: '🧭', title: '完成成长初评', text: '用约 3 分钟，记录孩子当前成长起点', target: 'assessment' });
+  return reminders.filter(item => !read[item.id]);
+}
+
+function markReminderRead(id) {
+  if (!id) return;
+  const read = getReminderReadState();
+  read[id] = todayStr();
+  wx.setStorageSync(REMINDER_READ_KEY, read);
+  cloudData.schedulePush();
+}
+
+function markAllRemindersRead() {
+  getSmartReminders().forEach(item => markReminderRead(item.id));
 }
 
 function saveAssessment(data) {
@@ -745,6 +778,7 @@ module.exports = {
   getBadges,
   getScoreRules,
   getAssessment, saveAssessment,
+  getSmartReminders, markReminderRead, markAllRemindersRead,
   redeem, login, isSigned, recordBonus,
   aiRecordBonus, getAiCheckinRecords, addDailyTask,
   getCustomTasks, addCustomTask, removeCustomTask,
