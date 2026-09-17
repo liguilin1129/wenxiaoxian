@@ -24,7 +24,7 @@ Component({
       {
         id: 1,
         role: 'ai',
-        content: '嗨，我是小贤的 AI 助手 🤖\n有什么想聊的，或者想让我帮你的事，都可以告诉我～'
+        content: '你好，我是小贤的 AI 助手。\n可以帮你记录打卡、安排任务或解答成长问题。'
       }
     ],
     _seq: 1
@@ -267,7 +267,7 @@ Component({
           } else {
             const errMsg = (res.data && res.data.error) ? res.data.error.message : ('HTTP ' + res.statusCode);
             console.error('[AI] DeepSeek 错误:', errMsg);
-            reply = '抱歉，模型返回了错误：' + errMsg + ' 🙏';
+            reply = '模型暂时无法回复：' + errMsg + '。请稍后再试。';
           }
           self.appendAiReply(reply);
         },
@@ -283,9 +283,37 @@ Component({
     // 把 AI 回复追加到消息列表，并解析可执行动作
     appendAiReply(reply, providedActions) {
       const aid = ++this.data._seq;
-      const actions = Array.isArray(providedActions) ? providedActions : this.parseActions(reply);
-      const list = this.data.messages.concat([{ id: aid, role: 'ai', content: reply, actions: actions }]);
+      const content = this.formatAiReply(reply);
+      const actions = Array.isArray(providedActions) ? providedActions : this.parseActions(content);
+      const list = this.data.messages.concat([{ id: aid, role: 'ai', content: content, actions: actions }]);
       this.setData({ messages: list, typing: false, scrollTarget: 'msg-' + aid });
+    },
+
+    // 即使模型偶尔没有完全遵守提示词，也统一输出为简洁、易读的聊天文本。
+    formatAiReply(reply) {
+      let content = String(reply || '')
+        .replace(/\r\n?/g, '\n')
+        .replace(/[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/gu, '')
+        .replace(/[！!]{2,}/g, '！')
+        .replace(/[？?]{2,}/g, '？')
+        .replace(/[～~]+/g, '')
+        .replace(/[ \t]+\n/g, '\n')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
+
+      if (!content) return '我已收到。请告诉我需要帮你处理什么。';
+
+      // 模型把多句内容挤在同一行时，每两句分成一个短段落。
+      if (content.indexOf('\n') === -1 && content.length > 90) {
+        const sentences = content.match(/[^。！？!?]+[。！？!?]?/g) || [content];
+        const paragraphs = [];
+        for (let i = 0; i < sentences.length; i += 2) {
+          paragraphs.push(sentences.slice(i, i + 2).join('').trim());
+        }
+        content = paragraphs.filter(Boolean).join('\n\n');
+      }
+
+      return content.slice(0, 420).trim();
     },
 
     // 识别“完成任务 + 打卡 + 积分”的自然语言，返回需要用户确认的打卡动作。
@@ -394,21 +422,21 @@ Component({
      */
     getMockReply(text) {
       if (/打扫|卫生|整理|主动|帮忙|做了好事/.test(text)) {
-        return '小贤真棒！🧹 如果要直接记入积分，请告诉我任务和分数，例如：\n“我完成了扫地任务，帮我打卡 10 分”。\n我会生成确认按钮，确认后立即写入积分流水。';
+        return '可以记录这次表现。\n请告诉我任务名称和积分，例如“完成扫地任务，打卡 10 分”。';
       }
       if (/打卡|完成|做了|做到/.test(text)) {
-        return '收到～（这是界面演示，接入真实模型后我可以帮你一键打卡 ✅）';
+        return '可以帮你打卡。请补充任务名称和积分，例如“阅读 20 分钟，打卡 10 分”。';
       }
       if (/记录|记一下|备忘|记着/.test(text)) {
-        return '好的，我记下了～（演示模式，真实模型接入后我会写入你的成长记录 📝）';
+        return '已收到。请补充需要记录的具体内容和日期。';
       }
       if (/任务|待办|新建|加一个/.test(text)) {
-        return '想加什么任务呢？（演示模式，接入模型后我能直接帮你新建任务 ➕）';
+        return '请告诉我任务名称、积分和是否每天重复。';
       }
       if (/你好|hi|hello|在吗/i.test(text)) {
-        return '你好呀 👋 我是小贤的 AI 助手，随时准备帮你记录、打卡、安排任务～';
+        return '你好。我可以帮你记录、打卡和安排任务。';
       }
-      return '嗯嗯，我在听～这是一个 UI 演示，等接入真实大模型，我就能真正陪你聊天、帮你办事啦 💬';
+      return '我已收到。请告诉我希望我帮你完成什么。';
     },
 
     preventMove() {}
