@@ -1,20 +1,21 @@
-/* 邻里打卡榜 */
+/* 邻里打卡榜：品牌紫 + 灰阶，不使用多色渐变 */
+.rank-intro { display:flex; align-items:center; justify-content:space-between; margin-bottom:20rpx; padding:26rpx 28rpx; border:1rpx solid rgba(94,92,230,.16); border-radius:var(--radius-sm); background:#F5F4FF; }.rank-intro-title { color:var(--ink-1); font-size:31rpx; font-weight:800; }.rank-intro-sub { margin-top:7rpx; color:var(--ink-3); font-size:22rpx; }.rank-intro-icon { width:68rpx; height:68rpx; display:flex; align-items:center; justify-content:center; border-radius:20rpx; background:#fff; font-size:34rpx; }
 .ranks .rank {
   display: flex;
   align-items: center;
   background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
+  border: 1rpx solid var(--line);
+  border-radius: 20rpx;
   padding: 20rpx 24rpx;
-  margin-bottom: 16rpx;
-  box-shadow: 0 2rpx 8rpx rgba(17, 17, 26, .04);
+  margin-bottom: 12rpx;
+  box-shadow: none;
 }
-.ranks .rank.me { border-color: var(--brand); background: var(--brand-soft); }
+.ranks .rank.me { border-color: rgba(94,92,230,.45); background: #FAFAFF; }
 
 .rno {
   width: 44rpx;
   height: 44rpx;
-  border-radius: 50%;
+  border-radius: 14rpx;
   flex: none;
   margin-right: 16rpx;
   display: flex;
@@ -22,13 +23,12 @@
   justify-content: center;
   font-size: 24rpx;
   font-weight: 800;
-  color: #fff;
-  background: var(--ink-3);
+  color: var(--ink-3);
+  background: var(--surface-2);
 }
-.rno-1 { background: linear-gradient(135deg, #FB7185, #F43F5E); }
-.rno-2 { background: linear-gradient(135deg, #FBBF24, #F59E0B); }
-.rno-3 { background: linear-gradient(135deg, #34D399, #10B981); }
+.rno-1 { color:#fff; background:var(--brand); }
+.rno-2,.rno-3 { color:var(--brand-700); background:var(--brand-soft); }
 
 .rname { flex: 1; font-size: 28rpx; font-weight: 700; color: var(--ink-1); }
 .rdays { font-size: 24rpx; color: var(--ink-3); }
-.rdays .rnum { font-size: 30rpx; font-weight: 800; color: var(--brand-700); margin: 0 4rpx; }
+.rdays .rnum { font-size: 30rpx; font-weight: 800; color: var(--ink-1); margin: 0 4rpx; }
