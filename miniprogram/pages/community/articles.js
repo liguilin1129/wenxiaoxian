@@ -8,15 +8,8 @@ const URLS = {
   articles: '/pages/community/articles',
   rank: '/pages/community/rank'
 };
-const MOCK_ARTICLES = [
-  { id: 1, title: '如何培养孩子的时间感知力', tag: '习惯养成', read: '2.3万', cover: '⏰' },
-  { id: 2, title: '经典诵读对专注力的 4 个好处', tag: '经典学习', read: '1.8万', cover: '📜' },
-  { id: 3, title: '积分制激励，怎么设才不翻车', tag: '家庭教育', read: '3.1万', cover: '🪙' }
-];
-
 function loadArticles() {
-  const user = wx.getStorageSync('communityUserArticles') || [];
-  return user.concat(MOCK_ARTICLES);
+  return getCommunityArticles();
 }
 
 Page({
@@ -38,7 +31,7 @@ Page({
     wx.navigateTo({ url: '/pages/community-publish/community-publish?mode=article' });
   },
   openArticle(e) {
-    const title = e.currentTarget.dataset.title;
-    wx.showToast({ title: '打开《' + title + '》', icon: 'none' });
+    wx.navigateTo({ url: '/pages/article-detail/article-detail?id=' + encodeURIComponent(e.currentTarget.dataset.id) });
   }
 });
+const { getCommunityArticles } = require('../../utils/community-article-data.js');

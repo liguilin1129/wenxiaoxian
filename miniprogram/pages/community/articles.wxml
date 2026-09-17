@@ -6,13 +6,14 @@
       wx:for="{{articles}}"
       wx:key="id"
       class="art"
-      data-title="{{item.title}}"
+      data-id="{{item.id}}"
       bindtap="openArticle"
       hover-class="art-hover"
     >
       <view class="acover">{{item.cover}}</view>
       <view class="atext">
         <view class="atitle">{{item.title}}</view>
+        <view class="asummary">{{item.summary}}</view>
         <view class="ameta">
           <text class="pill pill-habit">{{item.tag}}</text>
           <text class="aread">{{item.read}} 阅读</text>

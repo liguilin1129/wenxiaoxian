@@ -24,7 +24,7 @@
   font-size: 34rpx;
 }
 .atext { flex: 1; min-width: 0; }
-.atitle { font-size: 28rpx; font-weight: 700; color: var(--ink-1); }
+.atitle { font-size: 28rpx; font-weight: 700; color: var(--ink-1); line-height:1.4; }.asummary { margin-top:6rpx; overflow:hidden; color:var(--ink-3); font-size:22rpx; line-height:1.5; white-space:nowrap; text-overflow:ellipsis; }
 .ameta { display: flex; align-items: center; gap: 14rpx; margin-top: 10rpx; }
 .aread { font-size: 22rpx; color: var(--ink-3); }
 .darrow { font-size: 40rpx; color: var(--ink-3); margin-left: 10rpx; flex: none; }
