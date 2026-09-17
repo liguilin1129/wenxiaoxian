@@ -29,22 +29,29 @@
 
   <!-- 发起/进行会议 -->
   <block wx:if="{{mode === 'form'}}">
-    <view class="card">
-      <view class="field-label">会议主题</view>
-      <input class="field-input" placeholder="例如：本周家庭会议" value="{{form.title}}" bindinput="onTitle" />
+    <view class="meeting-form-hero">
+      <view class="meeting-form-icon">🪑</view>
+      <view><view class="meeting-form-title">发起一次家庭会议</view><view class="meeting-form-desc">把讨论变成清晰、可执行的家庭决议。</view></view>
+    </view>
 
-      <view class="field-label" style="margin-top:24rpx">议题模板</view>
+    <view class="meeting-form-card">
+      <view class="step-label"><text>1</text>会议主题</view>
+      <input class="field-input" placeholder="例如：本周家庭会议" value="{{form.title}}" bindinput="onTitle" />
+    </view>
+
+    <view class="meeting-form-card agenda-picker">
+      <view class="step-head"><view class="step-label"><text>2</text>添加议题</view><view class="step-help">可添加多个</view></view>
       <view class="template-row">
-        <view class="template-chip" wx:for="{{templates}}" wx:key="type" bindtap="addTopic" data-type="{{item.type}}">+ {{item.name}}</view>
+        <view class="template-chip" wx:for="{{templates}}" wx:key="type" bindtap="addTopic" data-type="{{item.type}}"><text class="template-plus">+</text>{{item.name}}</view>
       </view>
+      <view class="agenda-tip">选择模板后，可继续填写具体名称、积分和补充说明。</view>
     </view>
 
     <!-- 议题列表 -->
-    <view wx:if="{{form.topics.length}}" class="section-title">待决议议题</view>
+    <view wx:if="{{form.topics.length}}" class="agenda-list-head"><view class="step-label"><text>3</text>完善议题</view><view class="agenda-count">{{form.topics.length}} 项</view></view>
     <view wx:for="{{form.topics}}" wx:key="id" class="topic-card">
       <view class="row between topic-editor-row">
-        <view class="topic-editor-main">
-          <view class="topic-type">{{topicTypeName(item.type)}}</view>
+        <view class="topic-editor-main"><view class="topic-type">{{topicTypeName(item.type)}}</view>
           <input class="topic-title" placeholder="议题标题" value="{{item.title}}" data-idx="{{index}}" data-field="title" bindinput="onTopic" />
         </view>
         <view class="del-btn" data-idx="{{index}}" bindtap="removeTopic">删除</view>
@@ -56,7 +63,7 @@
       </view>
     </view>
 
-    <button class="btn" style="margin-top:32rpx" bindtap="createMeeting">创建会议</button>
+    <button class="btn meeting-create" bindtap="createMeeting">创建会议并开始决议</button>
   </block>
 
   <!-- 会议详情 -->

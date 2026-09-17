@@ -31,6 +31,12 @@
   line-height: 1.6;
 }
 
+.meeting-form-hero { display:flex; align-items:center; gap:20rpx; margin-bottom:22rpx; padding:28rpx; border-radius:24rpx; background:linear-gradient(135deg,#F3F2FF,#FAFAFF); }
+.meeting-form-icon { display:flex; align-items:center; justify-content:center; flex:none; width:78rpx; height:78rpx; border-radius:24rpx; background:#fff; font-size:40rpx; box-shadow:0 4rpx 12rpx rgba(94,92,230,.10); }
+.meeting-form-title { color:var(--ink-1); font-size:31rpx; font-weight:800; }.meeting-form-desc { margin-top:7rpx; color:var(--ink-3); font-size:23rpx; line-height:1.55; }
+.meeting-form-card { margin-bottom:20rpx; padding:26rpx; border:1rpx solid var(--line); border-radius:22rpx; background:var(--surface); box-shadow:0 3rpx 12rpx rgba(17,17,26,.035); }
+.step-head,.agenda-list-head { display:flex; align-items:center; justify-content:space-between; }.step-label { display:flex; align-items:center; gap:12rpx; margin-bottom:16rpx; color:var(--ink-1); font-size:28rpx; font-weight:750; }.step-label text { display:flex; align-items:center; justify-content:center; width:34rpx; height:34rpx; border-radius:50%; color:#fff; background:var(--brand); font-size:21rpx; }.step-help,.agenda-count { color:var(--ink-3); font-size:22rpx; }.agenda-tip { margin-top:18rpx; color:var(--ink-3); font-size:22rpx; line-height:1.55; }.agenda-list-head { margin:30rpx 6rpx 16rpx; }.agenda-list-head .step-label { margin:0; }.agenda-count { padding:5rpx 14rpx; border-radius:999rpx; background:var(--brand-soft); color:var(--brand-700); font-weight:650; }.meeting-create { margin-top:30rpx; }
+
 .field-label {
   font-size: 26rpx;
   font-weight: 600;
@@ -69,6 +75,9 @@
   gap: 16rpx;
 }
 .template-chip {
+  display:flex;
+  align-items:center;
+  gap:7rpx;
   font-size: 26rpx;
   color: var(--brand-700);
   background: var(--brand-soft);
@@ -76,11 +85,12 @@
   border-radius: 999rpx;
   font-weight: 600;
 }
+.template-plus { font-size:30rpx; font-weight:500; line-height:1; }
 
 .topic-card {
   background: var(--surface);
   border-radius: var(--radius-sm);
-  padding: 24rpx;
+  padding: 26rpx;
   border: 1px solid var(--line);
   margin-bottom: 20rpx;
 }
@@ -88,7 +98,11 @@
   font-size: 22rpx;
   color: var(--brand-600);
   font-weight: 700;
-  margin-bottom: 8rpx;
+  display:inline-flex;
+  padding:5rpx 12rpx;
+  border-radius:999rpx;
+  background:var(--brand-soft);
+  margin-bottom: 10rpx;
 }
 .topic-title {
   display: block;
@@ -142,8 +156,11 @@
   font-weight: 600;
 }
 .del-btn {
-  font-size: 24rpx;
+  flex:none;
+  font-size: 23rpx;
   color: var(--c-heart-d);
-  font-weight: 600;
-  padding: 8rpx 16rpx;
+  font-weight: 650;
+  padding: 9rpx 14rpx;
+  border-radius:12rpx;
+  background:#FFF1F3;
 }
