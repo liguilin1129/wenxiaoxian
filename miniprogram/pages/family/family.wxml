@@ -4,6 +4,29 @@
 </view>
 
 <view class="scr-body">
+  <!-- 家长代管与家庭邀请码 -->
+  <view class="card family-access-card" wx:if="{{familyProfile}}">
+    <view class="row between access-title-row">
+      <view>
+        <view class="tn">家庭身份</view>
+        <view class="access-subtitle">{{familyProfile.name}}</view>
+      </view>
+      <view class="managed-tag">家长代管中</view>
+    </view>
+    <view class="access-note">家长可统一管理孩子资料、任务、审核与积分；孩子独立使用时可凭邀请码加入同一家庭。</view>
+    <view class="invite-box">
+      <view>
+        <view class="invite-label">家庭邀请码</view>
+        <view class="invite-code">{{familyProfile.inviteCode}}</view>
+      </view>
+      <view class="invite-actions">
+        <view class="invite-copy" bindtap="copyInviteCode">复制</view>
+        <view class="invite-renew" bindtap="renewInviteCode">换一组</view>
+      </view>
+    </view>
+    <view class="access-tip">提示：当前邀请码已生成；跨账号加入会在云端家庭数据同步完成后自动启用。</view>
+  </view>
+
   <!-- 家庭成员 -->
   <view class="card">
     <view class="row between" style="margin-bottom:20rpx">
