@@ -67,6 +67,12 @@ function formatToday() {
   return m + '-' + day;
 }
 
+// 任务备注、名称等用户输入统一清理，避免空值和超长文本进入本地/云端记录。
+function cleanText(value, maxLength) {
+  if (typeof value !== 'string') return '';
+  return value.replace(/\s+/g, ' ').trim().slice(0, Number(maxLength) || 0);
+}
+
 function load() {
   let st = wx.getStorageSync(KEY);
   const today = todayStr();
