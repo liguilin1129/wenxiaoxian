@@ -11,7 +11,7 @@
     <view class="calendar-week-row"><text wx:for="{{weekLabels}}" wx:key="*this">{{item}}</text></view>
     <view class="calendar-grid">
       <view wx:for="{{calendar}}" wx:key="key" class="calendar-cell {{item.empty ? 'empty' : ''}} {{item.today ? 'today' : ''}} {{item.future ? 'future' : ''}}">
-        <view wx:if="{{!item.empty}}" class="calendar-date-circle {{item.done ? 'done' : ''}}">{{item.done ? '✓' : item.day}}</view>
+        <view wx:if="{{!item.empty}}" class="calendar-date-circle {{item.done ? 'done' : ''}}"><text>{{item.day}}</text><text wx:if="{{item.done}}" class="calendar-check-badge">✓</text></view>
       </view>
     </view>
     <view class="calendar-tip"><text class="tip-dot done"></text>已打卡 <text class="tip-dot"></text>暂无记录 <text class="tip-ring"></text>今天</view>
