@@ -57,6 +57,7 @@
   letter-spacing: 1rpx;
   text-shadow: 0 2rpx 6rpx rgba(0,0,0,.15);
 }
+.ai-compact { position:fixed; right:30rpx; bottom:42rpx; display:flex; align-items:center; justify-content:center; width:86rpx; height:86rpx; border:4rpx solid rgba(255,255,255,.94); border-radius:50%; color:#fff; background:linear-gradient(145deg,#7C9EF4,#4C7FE3); box-shadow:0 8rpx 22rpx rgba(76,127,227,.28); font-size:25rpx; font-weight:800; z-index:998; }.ai-compact:active { transform:scale(.94); }
 
 /* ---- 遮罩层 ---- */
 .ai-mask {

@@ -37,4 +37,4 @@
   </block>
 </view>
 
-<ai-assistant />
+<ai-assistant id="aiAssistant" tab-mode="{{true}}" />

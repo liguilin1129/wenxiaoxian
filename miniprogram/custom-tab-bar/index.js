@@ -13,6 +13,12 @@ Component({
     switchTab(e) {
       const path = e.currentTarget.dataset.path;
       wx.switchTab({ url: path });
+    },
+    openAiAssistant() {
+      const pages = getCurrentPages();
+      const page = pages[pages.length - 1];
+      const assistant = page && page.selectComponent && page.selectComponent('#aiAssistant');
+      if (assistant && typeof assistant.openPanel === 'function') assistant.openPanel();
     }
   }
 });

@@ -1,11 +1,21 @@
 /* ===== 液态玻璃岛底部导航（Floating Glass Dock · iOS 风格） ===== */
 
-.tabbar {
+.tabbar-shell {
   position: fixed;
   left: 28rpx;
   right: 28rpx;
   bottom: calc(8rpx + env(safe-area-inset-bottom));
-  height: 96rpx;
+  height: 112rpx;
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+  z-index: 999;
+  transition: transform 0.25s ease;
+}
+.tabbar {
+  position: relative;
+  flex: 1;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -13,14 +23,12 @@
   /* 玻璃岛：半透明白底 + 白色描边 + 柔和投影托起 */
   background: rgba(255, 255, 255, 0.62);
   border: 1rpx solid rgba(255, 255, 255, 0.9);
-  border-radius: 30rpx;
-  box-shadow: 0 10rpx 30rpx rgba(94, 92, 230, 0.18);
+  border-radius: 56rpx;
+  box-shadow: 0 10rpx 28rpx rgba(32, 32, 48, 0.12);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 
   overflow: hidden;
-  z-index: 999;
-  transition: transform 0.25s ease;
 }
 
 /* 聊天面板等全屏弹层打开时，把导航栏下移移出屏幕 */
@@ -35,8 +43,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  border-radius: 30rpx;
-  background: linear-gradient(90deg, rgba(94, 92, 230, 0.12), rgba(94, 92, 230, 0.05));
+  border-radius: 56rpx;
+  background: rgba(255,255,255,.15);
   z-index: 0;
 }
 
@@ -45,17 +53,29 @@
   position: relative;
   z-index: 1;
   flex: 1;
-  height: 100%;
+  height: 92rpx;
+  margin: 0 4rpx;
+  border-radius: 40rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #B0B0BF;
-  transition: color 0.2s;
+  color: #8E8E98;
+  transition: color .2s, background .2s, transform .2s;
+}
+.tb::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: transparent;
+  transition: background .2s;
 }
 .tb.on {
   color: #5E5CE6;
 }
+.tb.on::before { background: rgba(108,108,118,.14); }
+.tb.on .icon { transform: scale(1.08); }
 .txt {
   font-size: 22rpx;
   margin-top: 6rpx;
@@ -82,18 +102,7 @@
   background-size: contain;
 }
 
-/* 选中态光圈 */
-.halo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 0;
-  width: 46rpx;
-  height: 46rpx;
-  border-radius: 50%;
-  background: rgba(94, 92, 230, 0.14);
-}
+.ai-tab { position:relative; display:flex; flex:none; flex-direction:column; align-items:center; justify-content:center; width:112rpx; height:112rpx; border:5rpx solid rgba(255,255,255,.95); border-radius:50%; color:#fff; background:linear-gradient(145deg,#7C9EF4,#4C7FE3); box-shadow:0 10rpx 24rpx rgba(76,127,227,.32); box-sizing:border-box; }.ai-tab:active { transform:scale(.95); }.ai-tab-spark { position:absolute; top:18rpx; right:24rpx; font-size:18rpx; }.ai-tab-label { font-size:30rpx; font-weight:800; letter-spacing:1rpx; }
 
 /* ---- 首页（房子） ---- */
 .icon-home {

@@ -1,21 +1,6 @@
 <!-- 全局悬浮 AI 助手（微信聊天风格） -->
 <view class="ai-wrap">
-  <!-- 悬浮按钮（可拖动，位置不持久化；面板打开时隐藏） -->
-  <view
-    wx:if="{{!showPanel}}"
-    class="ai-fab {{fabMoving ? 'moving' : ''}}"
-    style="transform: translate({{fabOffset.x}}px, {{fabOffset.y}}px);"
-    hover-class="{{fabMoving ? '' : 'fab-hover'}}"
-    catchtouchstart="onFabTouchStart"
-    catchtouchmove="onFabTouchMove"
-    catchtouchend="onFabTouchEnd"
-    catchtouchcancel="onFabTouchEnd"
-  >
-    <view class="fab-ring"></view>
-    <view class="fab-icon">
-      <text class="fab-text">AI</text>
-    </view>
-  </view>
+  <view wx:if="{{!showPanel && !tabMode}}" class="ai-compact" bindtap="openPanel"><text>AI</text></view>
 
   <!-- 聊天面板（贴底弹层） -->
   <view wx:if="{{showPanel}}" class="ai-mask" bindtap="onClose" catchtouchmove="preventMove">

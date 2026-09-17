@@ -1,24 +1,16 @@
 <!-- 自定义底部导航（液态玻璃岛 · Floating Glass Dock） -->
-<view class="tabbar {{hidden ? 'tabbar-hidden' : ''}}">
-  <!-- 玻璃底色：淡淡的品牌色晕染，营造通透质感 -->
-  <view class="glass-wash"></view>
-
-  <view
-    wx:for="{{list}}"
-    wx:key="idx"
-    class="tb {{selected === item.idx ? 'on' : ''}}"
-    data-path="{{item.pagePath}}"
-    bindtap="switchTab"
-  >
-    <view class="icon-wrap">
-      <!-- 选中态：仅托在图标背后的小光圈（不压文字） -->
-      <view wx:if="{{selected === item.idx}}" class="halo"></view>
-
-      <view wx:if="{{item.idx === 0}}" class="icon icon-home"></view>
-      <view wx:if="{{item.idx === 1}}" class="icon icon-task"></view>
-      <view wx:if="{{item.idx === 2}}" class="icon icon-discover"></view>
-      <view wx:if="{{item.idx === 3}}" class="icon icon-mine"></view>
+<view class="tabbar-shell {{hidden ? 'tabbar-hidden' : ''}}">
+  <view class="tabbar">
+    <view class="glass-wash"></view>
+    <view wx:for="{{list}}" wx:key="idx" class="tb {{selected === item.idx ? 'on' : ''}}" data-path="{{item.pagePath}}" bindtap="switchTab">
+      <view class="icon-wrap">
+        <view wx:if="{{item.idx === 0}}" class="icon icon-home"></view>
+        <view wx:if="{{item.idx === 1}}" class="icon icon-task"></view>
+        <view wx:if="{{item.idx === 2}}" class="icon icon-discover"></view>
+        <view wx:if="{{item.idx === 3}}" class="icon icon-mine"></view>
+      </view>
+      <text class="txt">{{item.text}}</text>
     </view>
-    <text class="txt">{{item.text}}</text>
   </view>
+  <view class="ai-tab" bindtap="openAiAssistant"><view class="ai-tab-spark">✦</view><view class="ai-tab-label">AI</view></view>
 </view>

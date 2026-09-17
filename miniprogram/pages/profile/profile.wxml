@@ -27,4 +27,4 @@
     <button class="btn soft profile-logout" bindtap="logout">退出成长花园</button>
   </block>
 </view>
-<ai-assistant />
+<ai-assistant id="aiAssistant" tab-mode="{{true}}" />

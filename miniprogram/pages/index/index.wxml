@@ -236,4 +236,4 @@
   </block>
 </view>
 
-<ai-assistant id="aiAssistant" />
+<ai-assistant id="aiAssistant" tab-mode="{{true}}" />
