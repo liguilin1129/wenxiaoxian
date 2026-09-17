@@ -1,10 +1,12 @@
 <view class="reminder-page">
   <view class="reminder-hero"><view><view class="reminder-kicker">成长提醒</view><view class="reminder-title">把重要的事，及时做好</view><view class="reminder-desc">提醒会根据任务、家长确认、家庭会议和成长初评自动生成。</view></view><view class="reminder-hero-icon">🔔</view></view>
   <view wx:if="{{reminders.length}}" class="reminder-toolbar"><text>待处理 {{reminders.length}} 项</text><text bindtap="markAllRead">全部标记已读</text></view>
-  <view wx:for="{{reminders}}" wx:key="id" class="reminder-card">
-    <view class="reminder-card-top" data-item="{{item}}" bindtap="handle"><view class="reminder-icon">{{item.icon}}</view><view class="reminder-content"><view class="reminder-name">{{item.title}}</view><view class="reminder-copy">{{item.text}}</view></view><view class="reminder-go">去处理 ›</view></view>
-    <view class="reminder-card-foot"><text bindtap="markRead" data-id="{{item.id}}">标记已读</text></view>
-  </view>
+  <block wx:if="{{reminders.length}}">
+    <view wx:for="{{reminders}}" wx:key="id" class="reminder-card">
+      <view class="reminder-card-top" data-item="{{item}}" bindtap="handle"><view class="reminder-icon">{{item.icon}}</view><view class="reminder-content"><view class="reminder-name">{{item.title}}</view><view class="reminder-copy">{{item.text}}</view></view><view class="reminder-go">去处理 ›</view></view>
+      <view class="reminder-card-foot"><text bindtap="markRead" data-id="{{item.id}}">标记已读</text></view>
+    </view>
+  </block>
   <view wx:else class="reminder-empty"><view>✨</view><view class="reminder-empty-title">暂时没有待处理提醒</view><view>完成任务后再回来看看吧。</view></view>
 </view>
 <ai-assistant />
