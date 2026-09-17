@@ -1,0 +1,28 @@
+<view class="record-page">
+  <view class="record-hero">
+    <view class="record-hero-label">当前连续打卡</view>
+    <view class="record-streak"><text>🔥</text>{{streak}}<text class="record-unit"> 天</text></view>
+    <view class="record-hero-note">坚持不是每天都完美，而是每次都愿意重新开始。</view>
+  </view>
+
+  <view class="record-card">
+    <view class="record-card-head"><view class="record-title">近 7 天</view><view class="record-count">累计 {{totalCheckins}} 次记录</view></view>
+    <view class="calendar">
+      <view wx:for="{{calendar}}" wx:key="date" class="calendar-day {{item.today ? 'today' : ''}}">
+        <view class="calendar-week">{{item.day}}</view>
+        <view class="calendar-dot {{item.done ? 'done' : ''}}">{{item.done ? '✓' : '·'}}</view>
+        <view class="calendar-date">{{item.date}}</view>
+      </view>
+    </view>
+    <view class="calendar-tip"><text class="tip-dot done"></text>已打卡 <text class="tip-dot"></text>暂无记录</view>
+  </view>
+
+  <view class="history-title">打卡明细</view>
+  <view class="history-card" wx:if="{{records.length}}">
+    <view class="history-row" wx:for="{{records}}" wx:key="index">
+      <view><view class="history-name">{{item.title}}</view><view class="history-date">{{item.date}} · {{item.dim}}</view></view>
+      <view class="history-points">+{{item.delta}}</view>
+    </view>
+  </view>
+  <view class="empty" wx:else>完成一次任务打卡后，这里会留下成长记录。</view>
+</view>

@@ -10,7 +10,7 @@ Page({
     stats: [
       { num: 0, label: '今日任务', action: 'goTasks' },
       { num: 0, label: '成长积分', action: 'goPoints' },
-      { num: 0, suffix: '天', label: '连续打卡', action: 'goReport' }
+      { num: 0, suffix: '天', label: '连续打卡', action: 'goCheckinRecord' }
     ],
     tools: [
       { icon: '📊', name: '成长报告', action: 'goReport', bg: '#FFFBEB', color: '#B7791F' },
@@ -50,6 +50,7 @@ Page({
   goRewards() { wx.navigateTo({ url: '/pages/rewards/rewards' }); },
   goReport() { wx.navigateTo({ url: '/pages/report/report' }); },
   goPoints() { wx.navigateTo({ url: '/pages/points/points' }); },
+  goCheckinRecord() { wx.navigateTo({ url: '/pages/checkin-record/checkin-record' }); },
   goTasks() { wx.switchTab({ url: '/pages/tasks/tasks' }); },
   goMembers() { wx.navigateTo({ url: '/pages/family/family' }); },
   goApprovals() { wx.navigateTo({ url: '/pages/approvals/approvals' }); },

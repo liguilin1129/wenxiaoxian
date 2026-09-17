@@ -8,6 +8,7 @@
     "pages/task-manage/task-manage",
     "pages/approvals/approvals",
     "pages/checkin/checkin",
+    "pages/checkin-record/checkin-record",
     "pages/points/points",
     "pages/classics/classics",
     "pages/classic-read/classic-read",
