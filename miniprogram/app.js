@@ -2,6 +2,7 @@ const mock = require('./utils/mock.js');
 const store = require('./utils/store.js');
 const apiConfig = require('./utils/api-config.js');
 const cloudHosting = require('./utils/cloud-hosting.js');
+const cloudData = require('./utils/cloud-data.js');
 
 App({
   globalData: {
@@ -22,6 +23,7 @@ App({
   },
 
   onLaunch() {
+    cloudData.init();
     if (apiConfig.USE_CLOUD_HOSTING) cloudHosting.init();
     const signed = wx.getStorageSync('signed');
     if (signed) {
@@ -53,7 +55,20 @@ App({
     });
 
     this.syncAuthorizedProfile();
+    this.restoreCloudData();
   },
+
+  // 云端有保存内容时，以同一微信账号的云端快照恢复；首次使用保持当前本地数据。
+  async restoreCloudData() {
+    const restored = await cloudData.pull();
+    if (!restored) return;
+    const saved = wx.getStorageSync('childProfile');
+    if (saved && typeof saved === 'object') this.globalData.child = Object.assign({}, this.globalData.child, saved);
+    store.initCheckIns(this);
+    this.globalData.assessment = store.getAssessment();
+  },
+
+  onHide() { cloudData.push(); },
 
   // 本地缓存只用于离线展示；服务可用时以已签名令牌校验后的资料为准。
   syncAuthorizedProfile() {

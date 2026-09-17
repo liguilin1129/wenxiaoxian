@@ -1,4 +1,5 @@
 const app = getApp();
+const cloudData = require('../../utils/cloud-data.js');
 
 // 可选头像（默认"贤"文字头像 + 一组可爱 emoji）
 const AVATARS = ['贤', '🦊', '🐱', '🐰', '🐻', '🦁', '🐼', '🐯', '🐶', '🐸', '🦄', '🌟', '🍎'];
@@ -63,6 +64,7 @@ Page({
     const fullProfile = Object.assign({}, saved && typeof saved === 'object' ? saved : {}, profile);
     app.globalData.child = Object.assign({}, app.globalData.child, fullProfile);
     wx.setStorageSync('childProfile', fullProfile);
+    cloudData.schedulePush();
     wx.showToast({ title: '已保存', icon: 'success' });
     setTimeout(() => wx.navigateBack(), 600);
   },

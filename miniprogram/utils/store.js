@@ -3,6 +3,7 @@
 // 全部持久化到本地存储，跨天自动重置「今日习惯」，积分与历史由 recompute 重建。
 
 const mock = require('./mock.js');
+const cloudData = require('./cloud-data.js');
 
 const KEY = 'checkInState';
 // 基准积分 = mock 默认积分 减去 默认已完成的今日任务积分，
@@ -99,6 +100,7 @@ function loadMeetings() {
 
 function saveMeetings(list) {
   wx.setStorageSync(MEETINGS_KEY, list);
+  cloudData.schedulePush();
 }
 
 function loadMeetingTasks() {
@@ -126,6 +128,7 @@ function getFamilyMembers() {
 
 function saveFamilyMembers(list) {
   wx.setStorageSync(FAMILY_MEMBERS_KEY, list);
+  cloudData.schedulePush();
 }
 
 // 家庭资料独立保存。现阶段使用本地存储承载「家长代管」，
@@ -151,6 +154,7 @@ function getFamilyProfile() {
     updatedAt: todayStr()
   };
   wx.setStorageSync(FAMILY_PROFILE_KEY, profile);
+  cloudData.schedulePush();
   return profile;
 }
 
@@ -160,6 +164,7 @@ function refreshFamilyInviteCode() {
     updatedAt: todayStr()
   });
   wx.setStorageSync(FAMILY_PROFILE_KEY, profile);
+  cloudData.schedulePush();
   return profile;
 }
 
@@ -208,11 +213,13 @@ function saveFamilyConvention(convention) {
   const content = typeof convention.content === 'string' ? convention.content.trim().slice(0, 1000) : '';
   const data = { title: title || '文小贤家的成长公约', content: content, updatedAt: formatToday() };
   wx.setStorageSync(FAMILY_CONVENTION_KEY, data);
+  cloudData.schedulePush();
   return data;
 }
 
 function save(st) {
   wx.setStorageSync(KEY, st);
+  cloudData.schedulePush();
 }
 
 function getAssessment() {
@@ -241,6 +248,7 @@ function saveAssessment(data) {
     focus: strengths[dimensions.length - 1] || null
   };
   wx.setStorageSync(ASSESSMENT_KEY, result);
+  cloudData.schedulePush();
   return result;
 }
 
@@ -516,6 +524,7 @@ function saveRewards(list) {
   const s = state();
   s.rewards = list;
   wx.setStorageSync(REWARDS_KEY, list);
+  cloudData.schedulePush();
 }
 
 // 轻量登录：仅标记已登录，与家庭会议解耦
