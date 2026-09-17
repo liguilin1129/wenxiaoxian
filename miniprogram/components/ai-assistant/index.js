@@ -34,6 +34,7 @@ Component({
     detached() {
       clearTimeout(this._keyboardTimer);
       if (this._recordManager && this.data.voiceRecording) this._recordManager.stop();
+      this.setPageScrollLocked(false);
     }
   },
 
@@ -47,6 +48,7 @@ Component({
     openPanel() {
       if (this.data.showPanel) return;
       const show = true;
+      this.setPageScrollLocked(true);
       this.setData({ showPanel: show });
       this.setTabBarHidden(show);
       if (show) {
@@ -75,6 +77,15 @@ Component({
       this._keyboardHeight = 0;
       this.setData({ showPanel: false, kbBottom: '0px' });
       this.setTabBarHidden(false);
+      this.setPageScrollLocked(false);
+    },
+
+    // 聊天面板打开时禁止底层页面滚动；scroll-view 仍可独立正常滚动。
+    setPageScrollLocked(locked) {
+      try {
+        if (locked && wx.disableScroll) wx.disableScroll();
+        if (!locked && wx.enableScroll) wx.enableScroll();
+      } catch (e) {}
     },
 
     // 打开聊天面板时把底部导航栏下移，避免遮挡输入框
