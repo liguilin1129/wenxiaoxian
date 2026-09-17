@@ -6,15 +6,15 @@
   </view>
 
   <view class="record-card">
-    <view class="record-card-head"><view class="record-title">近 7 天</view><view class="record-count">累计 {{totalCheckins}} 次记录</view></view>
-    <view class="calendar">
-      <view wx:for="{{calendar}}" wx:key="date" class="calendar-day {{item.today ? 'today' : ''}}">
-        <view class="calendar-week">{{item.day}}</view>
-        <view class="calendar-dot {{item.done ? 'done' : ''}}">{{item.done ? '✓' : '·'}}</view>
-        <view class="calendar-date">{{item.date}}</view>
+    <view class="record-card-head"><view class="record-title">打卡日历</view><view class="record-count">累计 {{totalCheckins}} 次记录</view></view>
+    <view class="calendar-nav"><view bindtap="previousMonth" class="calendar-nav-btn">‹</view><view class="calendar-month">{{monthLabel}}</view><view bindtap="nextMonth" class="calendar-nav-btn">›</view></view>
+    <view class="calendar-week-row"><text wx:for="{{weekLabels}}" wx:key="*this">{{item}}</text></view>
+    <view class="calendar-grid">
+      <view wx:for="{{calendar}}" wx:key="key" class="calendar-cell {{item.empty ? 'empty' : ''}} {{item.today ? 'today' : ''}} {{item.future ? 'future' : ''}}">
+        <view wx:if="{{!item.empty}}" class="calendar-date-circle {{item.done ? 'done' : ''}}">{{item.done ? '✓' : item.day}}</view>
       </view>
     </view>
-    <view class="calendar-tip"><text class="tip-dot done"></text>已打卡 <text class="tip-dot"></text>暂无记录</view>
+    <view class="calendar-tip"><text class="tip-dot done"></text>已打卡 <text class="tip-dot"></text>暂无记录 <text class="tip-ring"></text>今天</view>
   </view>
 
   <view class="history-title">打卡明细</view>
