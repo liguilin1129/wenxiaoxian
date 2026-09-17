@@ -11,8 +11,8 @@
 </view>
 
 <view class="scr-body">
-  <!-- 课程分类横向滚动 -->
-  <scroll-view scroll-x class="course-scroll" enable-flex>
+  <!-- 课程分类两列网格：真机上完整展示每张卡片文案 -->
+  <view class="course-section">
     <view class="course-list">
       <view class="course-card" wx:for="{{courses}}" wx:key="id" style="background:{{item.bg}}" bindtap="filterCourse" data-id="{{item.id}}">
         <view class="course-name">{{item.name}}</view>
@@ -21,7 +21,7 @@
         <image wx:if="{{item.cover}}" class="course-cover" src="{{item.cover}}" mode="aspectFill" />
       </view>
     </view>
-  </scroll-view>
+  </view>
 
   <!-- 案例分享 Tab -->
   <view class="case-share-header">
