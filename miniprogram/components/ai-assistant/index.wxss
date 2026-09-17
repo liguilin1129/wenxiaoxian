@@ -73,6 +73,9 @@
   animation: fade-in 0.2s ease;
   margin: 0;
   padding: 0;
+  overflow: hidden;
+  /* 阻断开发者工具鼠标滚轮的滚动链，避免滚到遮罩后的页面。 */
+  overscroll-behavior: contain;
 }
 @keyframes fade-in {
   from { opacity: 0; }
@@ -96,6 +99,7 @@
   padding: 0;
   box-shadow: 0 -8rpx 40rpx rgba(0, 0, 0, 0.12);
   z-index: 1;
+  overscroll-behavior: contain;
   animation: sheet-up 0.28s cubic-bezier(.22, .9, .33, 1);
 }
 @keyframes sheet-up {
@@ -147,6 +151,7 @@
   background: #EDEDED;
   padding: 24rpx 20rpx 16rpx;
   box-sizing: border-box;
+  overscroll-behavior: contain;
 }
 
 .msg-row {

@@ -3,7 +3,7 @@
   <view wx:if="{{!showPanel && !tabMode}}" class="ai-compact" bindtap="openPanel"><text>AI</text></view>
 
   <!-- 聊天面板（贴底弹层） -->
-  <view wx:if="{{showPanel}}" class="ai-mask" bindtap="onClose" catchtouchmove="preventMove">
+  <scroll-view wx:if="{{showPanel}}" class="ai-mask" scroll-y="{{false}}" bindtap="onClose" catchtouchmove="preventMove">
     <view class="ai-panel" style="top: 0; bottom: {{kbBottom}}" catchtap="preventMove">
       <!-- 面板头部（微信导航栏风格） -->
       <view class="panel-header">
@@ -87,5 +87,5 @@
         </view>
       </view>
     </view>
-  </view>
+  </scroll-view>
 </view>
