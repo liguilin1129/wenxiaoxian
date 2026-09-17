@@ -66,8 +66,10 @@
   left: 0;
   right: 0;
   bottom: 0;
+  width: 100vw;
+  height: 100vh;
   background: rgba(0, 0, 0, 0.35);
-  z-index: 999;
+  z-index: 10000;
   animation: fade-in 0.2s ease;
   margin: 0;
   padding: 0;
@@ -79,7 +81,7 @@
 
 /* ---- 聊天面板（贴底弹层） ---- */
 .ai-panel {
-  position: fixed;
+  position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
@@ -93,7 +95,7 @@
   margin: 0;
   padding: 0;
   box-shadow: 0 -8rpx 40rpx rgba(0, 0, 0, 0.12);
-  z-index: 1000;
+  z-index: 1;
   animation: sheet-up 0.28s cubic-bezier(.22, .9, .33, 1);
 }
 @keyframes sheet-up {
