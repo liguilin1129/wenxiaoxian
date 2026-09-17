@@ -6,7 +6,7 @@
   </view>
 
   <view class="record-card">
-    <view class="record-card-head"><view class="record-title">打卡日历</view><view class="record-count">累计 {{totalCheckins}} 次记录</view></view>
+    <view class="record-card-head"><view class="record-title">打卡日历</view><view class="record-count">本月已打卡 {{monthCheckinDays}} 天</view></view>
     <view class="calendar-nav"><view bindtap="previousMonth" class="calendar-nav-btn">‹</view><view class="calendar-month">{{monthLabel}}</view><view bindtap="nextMonth" class="calendar-nav-btn">›</view></view>
     <view class="calendar-week-row"><text wx:for="{{weekLabels}}" wx:key="*this">{{item}}</text></view>
     <view class="calendar-grid">
@@ -14,7 +14,7 @@
         <view wx:if="{{!item.empty}}" class="calendar-date-circle {{item.done ? 'done' : ''}}"><text>{{item.day}}</text><text wx:if="{{item.done}}" class="calendar-check-badge">✓</text></view>
       </view>
     </view>
-    <view class="calendar-tip"><text class="tip-dot done"></text>已打卡 <text class="tip-dot"></text>暂无记录 <text class="tip-ring"></text>今天</view>
+    <view class="calendar-summary"><view><text class="tip-dot done"></text>绿色日期表示已完成打卡</view><view>当前连续 <text>{{streak}}</text> 天</view></view>
   </view>
 
   <view class="history-title">打卡明细</view>

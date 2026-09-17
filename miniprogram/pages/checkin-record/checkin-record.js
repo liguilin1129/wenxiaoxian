@@ -34,7 +34,7 @@ function makeCalendar(year, month, records, todayDone) {
 }
 
 Page({
-  data: { streak: 0, calendar: [], records: [], totalCheckins: 0, year: 0, month: 0, monthLabel: '', weekLabels: WEEK },
+  data: { streak: 0, calendar: [], records: [], monthCheckinDays: 0, year: 0, month: 0, monthLabel: '', weekLabels: WEEK },
   onShow() { this.refresh(); },
   refresh(year, month) {
     const child = app.globalData.child || {};
@@ -48,7 +48,7 @@ Page({
       streak: Number(child.streak) || 0,
       calendar: calendar,
       records: records.slice(0, 20),
-      totalCheckins: records.length,
+      monthCheckinDays: calendar.filter(item => item.done).length,
       year: displayYear,
       month: displayMonth,
       monthLabel: displayYear + ' 年 ' + (displayMonth + 1) + ' 月'
