@@ -1,0 +1,19 @@
+<view class="scr-head"><view class="greet">仅成长圈成员可见</view><view class="title">成长圈空间</view></view>
+<view class="scr-body">
+  <view class="tabs"><view class="tab {{tab === 'feed' ? 'active' : ''}}" data-tab="feed" bindtap="changeTab">圈内动态</view><view class="tab {{tab === 'members' ? 'active' : ''}}" data-tab="members" bindtap="changeTab">成员管理</view></view>
+
+  <block wx:if="{{tab === 'feed'}}">
+    <view class="composer card"><textarea value="{{content}}" bindinput="inputContent" maxlength="300" placeholder="分享今天的成长、心得或好消息…"/><view class="composer-foot"><text>{{content.length}} / 300</text><button class="btn" bindtap="publish">发布</button></view></view>
+    <view wx:if="{{!loading && !posts.length}}" class="empty">还没有圈内动态，来发布第一条吧。</view>
+    <view wx:for="{{posts}}" wx:key="id" class="post card"><view class="post-head"><view class="avatar">{{item.avatar}}</view><view><view class="post-name">{{item.name}}</view><view class="post-time">{{item.time}} · #{{item.tag}}</view></view></view><view class="post-text">{{item.text}}</view><view class="post-actions"><text class="action {{item.liked ? 'liked' : ''}}" data-id="{{item.id}}" bindtap="toggleLike">{{item.liked ? '♥' : '♡'}} {{item.likeCount || 0}}</text><text class="action" data-id="{{item.id}}" bindtap="openComments">评论 {{item.commentCount || 0}}</text></view></view>
+  </block>
+
+  <block wx:else>
+    <view wx:if="{{!loading && !members.length}}" class="empty">暂时没有成员信息。</view>
+    <view wx:for="{{members}}" wx:key="id" class="member card"><view class="avatar">{{item.avatar}}</view><view class="member-info"><view>{{item.name}}<text wx:if="{{item.isSelf}}" class="self">（我）</text></view><view>{{item.role}}</view></view><text wx:if="{{isOwner && !item.isSelf}}" class="remove" data-member="{{item}}" bindtap="removeMember">移除</text></view>
+    <button wx:if="{{!isOwner}}" class="leave-btn" bindtap="leave">退出成长圈</button>
+    <view wx:if="{{isOwner}}" class="owner-note">你是管理员，可在此管理成员。管理员目前不能直接退出成长圈。</view>
+  </block>
+</view>
+
+<view wx:if="{{activePost}}" class="comment-mask" catchtap="closeComments"><view class="comment-panel" catchtap="noop"><view class="comment-title">评论 <text bindtap="closeComments">关闭</text></view><scroll-view scroll-y class="comment-list"><view wx:if="{{!comments.length}}" class="empty">还没有评论，来说一句鼓励的话吧。</view><view wx:for="{{comments}}" wx:key="id" class="comment"><view class="avatar">{{item.avatar}}</view><view><view class="comment-name">{{item.name}}</view><view class="comment-text">{{item.text}}</view></view></view></scroll-view><view class="comment-bar"><input value="{{commentText}}" bindinput="inputComment" maxlength="100" placeholder="说点友善的话…"/><button bindtap="sendComment">发送</button></view></view></view>

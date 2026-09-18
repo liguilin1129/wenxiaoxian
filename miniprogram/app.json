@@ -19,6 +19,7 @@
     "pages/community/articles",
     "pages/community/rank",
     "pages/community-circle/community-circle",
+    "pages/community-circle/circle-space",
     "pages/community-publish/community-publish",
     "pages/rewards/rewards",
     "pages/reward-edit/reward-edit",

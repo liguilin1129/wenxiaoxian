@@ -13,6 +13,7 @@
       <view class="code-label">圈子邀请码</view>
       <view class="code">{{current.inviteCode}}</view>
       <button class="btn" bindtap="copy">复制邀请码</button>
+      <view class="space-actions"><button class="btn soft" data-tab="feed" bindtap="goSpace">圈内动态</button><button class="btn soft" data-tab="members" bindtap="goSpace">成员管理</button></view>
       <button wx:if="{{current.role === '管理员'}}" class="btn soft manage-btn" bindtap="openEdit">管理成长圈</button>
     </view>
 
