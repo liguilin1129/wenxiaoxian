@@ -21,7 +21,7 @@ Page({
         key: 'community',
         icon: '💬',
         title: '社区',
-        desc: '成长圈 · 育儿干货 · 邻里打卡榜',
+        desc: '成长社区 · 育儿干货 · 成长榜',
         url: '/pages/community/community'
       },
       {

@@ -1,7 +1,7 @@
 <top-tabs tabs="{{tabs}}" current="rank" bind:change="onTabChange" />
 
 <view class="scr-body">
-  <view class="rank-intro"><view><view class="rank-intro-title">本周连续打卡榜</view><view class="rank-intro-sub">每一次坚持，都会成为成长的印记</view></view><view class="rank-intro-icon">🏆</view></view>
+  <view class="rank-intro"><view><view class="rank-intro-title">本周成长榜</view><view class="rank-intro-sub">与全体成长伙伴一起见证每一次坚持</view></view><view class="rank-intro-icon">🏆</view></view>
   <view class="ranks">
     <view wx:for="{{ranks}}" wx:key="id" class="rank {{item.me ? 'me' : ''}}">
       <view class="rno rno-{{item.id}}">{{item.id}}</view>

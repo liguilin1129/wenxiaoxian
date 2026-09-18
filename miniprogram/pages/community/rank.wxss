@@ -1,4 +1,4 @@
-/* 邻里打卡榜：品牌紫 + 灰阶，不使用多色渐变 */
+/* 成长榜：品牌紫 + 灰阶，不使用多色渐变 */
 .rank-intro { display:flex; align-items:center; justify-content:space-between; margin-bottom:20rpx; padding:26rpx 28rpx; border:1rpx solid rgba(94,92,230,.16); border-radius:var(--radius-sm); background:#F5F4FF; }.rank-intro-title { color:var(--ink-1); font-size:31rpx; font-weight:800; }.rank-intro-sub { margin-top:7rpx; color:var(--ink-3); font-size:22rpx; }.rank-intro-icon { width:68rpx; height:68rpx; display:flex; align-items:center; justify-content:center; border-radius:20rpx; background:#fff; font-size:34rpx; }
 .ranks .rank {
   display: flex;

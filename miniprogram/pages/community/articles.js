@@ -1,7 +1,7 @@
 const TABS = [
-  { key: 'feed', label: '成长圈' },
+  { key: 'feed', label: '成长社区' },
   { key: 'articles', label: '育儿干货' },
-  { key: 'rank', label: '邻里榜' }
+  { key: 'rank', label: '成长榜' }
 ];
 const URLS = {
   feed: '/pages/community/community',
