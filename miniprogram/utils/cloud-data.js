@@ -4,7 +4,7 @@ const SYNC_FUNCTION = 'userDataSync';
 const KEYS = [
   'childProfile', 'checkInState', 'growthAssessment', 'familyMembers', 'familyProfile',
   'familyConvention', 'familyMeetings', 'meetingTasks', 'parentRewards', 'classicVisited'
-  , 'reminderReadState'
+  , 'reminderReadState', 'communityUserPosts', 'communityUserArticles'
 ];
 
 let initialized = false;

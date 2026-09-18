@@ -1,5 +1,7 @@
 const app = getApp();
 const fs = wx.getFileSystemManager();
+const cloudData = require('../../utils/cloud-data.js');
+const cloudFile = require('../../utils/cloud-file.js');
 
 const FEED_TAGS = ['日常', '打卡', '成长', '经验'];
 const ARTICLE_TAGS = ['习惯养成', '经典学习', '家庭教育', '成长记录', '经验分享'];
@@ -20,6 +22,24 @@ function saveLocal(tempPath) {
       fail: err => reject(err)
     });
   });
+}
+
+async function persistMedia(item) {
+  const savedPath = await saveLocal(item.path);
+  const cloudPath = await cloudFile.upload(savedPath, 'community/media', item.type);
+  let thumbPath = item.thumb || savedPath;
+  if (thumbPath !== item.path) {
+    try { thumbPath = await saveLocal(thumbPath); } catch (error) {}
+  } else {
+    thumbPath = savedPath;
+  }
+  const cloudThumb = await cloudFile.upload(thumbPath, 'community/thumbs', 'image');
+  return {
+    path: cloudPath || savedPath,
+    type: item.type,
+    thumb: cloudThumb || thumbPath,
+    duration: item.duration
+  };
 }
 
 Page({
@@ -112,12 +132,7 @@ Page({
     wx.showLoading({ title: '发布中…', mask: true });
 
     // 把临时文件转成本地持久文件，避免重启后失效
-    const saveTasks = media.map(m => saveLocal(m.path).then(saved => ({
-      path: saved,
-      type: m.type,
-      thumb: m.type === 'video' ? saved : saved,
-      duration: m.duration
-    })));
+    const saveTasks = media.map(persistMedia);
 
     Promise.all(saveTasks).then(savedMedia => {
       const now = Date.now();
@@ -151,6 +166,7 @@ Page({
         });
         wx.setStorageSync('communityUserArticles', list);
       }
+      cloudData.schedulePush();
       wx.hideLoading();
       wx.showToast({ title: '发布成功', icon: 'success' });
       setTimeout(() => {
