@@ -1,7 +1,6 @@
 <top-tabs tabs="{{tabs}}" current="feed" bind:change="onTabChange" />
 
 <view class="scr-body">
-  <view class="circle-entry" bindtap="goCircle"><view><view class="circle-title">我的成长圈</view><view class="circle-sub">和同学家长、邻里或伙伴一起成长</view></view><text>›</text></view>
   <view class="feed">
     <view wx:for="{{feed}}" wx:key="id" class="post" data-id="{{item.id}}" bindtap="goPost">
       <view class="avatar sm">{{item.avatar}}</view>

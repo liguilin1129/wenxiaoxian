@@ -33,7 +33,6 @@ Page({
   goPublish() {
     wx.navigateTo({ url: '/pages/community-publish/community-publish?mode=feed' });
   },
-  goCircle() { wx.navigateTo({ url: '/pages/community-circle/community-circle' }); },
   goPost(e) {
     wx.navigateTo({ url: '/pages/community/post-detail?id=' + encodeURIComponent(e.currentTarget.dataset.id) });
   },

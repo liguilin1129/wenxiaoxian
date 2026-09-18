@@ -1,4 +1,0 @@
-function call(action, data) {
-  return new Promise(resolve => wx.cloud.callFunction({ name: 'communityCircle', data: Object.assign({ action }, data || {}), success: r => resolve(r.result || { ok: false, error: '服务无响应' }), fail: () => resolve({ ok: false, error: '无法连接成长圈服务' }) }));
-}
-module.exports = { get: () => call('get'), create: (name, profile) => call('create', Object.assign({ name }, profile || {})), join: (inviteCode, profile) => call('join', Object.assign({ inviteCode }, profile || {})), update: (name, renewInviteCode) => call('update', { name, renewInviteCode: !!renewInviteCode }), listPosts: () => call('listPosts'), publish: data => call('publish', data), toggleLike: postId => call('toggleLike', { postId }), listComments: postId => call('listComments', { postId }), comment: data => call('comment', data), members: () => call('members'), leave: () => call('leave'), removeMember: memberId => call('removeMember', { memberId }) };

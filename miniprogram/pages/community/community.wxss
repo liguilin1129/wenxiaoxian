@@ -1,7 +1,5 @@
 /* 社区页样式（复用 app.wxss 的 scr-head / scr-body / pill / avatar） */
 
-/* ---- 成长圈动态流 ---- */
-.circle-entry{display:flex;align-items:center;justify-content:space-between;margin-bottom:18rpx;padding:22rpx 24rpx;border-radius:22rpx;background:#F3F2FF;color:var(--brand-700)}.circle-title{font-size:28rpx;font-weight:750}.circle-sub{margin-top:5rpx;color:var(--ink-3);font-size:22rpx}.circle-entry>text{font-size:36rpx}
 .feed .post {
   display: flex;
   margin-bottom: 20rpx;
