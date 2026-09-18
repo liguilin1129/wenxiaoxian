@@ -29,10 +29,11 @@ exports.main = async event => {
     if (event.action === 'create') {
       const exists = await own(openId); if (exists) return { ok: true, circle: result(exists.circle, exists.role) };
       const id = 'circle_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
-      const circle = { _id: id, name: text(event.name, 20) || '我的成长圈', inviteCode: code(), ownerOpenId: openId, memberCount: 1, createdAt: db.serverDate() };
+      // _id 是数据库保留字段，由 doc(id) 指定，不能再写入 data。
+      const circle = { name: text(event.name, 20) || '我的成长圈', inviteCode: code(), ownerOpenId: openId, memberCount: 1, createdAt: db.serverDate() };
       await db.collection(CIRCLES).doc(id).set({ data: circle });
       await db.collection(MEMBERS).doc(id + '_' + openId).set({ data: { circleId: id, openId, role: '管理员', joinedAt: db.serverDate() } });
-      return { ok: true, circle: result(circle, '管理员') };
+      return { ok: true, circle: result(Object.assign({ _id: id }, circle), '管理员') };
     }
     if (event.action === 'join') {
       const exists = await own(openId); if (exists) return { ok: false, error: '你已经在一个成长圈中' };
