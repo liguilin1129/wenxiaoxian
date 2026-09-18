@@ -12,7 +12,9 @@ let pushTimer = null;
 let lastError = null;
 
 function init() {
-  if (initialized || !wx.cloud || !wx.cloud.init) return false;
+  // 已初始化后后续调用应复用成功状态，而不是被误判为不可用。
+  if (initialized) return true;
+  if (!wx.cloud || !wx.cloud.init) return false;
   try {
     wx.cloud.init({ env: ENV_ID, traceUser: true });
     initialized = true;
