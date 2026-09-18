@@ -9,6 +9,7 @@ const KEYS = [
 
 let initialized = false;
 let pushTimer = null;
+let lastError = null;
 
 function init() {
   if (initialized || !wx.cloud || !wx.cloud.init) return false;
@@ -29,13 +30,33 @@ function snapshot() {
 }
 
 function call(action, data) {
-  if (!init() || !wx.cloud || !wx.cloud.callFunction) return Promise.resolve({ ok: false });
+  if (!init() || !wx.cloud || !wx.cloud.callFunction) {
+    lastError = { code: 'CLOUD_UNAVAILABLE', message: '云开发初始化失败' };
+    console.error('[cloud-data]', lastError);
+    return Promise.resolve({ ok: false, error: lastError });
+  }
   return new Promise(resolve => {
     wx.cloud.callFunction({
       name: SYNC_FUNCTION,
       data: Object.assign({ action: action }, data || {}),
-      success: res => resolve(res && res.result ? res.result : { ok: false }),
-      fail: () => resolve({ ok: false })
+      success: res => {
+        const result = res && res.result ? res.result : { ok: false, error: { code: 'EMPTY_RESPONSE', message: '云函数没有返回结果' } };
+        if (!result.ok) {
+          lastError = result.error || { code: 'SYNC_FAILED', message: '云端同步失败' };
+          console.error('[cloud-data] ' + action + ' failed:', lastError);
+        } else {
+          lastError = null;
+        }
+        resolve(result);
+      },
+      fail: error => {
+        lastError = {
+          code: 'FUNCTION_CALL_FAILED',
+          message: String((error && error.errMsg) || '调用 userDataSync 失败')
+        };
+        console.error('[cloud-data] ' + action + ' failed:', lastError);
+        resolve({ ok: false, error: lastError });
+      }
     });
   });
 }
@@ -66,4 +87,6 @@ function schedulePush() {
   pushTimer = setTimeout(() => { pushTimer = null; push(); }, 1200);
 }
 
-module.exports = { init, pull, push, schedulePush, applySnapshot };
+function getLastError() { return lastError; }
+
+module.exports = { init, pull, push, schedulePush, applySnapshot, getLastError };

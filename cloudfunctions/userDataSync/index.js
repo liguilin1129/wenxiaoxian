@@ -7,6 +7,10 @@ cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 const COLLECTION = 'wenxiaoxian_user_data';
 
+function errorDetail(error) {
+  return String((error && (error.errCode || error.code || error.message)) || 'UNKNOWN').slice(0, 80);
+}
+
 function plainObject(value) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
   // 只接收可 JSON 序列化的数据，避免意外写入函数、循环引用等非用户资料内容。
@@ -25,7 +29,8 @@ exports.main = async (event) => {
     } catch (error) {
       // 云端没有首次数据时按空数据返回；其它错误不泄露服务端细节。
       if (error && (error.errCode === -502005 || error.errCode === 'DATABASE_RECORD_NOT_EXIST')) return { ok: true, data: null };
-      return { ok: false, error: { code: 'READ_FAILED', message: '暂时无法读取云端数据' } };
+      console.error('[userDataSync] read failed:', error);
+      return { ok: false, error: { code: 'READ_FAILED', message: '暂时无法读取云端数据', detail: errorDetail(error) } };
     }
   }
 
@@ -43,7 +48,8 @@ exports.main = async (event) => {
       });
       return { ok: true };
     } catch (error) {
-      return { ok: false, error: { code: 'SAVE_FAILED', message: '暂时无法保存云端数据' } };
+      console.error('[userDataSync] save failed:', error);
+      return { ok: false, error: { code: 'SAVE_FAILED', message: '暂时无法保存云端数据', detail: errorDetail(error) } };
     }
   }
 
