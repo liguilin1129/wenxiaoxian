@@ -1,6 +1,6 @@
 <view class="scr-head">
   <view class="home-nav">
-    <view><view class="title">成长花园</view><view class="greet">{{dateText}}</view></view>
+    <view><view class="greet">{{dateText}}</view><view class="title">成长花园</view></view>
     <view class="search-trigger" bindtap="openSearch"><text>🔍</text><text>搜索</text></view>
   </view>
 
