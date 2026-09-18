@@ -1,18 +1,12 @@
 // 云存储文件工具：用户发布的内容优先保存到云端，失败时由调用方保留本地文件兜底。
-const ENV_ID = 'cloud1-d6gz2xo6tac43e3eb';
 let initialized = false;
 
 function init() {
   if (initialized) return true;
-  if (!wx.cloud || !wx.cloud.init || !wx.cloud.uploadFile) return false;
-  try {
-    wx.cloud.init({ env: ENV_ID, traceUser: true });
-    initialized = true;
-    return true;
-  } catch (error) {
-    console.error('[cloud-file] 初始化失败', error);
-    return false;
-  }
+  // App.onLaunch 已由 cloud-data 统一初始化 wx.cloud；这里不能重复 init。
+  if (!wx.cloud || !wx.cloud.uploadFile) return false;
+  initialized = true;
+  return true;
 }
 
 function extension(filePath, type) {

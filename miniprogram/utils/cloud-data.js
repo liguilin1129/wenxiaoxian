@@ -17,7 +17,10 @@ function init() {
     wx.cloud.init({ env: ENV_ID, traceUser: true });
     initialized = true;
     return true;
-  } catch (error) { return false; }
+  } catch (error) {
+    console.error('[cloud-data] 云开发初始化失败', error);
+    return false;
+  }
 }
 
 function snapshot() {

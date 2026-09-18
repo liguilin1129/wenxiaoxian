@@ -23,8 +23,8 @@ App({
   },
 
   onLaunch() {
+    // 云开发只初始化一次；云函数、云托管和云存储均复用同一个环境。
     cloudData.init();
-    if (apiConfig.USE_CLOUD_HOSTING) cloudHosting.init();
     const signed = wx.getStorageSync('signed');
     if (signed) {
       this.globalData.signed = true;
