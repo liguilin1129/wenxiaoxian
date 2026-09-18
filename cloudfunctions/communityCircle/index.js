@@ -8,7 +8,14 @@ const text = (v, n) => typeof v === 'string' ? v.trim().slice(0, n) : '';
 function code() { let v = ''; for (let i = 0; i < 6; i++) v += chars[Math.floor(Math.random() * chars.length)]; return v; }
 function result(circle, role) { return { id: circle._id, name: circle.name, inviteCode: circle.inviteCode, memberCount: circle.memberCount || 1, role: role || '成员' }; }
 async function own(openId) {
-  const r = await db.collection(MEMBERS).where({ openId }).limit(1).get();
+  let r;
+  try {
+    r = await db.collection(MEMBERS).where({ openId }).limit(1).get();
+  } catch (error) {
+    // 首次使用时成员集合尚未生成，按“尚未加入任何圈子”处理。
+    if (error && (error.errCode === -502001 || error.errCode === 'DATABASE_COLLECTION_NOT_EXIST')) return null;
+    throw error;
+  }
   if (!r.data.length) return null;
   const member = r.data[0];
   const circle = await db.collection(CIRCLES).doc(member.circleId).get();
