@@ -1,3 +1,4 @@
+<view class="scr-head"><view class="greet">成长打卡</view><view class="title">打卡记录</view></view>
 <view class="record-page">
   <view class="record-hero">
     <view class="record-hero-label">当前连续打卡</view>

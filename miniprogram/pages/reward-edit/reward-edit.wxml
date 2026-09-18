@@ -1,3 +1,4 @@
+<view class="scr-head"><view class="greet">奖励商城</view><view class="title">{{mode === 'edit' ? '编辑心愿' : '新增心愿'}}</view></view>
 <view class="scr-body">
   <view class="form-card">
     <view class="field">

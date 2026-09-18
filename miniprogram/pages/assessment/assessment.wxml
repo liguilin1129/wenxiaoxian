@@ -1,5 +1,6 @@
+<view class="scr-head"><view class="greet">家长填写</view><view class="title">成长初评</view></view>
 <scroll-view class="assessment-page" scroll-y>
-  <view class="assessment-hero"><view class="assessment-kicker">家长成长初评</view><view class="assessment-title">一起发现孩子的成长起点</view><view class="assessment-desc">请依据近 2 周的日常情况选择。结果用于推荐家庭成长任务，不作医疗或心理诊断。</view></view>
+  <view class="assessment-hero"><view class="assessment-desc">请依据近 2 周的日常情况选择。结果用于推荐家庭成长任务，不作医疗或心理诊断。</view></view>
 
   <view wx:if="{{!result}}">
     <view class="assessment-tip">共 12 题，约需 3 分钟。没有标准答案，如实选择即可。</view>

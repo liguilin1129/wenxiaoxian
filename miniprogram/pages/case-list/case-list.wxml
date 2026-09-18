@@ -1,4 +1,5 @@
 <view class="scr-head case-head">
+  <view class="greet">成长案例</view>
   <view class="title">学员案例</view>
   <!-- 搜索栏 -->
   <view class="case-search">

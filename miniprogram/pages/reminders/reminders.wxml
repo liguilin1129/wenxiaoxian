@@ -1,3 +1,4 @@
+<view class="scr-head"><view class="greet">成长管理</view><view class="title">提醒中心</view></view>
 <view class="reminder-page">
   <view class="reminder-hero"><view><view class="reminder-kicker">成长提醒</view><view class="reminder-title">把重要的事，及时做好</view><view class="reminder-desc">提醒会根据任务、家长确认、家庭会议和成长初评自动生成。</view></view><view class="reminder-hero-icon">🔔</view></view>
   <view wx:if="{{reminders.length}}" class="reminder-toolbar"><text>待处理 {{reminders.length}} 项</text><text bindtap="markAllRead">全部标记已读</text></view>

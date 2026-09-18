@@ -1,3 +1,4 @@
+<view class="scr-head"><view class="greet">精选文章</view><view class="title">文章详情</view></view>
 <view wx:if="{{article}}" class="page">
   <view class="aheader">
     <view class="acover big">{{article.cover}}</view>

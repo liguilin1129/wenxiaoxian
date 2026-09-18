@@ -1,3 +1,4 @@
+<view class="scr-head"><view class="greet">{{mode === 'article' ? '育儿干货' : '成长社区'}}</view><view class="title">{{mode === 'article' ? '发布经验' : '发布动态'}}</view></view>
 <view class="scr-body">
   <view class="pub-hint">
     {{mode === 'article' ? '分享你的育儿经验，帮助更多家长' : '记录孩子日常，和邻里一起成长'}}
