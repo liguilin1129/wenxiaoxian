@@ -1,11 +1,6 @@
-// 只有开发者工具能访问电脑本机的 127.0.0.1；真机调试也必须走公网 HTTPS 域名。
+// 日常开发、真机调试和体验版统一走云端，不再依赖开发电脑上的 npm start。
 // 不要在此文件放置 AppSecret、access_token 或任何服务端密钥。
-let isDevtools = false;
-try {
-  isDevtools = wx.getSystemInfoSync().platform === 'devtools';
-} catch (error) {}
-
 module.exports = {
-  BASE_URL: isDevtools ? 'http://127.0.0.1:3000' : '',
-  USE_CLOUD_HOSTING: !isDevtools
+  BASE_URL: '',
+  USE_CLOUD_HOSTING: true
 };
