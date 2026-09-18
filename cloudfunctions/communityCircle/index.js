@@ -46,6 +46,16 @@ exports.main = async event => {
       circle.memberCount = (circle.memberCount || 1) + 1;
       return { ok: true, circle: result(circle, '成员') };
     }
+    if (event.action === 'update') {
+      const item = await own(openId);
+      if (!item) return { ok: false, error: '请先创建或加入成长圈' };
+      if (item.circle.ownerOpenId !== openId) return { ok: false, error: '只有管理员可以编辑成长圈' };
+      const name = text(event.name, 20) || item.circle.name;
+      const data = { name: name };
+      if (event.renewInviteCode) data.inviteCode = code();
+      await db.collection(CIRCLES).doc(item.circle._id).update({ data });
+      return { ok: true, circle: result(Object.assign({}, item.circle, data), item.role) };
+    }
     return { ok: false, error: '不支持的操作' };
   } catch (e) { console.error('[communityCircle]', e); return { ok: false, error: '成长圈服务暂时不可用' }; }
 };

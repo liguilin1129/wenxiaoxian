@@ -1,1 +1,47 @@
-<view class="scr-head"><view class="greet">同学 · 邻里 · 兴趣小组</view><view class="title">我的成长圈</view></view><view class="scr-body"><view wx:if="{{loading}}" class="empty">正在读取成长圈…</view><block wx:elif="{{current}}"><view class="card"><view class="name">{{current.name}}</view><view class="meta">{{current.memberCount}} 位成员 · {{current.role}}</view><view class="code-label">圈子邀请码</view><view class="code">{{current.inviteCode}}</view><button class="btn" bindtap="copy">复制邀请码</button></view><view class="tip">把邀请码发给同学家长、邻居或课程伙伴。圈内内容仅向成员展示。</view></block><block wx:else><view class="card"><view class="h3">创建成长圈</view><input class="input" placeholder="例如：阳光花园家长圈" value="{{name}}" bindinput="inputName"/><button class="btn" bindtap="create">创建并获取邀请码</button></view><view class="card"><view class="h3">加入已有成长圈</view><input class="input" placeholder="输入 6 位邀请码" maxlength="6" value="{{inviteCode}}" bindinput="inputCode"/><button class="btn soft" bindtap="join">加入成长圈</button></view></block></view>
+<view class="scr-head">
+  <view class="greet">同学 · 邻里 · 兴趣小组</view>
+  <view class="title">我的成长圈</view>
+</view>
+
+<view class="scr-body">
+  <view wx:if="{{loading}}" class="empty">正在读取成长圈…</view>
+
+  <block wx:elif="{{current}}">
+    <view class="card">
+      <view class="name">{{current.name}}</view>
+      <view class="meta">{{current.memberCount}} 位成员 · {{current.role}}</view>
+      <view class="code-label">圈子邀请码</view>
+      <view class="code">{{current.inviteCode}}</view>
+      <button class="btn" bindtap="copy">复制邀请码</button>
+      <button wx:if="{{current.role === '管理员'}}" class="btn soft manage-btn" bindtap="openEdit">管理成长圈</button>
+    </view>
+
+    <view wx:if="{{editing}}" class="card edit-card">
+      <view class="h3">编辑成长圈</view>
+      <input class="input" placeholder="成长圈名称" maxlength="20" value="{{editName}}" bindinput="inputEditName" />
+      <view class="edit-actions">
+        <button class="btn soft" bindtap="cancelEdit">取消</button>
+        <button class="btn" bindtap="saveEdit">保存名称</button>
+      </view>
+      <view class="renew-row">
+        <view>重新生成邀请码后，旧邀请码将失效</view>
+        <text bindtap="renewCode">换一组</text>
+      </view>
+    </view>
+
+    <view class="tip">把邀请码发给同学家长、邻居或课程伙伴。圈内内容仅向成员展示。</view>
+  </block>
+
+  <block wx:else>
+    <view class="card">
+      <view class="h3">创建成长圈</view>
+      <input class="input" placeholder="例如：阳光花园家长圈" value="{{name}}" bindinput="inputName" />
+      <button class="btn" bindtap="create">创建并获取邀请码</button>
+    </view>
+    <view class="card">
+      <view class="h3">加入已有成长圈</view>
+      <input class="input" placeholder="输入 6 位邀请码" maxlength="6" value="{{inviteCode}}" bindinput="inputCode" />
+      <button class="btn soft" bindtap="join">加入成长圈</button>
+    </view>
+  </block>
+</view>
