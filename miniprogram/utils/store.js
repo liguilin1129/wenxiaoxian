@@ -17,7 +17,6 @@ const MEETINGS_KEY = 'familyMeetings';
 const MEETING_TASKS_KEY = 'meetingTasks'; // 今日任务中来自会议的新增项
 const FAMILY_MEMBERS_KEY = 'familyMembers';
 const FAMILY_CONVENTION_KEY = 'familyConvention';
-const FAMILY_PROFILE_KEY = 'familyProfile';
 const ASSESSMENT_KEY = 'growthAssessment';
 const REMINDER_READ_KEY = 'reminderReadState';
 const GROWTH_GOALS_KEY = 'localGrowthGoals';
@@ -149,42 +148,6 @@ function saveFamilyMembers(list) {
   cloudData.schedulePush();
 }
 
-// 家庭资料独立保存。现阶段使用本地存储承载「家长代管」，
-// 后续接入云数据库时可按 familyId / inviteCode 原样迁移为跨账号家庭。
-function createInviteCode() {
-  const chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
-  let code = '';
-  for (let i = 0; i < 6; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
-  return code;
-}
-
-function getFamilyProfile() {
-  const saved = wx.getStorageSync(FAMILY_PROFILE_KEY);
-  if (saved && typeof saved === 'object' && saved.inviteCode) return saved;
-  const members = getFamilyMembers();
-  const child = members.find(item => item.role === '孩子') || {};
-  const profile = {
-    familyId: 'local_family_' + Date.now(),
-    name: (child.name || '文小贤') + '的成长家庭',
-    mode: 'parent_managed',
-    inviteCode: createInviteCode(),
-    createdAt: todayStr(),
-    updatedAt: todayStr()
-  };
-  wx.setStorageSync(FAMILY_PROFILE_KEY, profile);
-  cloudData.schedulePush();
-  return profile;
-}
-
-function refreshFamilyInviteCode() {
-  const profile = Object.assign({}, getFamilyProfile(), {
-    inviteCode: createInviteCode(),
-    updatedAt: todayStr()
-  });
-  wx.setStorageSync(FAMILY_PROFILE_KEY, profile);
-  cloudData.schedulePush();
-  return profile;
-}
 
 function updateFamilyMember(member) {
   const list = getFamilyMembers();
@@ -884,6 +847,5 @@ module.exports = {
   getRewards, saveRewards,
   getMeetings, createMeeting, updateMeeting, closeMeeting,
   getFamilyMembers, updateFamilyMember, addFamilyMember, removeFamilyMember, getFamilyConvention, saveFamilyConvention,
-  getFamilyProfile, refreshFamilyInviteCode,
   isCaseLiked, isCaseFaved, toggleCaseLike, toggleCaseFav
 };

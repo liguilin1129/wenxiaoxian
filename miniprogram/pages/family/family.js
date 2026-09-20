@@ -5,8 +5,7 @@ Page({
   data: {
     members: [],
     pendingCount: 0,
-    stats: { tasks: 0, rewards: 0 },
-    familyProfile: null
+    stats: { tasks: 0, rewards: 0 }
   },
   onShow() {
     this.refresh();
@@ -25,8 +24,7 @@ Page({
     this.setData({
       members: store.getFamilyMembers(),
       pendingCount: pending,
-      stats: stats,
-      familyProfile: store.getFamilyProfile()
+      stats: stats
     });
   },
   goMeeting() {
@@ -41,22 +39,5 @@ Page({
   },
   addMember() {
     wx.navigateTo({ url: '/pages/family/member-edit?mode=add' });
-  },
-  copyInviteCode() {
-    const code = this.data.familyProfile && this.data.familyProfile.inviteCode;
-    if (!code) return;
-    wx.setClipboardData({ data: code, success: () => wx.showToast({ title: '邀请码已复制', icon: 'success' }) });
-  },
-  renewInviteCode() {
-    wx.showModal({
-      title: '更换家庭邀请码',
-      content: '旧邀请码将失效，确定生成一组新的邀请码吗？',
-      confirmText: '生成新码',
-      success: (res) => {
-        if (!res.confirm) return;
-        this.setData({ familyProfile: store.refreshFamilyInviteCode() });
-        wx.showToast({ title: '已生成新邀请码', icon: 'success' });
-      }
-    });
   }
 });
