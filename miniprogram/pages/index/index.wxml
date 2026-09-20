@@ -231,12 +231,18 @@
           <view class="ghead-more" bindtap="goClassics">全部经典 <text class="chev">›</text></view>
         </view>
         <view class="classic-today-body">
-          <view class="row between classic-today-row">
+          <view
+            wx:for="{{classicRecommendations}}"
+            wx:key="name"
+            class="row between classic-today-row"
+            data-name="{{item.name}}"
+            catchtap="goClassicRead"
+          >
             <view class="classic-today-copy">
-              <view class="classic-today-title">《{{classicToday.name}}》</view>
-              <view class="classic-today-sub">已读 {{classicToday.read}} / {{classicToday.total}} 章 · 继续诵读</view>
+              <view class="classic-today-title">《{{item.name}}》</view>
+              <view class="classic-today-sub">已读 {{item.read}} / {{item.total}} 章 · {{item.read ? '继续诵读' : '开始学习'}}</view>
             </view>
-            <text class="btn sm classic-read-btn">诵读</text>
+            <text class="classic-read-btn">诵读</text>
           </view>
         </view>
       </view>

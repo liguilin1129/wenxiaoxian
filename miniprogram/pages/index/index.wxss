@@ -233,12 +233,13 @@
 
 /* 经典今日推荐：保证文字区在小屏下有足够空间，不被右侧按钮挤压 */
 .classic-today-card { padding: 0; }
-.classic-today-body { padding: 24rpx 28rpx 28rpx; }
-.classic-today-row { gap: 20rpx; }
+.classic-today-body { padding: 4rpx 28rpx 10rpx; }
+.classic-today-row { min-height: 106rpx; gap: 20rpx; padding: 18rpx 0; }
+.classic-today-row + .classic-today-row { border-top: 1rpx solid var(--sep); }
 .classic-today-copy { flex: 1; min-width: 0; }
-.classic-today-title { font-size: 32rpx; font-weight: 700; color: var(--ink-1); line-height: 1.35; }
-.classic-today-sub { margin-top: 8rpx; font-size: 26rpx; color: var(--ink-3); line-height: 1.45; }
-.classic-read-btn { flex: none; margin: 0; white-space: nowrap; }
+.classic-today-title { font-size: 29rpx; font-weight: 700; color: var(--ink-1); line-height: 1.35; }
+.classic-today-sub { margin-top: 5rpx; font-size: 23rpx; color: var(--ink-3); line-height: 1.45; }
+.classic-read-btn { flex: none; margin: 0; padding: 12rpx 18rpx; border-radius: 16rpx; background: var(--brand); color: #fff; font-size: 24rpx; font-weight: 700; white-space: nowrap; }
 
 /* 未登录游客态 */
 .guest-hero {

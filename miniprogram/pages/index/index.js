@@ -40,7 +40,7 @@ Page({
     levelPct: 0,
     nextLevel: 6,
     need: 0,
-    classicToday: {},
+    classicRecommendations: [],
     quickEntries: QUICK_ENTRIES,
     reminders: [],
     searchOpen: false,
@@ -88,6 +88,12 @@ Page({
     const ovPct = total ? Math.round(doneCount / total * 100) : 0;
 
     const reminders = store.getSmartReminders().slice(0, 2);
+    // 首页固定展示 3 本：优先续读进行中的经典，再补充未开始的经典。
+    const classics = (g.classics || mock.classics).slice();
+    const reading = classics.filter(book => book.read > 0 && book.read < book.total);
+    const unread = classics.filter(book => !book.read);
+    const finished = classics.filter(book => book.read >= book.total && book.total > 0);
+    const classicRecommendations = reading.concat(unread, finished).slice(0, 3);
 
     this.setData({
       signed: true,
@@ -102,7 +108,7 @@ Page({
       levelPct: levelPct,
       nextLevel: child.levelNum + 1,
       need: need,
-      classicToday: mock.classicToday,
+      classicRecommendations: classicRecommendations,
       reminders: reminders,
       // 荣誉墙：加载成就勋章 + 已点亮数量
       badges: store.getBadges().slice(0, 8),
@@ -118,6 +124,10 @@ Page({
   goPoints() { wx.navigateTo({ url: '/pages/points/points' }); },
   goCheckin() { wx.navigateTo({ url: '/pages/checkin/checkin' }); },
   goClassics() { wx.navigateTo({ url: '/pages/classics/classics' }); },
+  goClassicRead(e) {
+    const name = e.currentTarget.dataset.name;
+    if (name) wx.navigateTo({ url: '/pages/classic-read/classic-read?name=' + encodeURIComponent(name) });
+  },
   goTasks() { wx.switchTab({ url: '/pages/tasks/tasks' }); },
   goBadges() {
     wx.navigateTo({ url: '/pages/badges/badges' });
