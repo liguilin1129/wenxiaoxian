@@ -56,10 +56,10 @@
     </view>
 
     <view class="igroup">
-      <view class="ghead">
-        <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">功能介绍</view></view>
-      </view>
       <view class="igroup-card">
+        <view class="ghead">
+          <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">功能介绍</view></view>
+        </view>
         <view class="irow" wx:for="{{guestFeats}}" wx:key="name">
           <view class="ic">{{item.icon}}</view>
           <view class="tx">
@@ -100,11 +100,11 @@
 
     <!-- 荣誉墙 -->
     <view class="igroup">
-      <view class="ghead">
-        <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">荣誉墙</view></view>
-        <view class="ghead-more" bindtap="goBadges">全部勋章 <text class="chev">›</text></view>
-      </view>
       <view class="igroup-card">
+        <view class="ghead">
+          <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">荣誉墙</view></view>
+          <view class="ghead-more" bindtap="goBadges">全部勋章 <text class="chev">›</text></view>
+        </view>
         <view class="badge-user">
           <view class="avatar">{{child.avatar}}</view>
           <view class="top-bar-info">
@@ -123,31 +123,33 @@
 
     <!-- 快捷入口 -->
     <view class="igroup">
-      <view class="ghead">
-        <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">快捷入口</view></view>
-      </view>
-      <view class="igroup-card quick-grid">
-        <view
-          class="quick-item"
-          wx:for="{{quickEntries}}"
-          wx:key="name"
-          data-url="{{item.url}}"
-          data-tab="{{item.tab}}"
-          bindtap="goQuick"
-        >
-          <view class="quick-ic quick-ic-{{index}}"><view class="quick-symbol"></view></view>
-          <view class="quick-name">{{item.name}}</view>
+      <view class="igroup-card">
+        <view class="ghead">
+          <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">快捷入口</view></view>
+        </view>
+        <view class="quick-grid">
+          <view
+            class="quick-item"
+            wx:for="{{quickEntries}}"
+            wx:key="name"
+            data-url="{{item.url}}"
+            data-tab="{{item.tab}}"
+            bindtap="goQuick"
+          >
+            <view class="quick-ic quick-ic-{{index}}"><view class="quick-symbol"></view></view>
+            <view class="quick-name">{{item.name}}</view>
+          </view>
         </view>
       </view>
     </view>
 
     <!-- 智能提醒 -->
     <view class="igroup" wx:if="{{reminders.length}}">
-      <view class="ghead">
-        <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">智能提醒</view></view>
-        <view class="ghead-more" bindtap="goReminders">全部提醒 <text class="chev">›</text></view>
-      </view>
       <view class="igroup-card">
+        <view class="ghead">
+          <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">智能提醒</view></view>
+          <view class="ghead-more" bindtap="goReminders">全部提醒 <text class="chev">›</text></view>
+        </view>
         <view class="reminder-item" wx:for="{{reminders}}" wx:key="id" data-target="{{item.target}}" bindtap="goReminderTarget">
           <text class="reminder-ic">{{item.icon}}</text>
           <text class="reminder-txt">{{item.text}}</text>
@@ -158,11 +160,11 @@
 
     <!-- 今日概览 -->
     <view class="igroup">
-      <view class="ghead">
-        <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">今日概览</view></view>
-        <view class="ghead-more" bindtap="goCheckin">查看全部 <text class="chev">›</text></view>
-      </view>
       <view class="igroup-card ov-card">
+        <view class="ghead">
+          <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">今日概览</view></view>
+          <view class="ghead-more" bindtap="goCheckin">查看全部 <text class="chev">›</text></view>
+        </view>
         <view class="ov-body">
           <view class="ring" style="background: conic-gradient(var(--brand) {{ovPct}}%, var(--line) 0)">
             <view class="ring-inner">
@@ -190,11 +192,11 @@
 
     <!-- 四维成长 -->
     <view class="igroup">
-      <view class="ghead">
-        <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">四维成长</view></view>
-        <view class="ghead-more" bindtap="goReport">成长报告 <text class="chev">›</text></view>
-      </view>
       <view class="igroup-card">
+        <view class="ghead">
+          <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">四维成长</view></view>
+          <view class="ghead-more" bindtap="goReport">成长报告 <text class="chev">›</text></view>
+        </view>
         <view class="irow" wx:for="{{dims}}" wx:key="key" bindtap="goReport">
           <text class="dot" style="background:{{item.color}}"></text>
           <view class="tx" style="margin-left:14rpx">{{item.name}}</view>
@@ -206,11 +208,11 @@
 
     <!-- 今日待打卡 -->
     <view class="igroup">
-      <view class="ghead">
-        <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">今日待打卡</view></view>
-        <view class="ghead-more" bindtap="goTasks">任务中心 <text class="chev">›</text></view>
-      </view>
       <view class="igroup-card">
+        <view class="ghead">
+          <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">今日待打卡</view></view>
+          <view class="ghead-more" bindtap="goTasks">任务中心 <text class="chev">›</text></view>
+        </view>
         <view class="irow" wx:for="{{today}}" wx:key="id" data-id="{{item.id}}" bindtap="toggleToday">
           <view class="check {{item.done ? 'on' : ''}}">{{item.done ? '✓' : ''}}</view>
           <view class="tx" style="margin-left:18rpx">{{item.name}}</view>
@@ -221,11 +223,11 @@
 
     <!-- 经典今日推荐 -->
     <view class="igroup">
-      <view class="ghead">
-        <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">经典今日推荐</view></view>
-        <view class="ghead-more" bindtap="goClassics">全部经典 <text class="chev">›</text></view>
-      </view>
       <view class="igroup-card tap classic-today-card" bindtap="goClassics">
+        <view class="ghead">
+          <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">经典今日推荐</view></view>
+          <view class="ghead-more" bindtap="goClassics">全部经典 <text class="chev">›</text></view>
+        </view>
         <view class="row between classic-today-row">
           <view class="classic-today-copy">
             <view class="classic-today-title">《{{classicToday.name}}》</view>
