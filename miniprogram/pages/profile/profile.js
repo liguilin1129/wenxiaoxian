@@ -4,6 +4,7 @@ const store = require('../../utils/store.js');
 Page({
   data: {
     signed: false,
+    mode: 'parent',
     child: {},
     pendingApprovals: 0,
     assessment: null,
@@ -17,6 +18,7 @@ Page({
       { icon: '🎁', name: '奖励兑换', action: 'goRewards', bg: '#ECFDF5', color: '#0F9D6B' },
       { icon: '✅', name: '家长确认', action: 'goApprovals', bg: '#F5F3FF', color: '#7C3AED' },
       { icon: '📖', name: '经典书架', action: 'goClassics', bg: '#EEF2FF', color: '#4338CA' }
+      ,{ icon: '👨', name: '使用模式', action: 'goMode', bg: '#EEF2FF', color: '#4338CA' }
     ]
   },
   onShow() {
@@ -37,12 +39,13 @@ Page({
     stats[1].num = child.points || 0;
     stats[2].num = child.streak || 0;
     const pendingApprovals = store.getPendingApprovals().length;
+    const mode = store.getAppMode();
     const tools = this.data.tools.map(item => Object.assign({}, item, {
       badge: item.action === 'goApprovals' && pendingApprovals ? pendingApprovals : 0
-    }));
+    })).filter(item => mode === 'parent' || item.action !== 'goApprovals');
     const age = child.birthday ? Math.max(0, new Date().getFullYear() - Number(String(child.birthday).slice(0, 4))) : '';
     const bmi = child.height && child.weight ? (Number(child.weight) / Math.pow(Number(child.height) / 100, 2)).toFixed(1) : '';
-    this.setData({ signed: true, child: Object.assign({}, child, { age: age, bmi: bmi }), stats: stats, tools: tools, pendingApprovals: pendingApprovals, assessment: store.getAssessment() });
+    this.setData({ signed: true, mode, child: Object.assign({}, child, { age: age, bmi: bmi }), stats: stats, tools: tools, pendingApprovals: pendingApprovals, assessment: store.getAssessment() });
   },
   goLogin() { wx.navigateTo({ url: '/pages/login/login' }); },
   editProfile() { wx.navigateTo({ url: '/pages/profile-edit/profile-edit' }); },
@@ -55,7 +58,9 @@ Page({
   goMembers() { wx.navigateTo({ url: '/pages/family/family' }); },
   goApprovals() { wx.navigateTo({ url: '/pages/approvals/approvals' }); },
   goAssessment() { wx.navigateTo({ url: '/pages/assessment/assessment' }); },
+  goMode() { wx.navigateTo({ url: '/pages/app-mode/app-mode' }); },
   goSettings() { wx.showToast({ title: '提醒 · 主题', icon: 'none' }); },
+  switchMode(e) { const mode = store.setAppMode(e.currentTarget.dataset.mode); this.setData({ mode }); wx.showToast({ title: mode === 'child' ? '已切换为孩子模式' : '已切换为家长模式', icon: 'none' }); this.onShow(); },
   logout() {
     wx.showModal({
       title: '退出成长花园',

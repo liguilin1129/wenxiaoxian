@@ -35,6 +35,8 @@
   <view class="card" wx:if="{{status === 'todo'}}">
     <view class="h3">完成小记 <text class="muted">可选</text></view>
     <textarea class="checkin-note" placeholder="例如：我完成了 20 分钟运动，今天感觉很有精神。" maxlength="80" value="{{note}}" bindinput="onNoteInput" />
+    <view class="evidence-head"><text>打卡证明 <text class="muted">可选，最多 3 个</text></text><text bindtap="chooseEvidence">添加照片/视频</text></view>
+    <view wx:if="{{evidence.length}}" class="evidence-list"><view wx:for="{{evidence}}" wx:key="path" class="evidence-item" data-index="{{index}}" bindtap="previewEvidence"><image wx:if="{{item.type === 'image'}}" src="{{item.path}}" mode="aspectFill"/><view wx:else class="video-evidence">▶</view><text catchtap="removeEvidence">×</text></view></view>
   </view>
 
   <button class="btn {{status === 'approved' ? 'btn-done' : ''}} {{status === 'pending' ? 'btn-pending' : ''}}" style="margin-top:8rpx" bindtap="checkin">

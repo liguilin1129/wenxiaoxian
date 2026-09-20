@@ -26,6 +26,7 @@
     "pages/report/report",
     "pages/growth-archive/growth-archive",
     "pages/growth-goals/growth-goals",
+    "pages/app-mode/app-mode",
     "pages/assessment/assessment",
     "pages/profile/profile",
     "pages/profile-edit/profile-edit",

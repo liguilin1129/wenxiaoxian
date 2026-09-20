@@ -21,6 +21,9 @@ const FAMILY_PROFILE_KEY = 'familyProfile';
 const ASSESSMENT_KEY = 'growthAssessment';
 const REMINDER_READ_KEY = 'reminderReadState';
 const GROWTH_GOALS_KEY = 'localGrowthGoals';
+const APP_MODE_KEY = 'localAppMode';
+const LOCAL_DATA_VERSION_KEY = 'localDataVersion';
+const LEVELS = [{ level: 1, name: '成长新芽', exp: 0 }, { level: 2, name: '习惯幼苗', exp: 200 }, { level: 3, name: '自律新星', exp: 600 }, { level: 4, name: '成长先锋', exp: 1200 }, { level: 5, name: '少年榜样', exp: 2000 }, { level: 6, name: '习惯大师', exp: 3200 }, { level: 7, name: '成长领航员', exp: 4800 }, { level: 8, name: '卓越少年', exp: 7000 }];
 
 const GROWTH_GOAL_TEMPLATES = {
   heart: { name: '情绪与关怀', desc: '练习表达感受、理解他人和遵守家庭约定。', stages: [{ name: '每天说出一种感受', points: 5, target: 3 }, { name: '遇到不开心时先停一停再表达', points: 8, target: 5 }, { name: '主动关心一位家人', points: 10, target: 7 }] },
@@ -246,6 +249,15 @@ function saveGrowthGoals(goals) {
   wx.setStorageSync(GROWTH_GOALS_KEY, goals);
 }
 
+function getAppMode() { return wx.getStorageSync(APP_MODE_KEY) === 'child' ? 'child' : 'parent'; }
+function setAppMode(mode) { const next = mode === 'child' ? 'child' : 'parent'; wx.setStorageSync(APP_MODE_KEY, next); return next; }
+function isParentMode() { return getAppMode() === 'parent'; }
+function ensureLocalDataSchema() { if (Number(wx.getStorageSync(LOCAL_DATA_VERSION_KEY)) < 1) wx.setStorageSync(LOCAL_DATA_VERSION_KEY, 1); }
+function getLevelStatus(experience) { const exp = Math.max(0, Number(experience) || 0); let current = LEVELS[0]; for (let i = 0; i < LEVELS.length; i++) { if (exp >= LEVELS[i].exp) current = LEVELS[i]; }
+  const next = LEVELS.find(item => item.level === current.level + 1) || null;
+  return { experience: exp, levelNum: current.level, levelName: current.name, nextExperience: next ? next.exp : current.exp, progressPct: next ? Math.min(100, Math.round((exp - current.exp) / (next.exp - current.exp) * 100)) : 100, remaining: next ? Math.max(0, next.exp - exp) : 0 };
+}
+
 function goalView(goal) {
   const template = GROWTH_GOAL_TEMPLATES[goal.dim] || {};
   const stage = (goal.stages || [])[goal.currentStage] || null;
@@ -393,6 +405,12 @@ function recompute(s, st) {
   hist.sort((a, b) => b.date.localeCompare(a.date));
   s.child.points = pts;
   s.pointsHistory = hist;
+  const experience = 1200 + hist.filter(item => item.delta > 0).reduce((sum, item) => sum + item.delta, 0);
+  const level = getLevelStatus(experience);
+  s.child.experience = level.experience;
+  s.child.levelNum = level.levelNum;
+  s.child.levelName = level.levelName;
+  s.child.nextLevelExp = level.nextExperience;
   const contribution = { heart: 0, body: 0, habit: 0, taste: 0 };
   hist.filter(item => item.delta > 0 && Object.prototype.hasOwnProperty.call(contribution, item.dim)).forEach(item => { contribution[item.dim] += item.delta * DIMENSION_MULTIPLIERS[item.dim]; });
   s.dimensions.forEach(item => { const value = contribution[item.key] || 0; item.score = Math.round(value * 10) / 10; item.pct = Math.min(100, DIMENSION_BASELINES[item.key] + Math.floor(value / 20)); });
@@ -404,6 +422,7 @@ function initCheckIns(appInstance) {
   const s = (appInstance && appInstance.globalData) ? appInstance.globalData : state();
   _app = getApp() || appInstance || null;
   const st = load();
+  ensureLocalDataSchema();
   s.todayTasks.forEach(t => { t.done = !!st.daily[t.id]; });
   s.centerTasksDone = {};
   s.centerTaskStatus = {};
@@ -504,13 +523,14 @@ function getCenterStatus(id) {
   return state().centerTaskStatus[id] || 'todo';
 }
 
-function submitCenter(id, note) {
+function submitCenter(id, note, evidence) {
   ensure();
   const s = state();
   if (!centerMap[id]) return null;
   const status = getCenterStatus(id);
   if (status !== 'todo') return { status: status, changed: false };
-  const record = { status: 'pending', date: formatToday(), note: cleanText(note, 80) };
+  const media = Array.isArray(evidence) ? evidence.slice(0, 3).map(item => ({ path: cleanText(item && item.path, 300), thumb: cleanText(item && item.thumb, 300), type: item && item.type === 'video' ? 'video' : 'image' })).filter(item => item.path) : [];
+  const record = { status: 'pending', date: formatToday(), note: cleanText(note, 80), evidence: media };
   s._ci.center[id] = record;
   s.centerTaskStatus[id] = record.status;
   save(s._ci);
@@ -519,15 +539,17 @@ function submitCenter(id, note) {
 
 function approveCenter(id) {
   ensure();
+  if (!isParentMode()) return { forbidden: true };
   const s = state();
   const record = s._ci.center[id];
   if (!record || record.status !== 'pending') return null;
+  const oldLevel = Number(s.child.levelNum) || 1;
   record.status = 'approved';
   s.centerTaskStatus[id] = 'approved';
   s.centerTasksDone[id] = record.date;
   recompute(s, s._ci);
   save(s._ci);
-  return { points: centerMap[id].points, status: 'approved' };
+  return { points: centerMap[id].points, experience: centerMap[id].points, status: 'approved', levelUp: s.child.levelNum > oldLevel, levelName: s.child.levelName };
 }
 
 function rejectCenter(id) {
@@ -553,7 +575,7 @@ function getPendingApprovals() {
       points: centerMap[id].points,
       rewards: centerMap[id].rewards,
       date: s._ci.center[id].date,
-      note: s._ci.center[id].note || ''
+      note: s._ci.center[id].note || '', evidence: s._ci.center[id].evidence || []
     }));
 }
 
@@ -852,6 +874,7 @@ module.exports = {
   isCenterDone, getCenterStatus, submitCenter, approveCenter, rejectCenter, getPendingApprovals, todayDoneCount, todayGain,
   getBadges,
   getScoreRules,
+  getAppMode, setAppMode, isParentMode, getLevelStatus,
   getAssessment, saveAssessment,
   getSmartReminders, markReminderRead, markAllRemindersRead,
   redeem, login, isSigned, recordBonus,

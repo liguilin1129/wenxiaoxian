@@ -1,0 +1,1 @@
+.mode{display:flex;align-items:center;gap:18rpx}.mode.selected{border-color:var(--brand);background:#FAFAFF}.mode-icon{display:flex;align-items:center;justify-content:center;width:70rpx;height:70rpx;border-radius:20rpx;background:var(--brand-soft);font-size:34rpx}.mode>view:nth-child(2){flex:1}.mode>text{color:var(--brand);font-size:34rpx;font-weight:800}

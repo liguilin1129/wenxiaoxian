@@ -10,3 +10,4 @@
   background: var(--surface-2);
   color: var(--ink-2);
 }
+.evidence-head{display:flex;justify-content:space-between;margin-top:20rpx;color:var(--ink-2);font-size:24rpx}.evidence-head>text:last-child{color:var(--brand)}.evidence-list{display:flex;gap:14rpx;margin-top:16rpx}.evidence-item{position:relative;width:120rpx;height:120rpx;overflow:hidden;border-radius:14rpx;background:var(--surface-2)}.evidence-item image{width:100%;height:100%}.video-evidence{display:flex;align-items:center;justify-content:center;height:100%;color:var(--brand);font-size:38rpx}.evidence-item text{position:absolute;right:4rpx;top:4rpx;width:30rpx;height:30rpx;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;text-align:center;line-height:28rpx}

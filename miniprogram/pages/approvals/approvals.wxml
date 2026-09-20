@@ -12,6 +12,7 @@
           <view class="tn">{{item.name}}</view>
           <view class="muted">{{dimName[item.dim]}} · {{item.date}} 提交</view>
           <view wx:if="{{item.note}}" class="approval-note-text">孩子记录：{{item.note}}</view>
+          <view wx:if="{{item.evidence.length}}" class="approval-media"><view wx:for="{{item.evidence}}" wx:for-item="media" wx:for-index="mediaIndex" wx:key="path" class="approval-media-item" data-list="{{item.evidence}}" data-index="{{mediaIndex}}" bindtap="previewEvidence"><image wx:if="{{media.type === 'image'}}" src="{{media.path}}" mode="aspectFill"/><text wx:else>▶</text></view></view>
         </view>
         <text class="pts-pos">+{{item.points}}</text>
       </view>

@@ -13,7 +13,8 @@ Page({
     const id = e.currentTarget.dataset.id;
     const res = store.approveCenter(id);
     if (!res) return;
-    wx.showToast({ title: '已确认，积分 +' + res.points, icon: 'none' });
+    if (res.forbidden) return wx.showToast({ title: '请切换到家长模式后确认', icon: 'none' });
+    wx.showToast({ title: res.levelUp ? ('升级为 ' + res.levelName) : ('已确认，积分 +' + res.points + ' · 经验 +' + res.experience), icon: 'none' });
     this.refresh();
   },
   reject(e) {
@@ -28,5 +29,6 @@ Page({
         this.refresh();
       }
     });
-  }
+  },
+  previewEvidence(e) { const list = e.currentTarget.dataset.list || []; const index = Number(e.currentTarget.dataset.index) || 0; wx.previewMedia({ sources: list.map(item => ({ url: item.path, type: item.type, poster: item.thumb || item.path })), current: index }); }
 });
