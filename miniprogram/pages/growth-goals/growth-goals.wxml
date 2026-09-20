@@ -1,0 +1,12 @@
+<view class="scr-head"><view class="greet">家长为孩子设定</view><view class="title">成长目标</view></view>
+<view class="scr-body">
+  <view class="intro card"><view class="h3">一次专注 1–2 个目标</view><view class="small">每个目标会从容易坚持的第一阶段开始；达到次数后，自动解锁下一阶段。</view><view class="member-select"><text>执行人</text><view class="chips"><text wx:for="{{members}}" wx:key="id" class="pill {{assignee === item.name ? 'pill-habit' : ''}}" data-name="{{item.name}}" bindtap="selectMember">{{item.name}}</text></view></view></view>
+
+  <view wx:if="{{goals.length}}" class="section-title">进行中的目标</view>
+  <view wx:for="{{goals}}" wx:key="id" class="goal card"><view class="goal-head"><view><view class="goal-name">{{item.name}}</view><view class="small">{{item.assignee}} · {{item.done ? '已完成全部阶段' : '第 ' + (item.currentStage + 1) + ' 阶段'}}</view></view><text class="goal-status {{item.done ? 'done' : ''}}">{{item.done ? '已达成' : '进行中'}}</text></view><view wx:if="{{!item.done}}" class="stage"><view class="stage-name">{{item.stage.name}}</view><view class="small">完成 {{item.stage.progress}} / {{item.stage.target}} 次后解锁下一阶段</view><view class="progress"><view style="width:{{item.progressPct}}%"></view></view></view><view wx:else class="goal-complete">已完成全部阶梯任务，真棒！</view></view>
+
+  <view class="section-title">选择新的成长方向</view>
+  <view wx:for="{{templates}}" wx:key="key" class="template card"><view><view class="template-name">{{item.name}}<text wx:if="{{item.recommended}}" class="recommended">初评建议</text></view><view class="template-desc">{{item.desc}}</view><view class="template-stage">第一阶段：{{item.firstStage}}</view></view><button class="btn soft" data-dim="{{item.key}}" bindtap="addGoal">开启</button></view>
+  <view class="bottom-tip">目标任务会出现在“任务管理”和“任务打卡”中。所有目标与进度仅保存在当前设备。</view>
+  <button class="btn" bindtap="goTasks">查看任务管理</button>
+</view>

@@ -44,7 +44,7 @@ Page({
         wx.showToast({ title: 'AI 打卡记录不能在此取消', icon: 'none' });
         return;
       }
-      const tip = res.delta > 0 ? '打卡 +' + res.delta + ' 分' : '已取消打卡';
+      const tip = res.goalUpdate && res.goalUpdate.completed ? (res.goalUpdate.goal.done ? '成长目标已达成！' : '本阶段完成，已解锁下一阶段') : (res.delta > 0 ? '打卡 +' + res.delta + ' 分' : '已取消打卡');
       wx.showToast({ title: tip, icon: 'none' });
       this.refresh();
     }

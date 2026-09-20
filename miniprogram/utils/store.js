@@ -20,6 +20,14 @@ const FAMILY_CONVENTION_KEY = 'familyConvention';
 const FAMILY_PROFILE_KEY = 'familyProfile';
 const ASSESSMENT_KEY = 'growthAssessment';
 const REMINDER_READ_KEY = 'reminderReadState';
+const GROWTH_GOALS_KEY = 'localGrowthGoals';
+
+const GROWTH_GOAL_TEMPLATES = {
+  heart: { name: '情绪与关怀', desc: '练习表达感受、理解他人和遵守家庭约定。', stages: [{ name: '每天说出一种感受', points: 5, target: 3 }, { name: '遇到不开心时先停一停再表达', points: 8, target: 5 }, { name: '主动关心一位家人', points: 10, target: 7 }] },
+  body: { name: '规律作息与运动', desc: '从小运动和规律生活开始，建立身体好习惯。', stages: [{ name: '完成 20 分钟户外运动', points: 8, target: 3 }, { name: '按约定时间准备睡觉', points: 6, target: 5 }, { name: '一周完成 5 次运动打卡', points: 10, target: 5 }] },
+  habit: { name: '自律与整理', desc: '从完成一件小事开始，练习计划和整理。', stages: [{ name: '完成后整理自己的物品', points: 5, target: 3 }, { name: '按约定完成当天任务', points: 8, target: 5 }, { name: '独立整理一次书包或学习区', points: 10, target: 7 }] },
+  taste: { name: '阅读与创造', desc: '通过阅读、表达和创作积累好品味。', stages: [{ name: '阅读或听故事 15 分钟', points: 8, target: 3 }, { name: '分享一个新发现', points: 6, target: 5 }, { name: '完成一次小创作或手工', points: 10, target: 5 }] }
+};
 
 const ASSESSMENT_LEVELS = [
   { min: 90, name: '成长榜样', note: '四维习惯表现稳定，可以尝试更有挑战的成长目标。' },
@@ -224,9 +232,74 @@ function saveFamilyConvention(convention) {
   return data;
 }
 
-function save(st) {
+function save(st, options) {
   wx.setStorageSync(KEY, st);
-  cloudData.schedulePush();
+  if (!(options && options.localOnly)) cloudData.schedulePush();
+}
+
+function loadGrowthGoals() {
+  const saved = wx.getStorageSync(GROWTH_GOALS_KEY);
+  return Array.isArray(saved) ? saved : [];
+}
+
+function saveGrowthGoals(goals) {
+  wx.setStorageSync(GROWTH_GOALS_KEY, goals);
+}
+
+function goalView(goal) {
+  const template = GROWTH_GOAL_TEMPLATES[goal.dim] || {};
+  const stage = (goal.stages || [])[goal.currentStage] || null;
+  return Object.assign({}, goal, { templateName: template.name || '成长目标', stage: stage, done: !stage, progressPct: stage ? Math.min(100, Math.round((stage.progress || 0) / stage.target * 100)) : 100 });
+}
+
+function getGrowthGoalTemplates() {
+  return Object.keys(GROWTH_GOAL_TEMPLATES).map(key => ({ key: key, name: GROWTH_GOAL_TEMPLATES[key].name, desc: GROWTH_GOAL_TEMPLATES[key].desc, firstStage: GROWTH_GOAL_TEMPLATES[key].stages[0].name }));
+}
+
+function getGrowthGoals() {
+  return loadGrowthGoals().map(goalView);
+}
+
+function addGoalStageTask(goal, stageIndex) {
+  const stage = goal.stages[stageIndex];
+  if (!stage) return null;
+  const task = addCustomTask({ name: stage.name, points: stage.points, dim: goal.dim, frequency: 'daily', deadline: '', assignee: goal.assignee, goalId: goal.id, goalStage: stageIndex, localOnly: true });
+  if (task) goal.taskId = task.id;
+  return task;
+}
+
+function createGrowthGoal(input) {
+  ensure();
+  const dim = input && GROWTH_GOAL_TEMPLATES[input.dim] ? input.dim : '';
+  const active = loadGrowthGoals().filter(item => item.status === 'active');
+  if (!dim || active.length >= 2 || active.some(item => item.dim === dim)) return null;
+  const template = GROWTH_GOAL_TEMPLATES[dim];
+  const goal = { id: 'goal_' + Date.now(), dim: dim, name: template.name, desc: template.desc, assignee: cleanText(input && input.assignee, 32) || (state().child && state().child.name) || '孩子', status: 'active', currentStage: 0, stages: template.stages.map(stage => Object.assign({}, stage, { progress: 0 })), createdAt: todayStr(), taskId: '' };
+  addGoalStageTask(goal, 0);
+  const goals = loadGrowthGoals(); goals.unshift(goal); saveGrowthGoals(goals);
+  return goalView(goal);
+}
+
+function advanceGrowthGoal(goalId, stageIndex, taskId) {
+  const goals = loadGrowthGoals();
+  const goal = goals.find(item => item.id === goalId && item.status === 'active');
+  if (!goal || goal.currentStage !== Number(stageIndex) || goal.taskId !== taskId) return null;
+  const stage = goal.stages[goal.currentStage];
+  if (!stage) return null;
+  stage.progress = Math.min(stage.target, (stage.progress || 0) + 1);
+  let completed = false;
+  if (stage.progress >= stage.target) {
+    completed = true;
+    const task = (state()._ci.customTasks || []).find(item => item.id === taskId);
+    if (task) task.active = false;
+    state().todayTasks = state().todayTasks.filter(item => item.id !== taskId);
+    goal.currentStage += 1;
+    if (goal.currentStage >= goal.stages.length) { goal.status = 'completed'; goal.completedAt = todayStr(); goal.taskId = ''; }
+    else addGoalStageTask(goal, goal.currentStage);
+  }
+  saveGrowthGoals(goals);
+  save(state()._ci, { localOnly: true });
+  return { completed: completed, goal: goalView(goal) };
 }
 
 function getAssessment() {
@@ -391,8 +464,10 @@ function toggleDaily(index) {
   const st = s._ci;
   if (t.done) st.daily[t.id] = formatToday(); else delete st.daily[t.id];
   recompute(s, st);
-  save(st);
-  return { done: t.done, delta: t.done ? t.points : -t.points };
+  let goalUpdate = null;
+  if (t.done && t.goalId) goalUpdate = advanceGrowthGoal(t.goalId, t.goalStage, t.id);
+  else save(st, { localOnly: !!t.localOnly });
+  return { done: t.done, delta: t.done ? t.points : -t.points, goalUpdate: goalUpdate };
 }
 
 function toggleCenter(id) {
@@ -634,12 +709,12 @@ function addCustomTask(input) {
   const frequency = input && input.frequency === 'daily' ? 'daily' : 'once';
   const deadline = typeof (input && input.deadline) === 'string' ? input.deadline : '';
   const assignee = cleanText(input && input.assignee, 32) || (state().child && state().child.name) || '孩子';
-  const task = { id: 'custom_' + Date.now(), name, points, dim, date: formatToday(), frequency, deadline, assignee, active: true };
-  state()._ci.customTasks.unshift(task); save(state()._ci);
+  const task = { id: 'custom_' + Date.now(), name, points, dim, date: formatToday(), frequency, deadline, assignee, active: true, goalId: cleanText(input && input.goalId, 64), goalStage: Number(input && input.goalStage) || 0, localOnly: !!(input && input.localOnly) };
+  state()._ci.customTasks.unshift(task); save(state()._ci, { localOnly: task.localOnly });
   state().todayTasks.push(Object.assign({}, task, { done: false, fromCustomTask: true }));
   return task;
 }
-function removeCustomTask(id) { ensure(); const st = state()._ci; const item = (st.customTasks || []).find(task => task.id === id); if (!item) return false; item.active = false; state().todayTasks = state().todayTasks.filter(task => task.id !== id); delete st.daily[id]; save(st); recompute(state(), st); return true; }
+function removeCustomTask(id) { ensure(); const st = state()._ci; const item = (st.customTasks || []).find(task => task.id === id); if (!item) return false; item.active = false; state().todayTasks = state().todayTasks.filter(task => task.id !== id); delete st.daily[id]; save(st, { localOnly: !!item.localOnly }); recompute(state(), st); return true; }
 
 // 保留旧接口（仅累加，不持久化），避免其它页面报错
 function recordBonus(name, points) {
@@ -782,6 +857,7 @@ module.exports = {
   redeem, login, isSigned, recordBonus,
   aiRecordBonus, getAiCheckinRecords, addDailyTask,
   getCustomTasks, addCustomTask, removeCustomTask,
+  getGrowthGoalTemplates, getGrowthGoals, createGrowthGoal,
   getRewards, saveRewards,
   getMeetings, createMeeting, updateMeeting, closeMeeting,
   getFamilyMembers, updateFamilyMember, addFamilyMember, removeFamilyMember, getFamilyConvention, saveFamilyConvention,

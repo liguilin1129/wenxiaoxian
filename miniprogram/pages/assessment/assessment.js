@@ -105,5 +105,6 @@ Page({
     wx.showToast({ title: task.frequency === 'daily' ? '已加入每日打卡' : '已加入今日打卡', icon: 'success' });
   },
   goTaskManage() { wx.navigateTo({ url: '/pages/task-manage/task-manage' }); },
+  goGoals() { wx.navigateTo({ url: '/pages/growth-goals/growth-goals' }); },
   goReport() { wx.navigateTo({ url: '/pages/report/report' }); }
 });
