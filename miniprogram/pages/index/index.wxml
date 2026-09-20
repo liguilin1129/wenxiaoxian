@@ -165,25 +165,27 @@
           <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">今日概览</view></view>
           <view class="ghead-more" bindtap="goCheckin">查看全部 <text class="chev">›</text></view>
         </view>
-        <view class="ov-body">
-          <view class="ring" style="background: conic-gradient(var(--brand) {{ovPct}}%, var(--line) 0)">
-            <view class="ring-inner">
-              <view class="ring-pct">{{ovPct}}%</view>
-              <view class="ring-sub">今日完成</view>
+        <view class="ov-content">
+          <view class="ov-body">
+            <view class="ring" style="background: conic-gradient(var(--brand) {{ovPct}}%, var(--line) 0)">
+              <view class="ring-inner">
+                <view class="ring-pct">{{ovPct}}%</view>
+                <view class="ring-sub">今日完成</view>
+              </view>
             </view>
-          </view>
-          <view class="ov-stats">
-            <view class="ov-stat">
-              <view class="ov-stat-num">{{doneCount}}<text class="ov-stat-unit">/{{total}}</text></view>
-              <view class="ov-stat-label">任务打卡</view>
-            </view>
-            <view class="ov-stat">
-              <view class="ov-stat-num">🔥 {{child.streak}}</view>
-              <view class="ov-stat-label">连续打卡(天)</view>
-            </view>
-            <view class="ov-stat">
-              <view class="ov-stat-num">+{{child.weekGain}}</view>
-              <view class="ov-stat-label">本周积分</view>
+            <view class="ov-stats">
+              <view class="ov-stat">
+                <view class="ov-stat-num">{{doneCount}}<text class="ov-stat-unit">/{{total}}</text></view>
+                <view class="ov-stat-label">任务打卡</view>
+              </view>
+              <view class="ov-stat">
+                <view class="ov-stat-num">🔥 {{child.streak}}</view>
+                <view class="ov-stat-label">连续打卡(天)</view>
+              </view>
+              <view class="ov-stat">
+                <view class="ov-stat-num">+{{child.weekGain}}</view>
+                <view class="ov-stat-label">本周积分</view>
+              </view>
             </view>
           </view>
         </view>
@@ -228,12 +230,14 @@
           <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">经典今日推荐</view></view>
           <view class="ghead-more" bindtap="goClassics">全部经典 <text class="chev">›</text></view>
         </view>
-        <view class="row between classic-today-row">
-          <view class="classic-today-copy">
-            <view class="classic-today-title">《{{classicToday.name}}》</view>
-            <view class="classic-today-sub">已读 {{classicToday.read}} / {{classicToday.total}} 章 · 继续诵读</view>
+        <view class="classic-today-body">
+          <view class="row between classic-today-row">
+            <view class="classic-today-copy">
+              <view class="classic-today-title">《{{classicToday.name}}》</view>
+              <view class="classic-today-sub">已读 {{classicToday.read}} / {{classicToday.total}} 章 · 继续诵读</view>
+            </view>
+            <text class="btn sm classic-read-btn">诵读</text>
           </view>
-          <text class="btn sm classic-read-btn">诵读</text>
         </view>
       </view>
     </view>
