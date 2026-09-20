@@ -2,7 +2,7 @@ const app = getApp();
 const store = require('../../utils/store.js');
 
 Page({
-  data: { dims: [], neigong: [], rules: [], assessment: null, weekGain: 0, points: 0, streak: 0, done: 0, total: 0, completionPct: 0, earned: 0, spent: 0, recordCount: 0, focus: {}, strength: {}, suggestion: '' },
+  data: { dims: [], neigong: [], rules: [], assessment: null, weekGain: 0, points: 0, streak: 0, done: 0, total: 0, completionPct: 0, earned: 0, spent: 0, recordCount: 0, focus: {}, strength: {}, suggestion: '', body: {}, hasBodyData: false },
   onShow() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 2 });
@@ -17,6 +17,11 @@ Page({
     const earned = history.filter(item => item.delta > 0).reduce((sum, item) => sum + item.delta, 0);
     const spent = Math.abs(history.filter(item => item.delta < 0).reduce((sum, item) => sum + item.delta, 0));
     const suggestion = focus.name ? ('本周可优先安排 1 项“' + focus.name + '”相关任务，完成后在家庭会议中一起复盘。') : '';
-    this.setData({ dims: dims, neigong: g.neigong || [], rules: store.getScoreRules(), assessment: store.getAssessment(), weekGain: g.child.weekGain || 0, points: g.child.points || 0, streak: g.child.streak || 0, done: done, total: today.length, completionPct: today.length ? Math.round(done / today.length * 100) : 0, earned: earned, spent: spent, recordCount: history.length, focus: focus, strength: strength, suggestion: suggestion });
-  }
+    const child = g.child || {};
+    const body = { height: child.height || '未填写', weight: child.weight || '未填写', bmi: child.bmi || '填写身高体重后自动计算' };
+    this.setData({ dims: dims, neigong: g.neigong || [], rules: store.getScoreRules(), assessment: store.getAssessment(), weekGain: child.weekGain || 0, points: child.points || 0, streak: child.streak || 0, done: done, total: today.length, completionPct: today.length ? Math.round(done / today.length * 100) : 0, earned: earned, spent: spent, recordCount: history.length, focus: focus, strength: strength, suggestion: suggestion, body: body, hasBodyData: !!(child.height || child.weight) });
+  },
+  goCheckin() { wx.navigateTo({ url: '/pages/checkin/checkin' }); },
+  goAssessment() { wx.navigateTo({ url: '/pages/assessment/assessment' }); },
+  goProfileEdit() { wx.navigateTo({ url: '/pages/profile-edit/profile-edit' }); }
 });
