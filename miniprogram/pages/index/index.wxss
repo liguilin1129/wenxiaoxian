@@ -16,7 +16,8 @@
 
 /* 首屏成长仪表盘：复用既有品牌色，不改变全局配色 */
 .growth-dashboard {
-  margin: 16rpx 32rpx 0;
+  /* 首页已由 .scr-body 提供 32rpx 左右留白，此处不再重复叠加。 */
+  margin: 16rpx 0 0;
   padding: 30rpx;
   border-radius: var(--radius);
   color: #fff;
@@ -241,7 +242,7 @@
   background: linear-gradient(135deg, #6E6CF0, #5E5CE6);
   border-radius: var(--radius);
   padding: 56rpx 40rpx;
-  margin: 16rpx 32rpx 0;
+  margin: 16rpx 0 0;
   color: #fff;
   text-align: center;
   box-shadow: 0 10rpx 30rpx rgba(94, 92, 230, .22);

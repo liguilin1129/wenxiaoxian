@@ -222,7 +222,7 @@ button::after { border: none; }
 .avatar.sm { width: 64rpx; height: 64rpx; font-size: 26rpx; }
 
 /* ===== iOS 分组列表（Grouped List） ===== */
-.igroup { margin: 28rpx 32rpx 0; }
+.igroup { margin: 28rpx 0 0; }
 .igroup:first-child { margin-top: 16rpx; }
 .igroup-title {
   font-size: 24rpx; font-weight: 600; color: var(--ink-3);
