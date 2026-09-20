@@ -1,5 +1,11 @@
 const app = getApp();
 const store = require('../../utils/store.js');
+const archive = require('../../utils/growth-archive.js');
+
+function dateLabel() {
+  const date = new Date();
+  return date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日';
+}
 
 Page({
   data: { dims: [], neigong: [], rules: [], assessment: null, weekGain: 0, points: 0, streak: 0, done: 0, total: 0, completionPct: 0, earned: 0, spent: 0, recordCount: 0, focus: {}, strength: {}, suggestion: '', body: {}, hasBodyData: false },
@@ -23,5 +29,11 @@ Page({
   },
   goCheckin() { wx.navigateTo({ url: '/pages/checkin/checkin' }); },
   goAssessment() { wx.navigateTo({ url: '/pages/assessment/assessment' }); },
-  goProfileEdit() { wx.navigateTo({ url: '/pages/profile-edit/profile-edit' }); }
+  goProfileEdit() { wx.navigateTo({ url: '/pages/profile-edit/profile-edit' }); },
+  saveArchive() {
+    const assessment = this.data.assessment || {};
+    archive.save({ date: dateLabel(), points: this.data.points, streak: this.data.streak, weekGain: this.data.weekGain, completionPct: this.data.completionPct, levelName: assessment.levelName || '', assessmentScore: assessment.overall || 0, strengthName: (assessment.strength || this.data.strength || {}).name || '', focusName: (assessment.focus || this.data.focus || {}).name || '', dims: this.data.dims.map(item => ({ key: item.key, name: item.name, pct: item.pct })), body: this.data.body });
+    wx.showToast({ title: '已存入成长档案', icon: 'success' });
+  },
+  goArchive() { wx.navigateTo({ url: '/pages/growth-archive/growth-archive' }); }
 });

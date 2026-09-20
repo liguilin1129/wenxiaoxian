@@ -24,6 +24,7 @@
     "pages/article-list/article-list",
     "pages/article-detail/article-detail",
     "pages/report/report",
+    "pages/growth-archive/growth-archive",
     "pages/assessment/assessment",
     "pages/profile/profile",
     "pages/profile-edit/profile-edit",
