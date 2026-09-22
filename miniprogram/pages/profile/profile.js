@@ -17,7 +17,7 @@ Page({
       { icon: '📊', name: '成长报告', action: 'goReport', bg: '#FFFBEB', color: '#B7791F' },
       { icon: '🎁', name: '奖励兑换', action: 'goRewards', bg: '#ECFDF5', color: '#0F9D6B' },
       { icon: '✅', name: '家长确认', action: 'goApprovals', bg: '#F5F3FF', color: '#7C3AED' },
-      { icon: '📖', name: '经典书架', action: 'goClassics', bg: '#EEF2FF', color: '#4338CA' }
+      { icon: '🏅', name: '荣誉勋章', action: 'goBadges', bg: '#FFF7ED', color: '#C66A16' }
       ,{ icon: '👨', name: '使用模式', action: 'goMode', bg: '#EEF2FF', color: '#4338CA' }
     ]
   },
@@ -49,7 +49,7 @@ Page({
   },
   goLogin() { wx.navigateTo({ url: '/pages/login/login' }); },
   editProfile() { wx.navigateTo({ url: '/pages/profile-edit/profile-edit' }); },
-  goClassics() { wx.navigateTo({ url: '/pages/classics/classics' }); },
+  goBadges() { wx.navigateTo({ url: '/pages/badges/badges' }); },
   goRewards() { wx.navigateTo({ url: '/pages/rewards/rewards' }); },
   goReport() { wx.navigateTo({ url: '/pages/report/report' }); },
   goPoints() { wx.navigateTo({ url: '/pages/points/points' }); },
