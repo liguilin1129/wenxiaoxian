@@ -324,6 +324,27 @@ function getAssessmentTrend() {
   };
 }
 
+function getAssessmentReviewStatus() {
+  const assessment = getAssessment();
+  if (!assessment || !/^\d{4}-\d{2}-\d{2}$/.test(assessment.completedAt || '')) {
+    return { hasAssessment: false, due: false, daysRemaining: 0, nextDate: '' };
+  }
+  const parts = assessment.completedAt.split('-').map(Number);
+  const reviewAt = new Date(parts[0], parts[1] - 1, parts[2]);
+  reviewAt.setDate(reviewAt.getDate() + 30);
+  reviewAt.setHours(0, 0, 0, 0);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const daysRemaining = Math.max(0, Math.ceil((reviewAt.getTime() - today.getTime()) / 86400000));
+  return {
+    hasAssessment: true,
+    due: reviewAt.getTime() <= today.getTime(),
+    daysRemaining: daysRemaining,
+    nextDate: reviewAt.getFullYear() + '-' + ('0' + (reviewAt.getMonth() + 1)).slice(-2) + '-' + ('0' + reviewAt.getDate()).slice(-2),
+    assessmentId: assessment.id || assessment.completedAt
+  };
+}
+
 function getReminderReadState() {
   const saved = wx.getStorageSync(REMINDER_READ_KEY);
   return saved && typeof saved === 'object' ? saved : {};
@@ -341,6 +362,8 @@ function getSmartReminders() {
   const meetings = (s.meetings || []).filter(item => item.status === 'pending');
   if (meetings.length) reminders.push({ id: 'meeting-' + meetings.map(item => item.id).join('-'), icon: '🪑', title: '家庭会议待召开', text: '有 ' + meetings.length + ' 场家庭会议等待处理', target: 'family' });
   if (!getAssessment()) reminders.push({ id: 'assessment', icon: '🧭', title: '完成成长初评', text: '用约 3 分钟，记录孩子当前成长起点', target: 'assessment' });
+  const review = getAssessmentReviewStatus();
+  if (review.due) reminders.push({ id: 'assessment-review-' + review.assessmentId, icon: '🧭', title: '进行成长复评', text: '距离上次评估已满 30 天，看看孩子近期有哪些变化', target: 'assessment' });
   return reminders.filter(item => !read[item.id]);
 }
 
@@ -885,7 +908,7 @@ module.exports = {
   getBadges,
   getScoreRules,
   getAppMode, setAppMode, isParentMode, getLevelStatus,
-  getAssessment, getAssessmentHistory, getAssessmentTrend, saveAssessment,
+  getAssessment, getAssessmentHistory, getAssessmentTrend, getAssessmentReviewStatus, saveAssessment,
   getSmartReminders, markReminderRead, markAllRemindersRead,
   redeem, login, isSigned, recordBonus,
   aiRecordBonus, getAiCheckinRecords, addDailyTask,
