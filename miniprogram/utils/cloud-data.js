@@ -2,7 +2,7 @@
 const ENV_ID = 'cloud1-d6gz2xo6tac43e3eb';
 const SYNC_FUNCTION = 'userDataSync';
 const KEYS = [
-  'childProfile', 'checkInState', 'growthAssessment', 'familyMembers', 'familyProfile',
+  'childProfile', 'checkInState', 'growthAssessment', 'growthAssessmentHistory', 'familyMembers', 'familyProfile',
   'familyConvention', 'familyMeetings', 'meetingTasks', 'parentRewards', 'classicVisited'
   , 'reminderReadState', 'communityUserPosts', 'communityUserArticles'
 ];

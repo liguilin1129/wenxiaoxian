@@ -18,6 +18,7 @@ const MEETING_TASKS_KEY = 'meetingTasks'; // 今日任务中来自会议的新�
 const FAMILY_MEMBERS_KEY = 'familyMembers';
 const FAMILY_CONVENTION_KEY = 'familyConvention';
 const ASSESSMENT_KEY = 'growthAssessment';
+const ASSESSMENT_HISTORY_KEY = 'growthAssessmentHistory';
 const REMINDER_READ_KEY = 'reminderReadState';
 const GROWTH_GOALS_KEY = 'localGrowthGoals';
 const APP_MODE_KEY = 'localAppMode';
@@ -282,6 +283,34 @@ function getAssessment() {
   return saved && typeof saved === 'object' && Array.isArray(saved.dimensions) ? saved : null;
 }
 
+// 旧版本只保存最新一次初评。读取时把旧数据视为第一条记录，升级后不会丢失已有结果。
+function getAssessmentHistory() {
+  const saved = wx.getStorageSync(ASSESSMENT_HISTORY_KEY);
+  if (Array.isArray(saved) && saved.length) {
+    return saved.filter(item => item && Array.isArray(item.dimensions));
+  }
+  const current = getAssessment();
+  return current ? [current] : [];
+}
+
+function getAssessmentTrend() {
+  const history = getAssessmentHistory();
+  const current = history[history.length - 1] || null;
+  const previous = history.length > 1 ? history[history.length - 2] : null;
+  if (!current) return { count: 0, current: null, previous: null, overallDelta: 0, dimensions: [] };
+  const previousScores = {};
+  ((previous && previous.dimensions) || []).forEach(item => { previousScores[item.key] = Number(item.score) || 0; });
+  return {
+    count: history.length,
+    current: current,
+    previous: previous,
+    overallDelta: previous ? current.overall - previous.overall : 0,
+    dimensions: (current.dimensions || []).map(item => Object.assign({}, item, {
+      delta: previous ? (Number(item.score) || 0) - (previousScores[item.key] || 0) : null
+    }))
+  };
+}
+
 function getReminderReadState() {
   const saved = wx.getStorageSync(REMINDER_READ_KEY);
   return saved && typeof saved === 'object' ? saved : {};
@@ -326,6 +355,7 @@ function saveAssessment(data) {
   const level = ASSESSMENT_LEVELS.find(item => overall >= item.min) || ASSESSMENT_LEVELS[ASSESSMENT_LEVELS.length - 1];
   const strengths = dimensions.slice().sort((a, b) => b.score - a.score);
   const result = {
+    id: input.id || ('assessment_' + Date.now()),
     completedAt: input.completedAt || todayStr(),
     overall: overall,
     levelName: level.name,
@@ -334,6 +364,10 @@ function saveAssessment(data) {
     strength: strengths[0] || null,
     focus: strengths[dimensions.length - 1] || null
   };
+  const history = getAssessmentHistory();
+  history.push(result);
+  // 本机保留最近 24 次，足够覆盖两年按月复评，同时避免本地数据无限增长。
+  wx.setStorageSync(ASSESSMENT_HISTORY_KEY, history.slice(-24));
   wx.setStorageSync(ASSESSMENT_KEY, result);
   cloudData.schedulePush();
   return result;
@@ -838,7 +872,7 @@ module.exports = {
   getBadges,
   getScoreRules,
   getAppMode, setAppMode, isParentMode, getLevelStatus,
-  getAssessment, saveAssessment,
+  getAssessment, getAssessmentHistory, getAssessmentTrend, saveAssessment,
   getSmartReminders, markReminderRead, markAllRemindersRead,
   redeem, login, isSigned, recordBonus,
   aiRecordBonus, getAiCheckinRecords, addDailyTask,

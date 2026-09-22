@@ -58,10 +58,10 @@ function buildRecommendations(result) {
 }
 
 Page({
-  data: { questions: QUESTIONS, options: OPTIONS, answers: {}, result: null, recommendations: [], addedNames: {} },
+  data: { questions: QUESTIONS, options: OPTIONS, answers: {}, result: null, trend: null, recommendations: [], addedNames: {} },
   onLoad() {
     const result = store.getAssessment();
-    this.setData({ result: result, recommendations: buildRecommendations(result) });
+    this.setData({ result: result, trend: store.getAssessmentTrend(), recommendations: buildRecommendations(result) });
   },
   choose(e) {
     const index = e.currentTarget.dataset.index;
@@ -85,10 +85,11 @@ Page({
     });
     const result = store.saveAssessment({ dimensions: dimensions });
     app.globalData.assessment = result;
-    this.setData({ result: result, recommendations: buildRecommendations(result), addedNames: {} });
-    wx.showToast({ title: '初评已生成', icon: 'success' });
+    const trend = store.getAssessmentTrend();
+    this.setData({ result: result, trend: trend, recommendations: buildRecommendations(result), addedNames: {} });
+    wx.showToast({ title: trend.count > 1 ? '复评已保存' : '初评已生成', icon: 'success' });
   },
-  retake() { this.setData({ result: null, answers: {}, recommendations: [], addedNames: {} }); },
+  retake() { this.setData({ result: null, trend: null, answers: {}, recommendations: [], addedNames: {} }); },
   addRecommendation(e) {
     const id = e.currentTarget.dataset.id;
     const task = this.data.recommendations.find(item => item.id === id);
