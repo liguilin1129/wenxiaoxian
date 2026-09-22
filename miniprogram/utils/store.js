@@ -256,6 +256,19 @@ function createGrowthGoal(input) {
   return goalView(goal);
 }
 
+// 将当前评估中最需要练习的维度转成阶梯目标；已有同维度目标会保留，不重复创建。
+function createAssessmentGoals(input) {
+  const assessment = getAssessment();
+  if (!assessment || !Array.isArray(assessment.dimensions)) return [];
+  const dims = assessment.dimensions.slice().sort((a, b) => a.score - b.score).slice(0, 2);
+  const created = [];
+  dims.forEach(item => {
+    const goal = createGrowthGoal({ dim: item.key, assignee: input && input.assignee });
+    if (goal) created.push(goal);
+  });
+  return created;
+}
+
 function advanceGrowthGoal(goalId, stageIndex, taskId) {
   const goals = loadGrowthGoals();
   const goal = goals.find(item => item.id === goalId && item.status === 'active');
@@ -877,7 +890,7 @@ module.exports = {
   redeem, login, isSigned, recordBonus,
   aiRecordBonus, getAiCheckinRecords, addDailyTask,
   getCustomTasks, addCustomTask, removeCustomTask,
-  getGrowthGoalTemplates, getGrowthGoals, createGrowthGoal,
+  getGrowthGoalTemplates, getGrowthGoals, createGrowthGoal, createAssessmentGoals,
   getRewards, saveRewards,
   getMeetings, createMeeting, updateMeeting, closeMeeting,
   getFamilyMembers, updateFamilyMember, addFamilyMember, removeFamilyMember, getFamilyConvention, saveFamilyConvention,

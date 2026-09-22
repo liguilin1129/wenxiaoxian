@@ -58,10 +58,10 @@ function buildRecommendations(result) {
 }
 
 Page({
-  data: { questions: QUESTIONS, options: OPTIONS, answers: {}, result: null, trend: null, recommendations: [], addedNames: {} },
+  data: { questions: QUESTIONS, options: OPTIONS, answers: {}, result: null, trend: null, recommendations: [], addedNames: {}, planCreated: false },
   onLoad() {
     const result = store.getAssessment();
-    this.setData({ result: result, trend: store.getAssessmentTrend(), recommendations: buildRecommendations(result) });
+    this.setData({ result: result, trend: store.getAssessmentTrend(), recommendations: buildRecommendations(result), planCreated: false });
   },
   choose(e) {
     const index = e.currentTarget.dataset.index;
@@ -86,10 +86,20 @@ Page({
     const result = store.saveAssessment({ dimensions: dimensions });
     app.globalData.assessment = result;
     const trend = store.getAssessmentTrend();
-    this.setData({ result: result, trend: trend, recommendations: buildRecommendations(result), addedNames: {} });
+    this.setData({ result: result, trend: trend, recommendations: buildRecommendations(result), addedNames: {}, planCreated: false });
     wx.showToast({ title: trend.count > 1 ? '复评已保存' : '初评已生成', icon: 'success' });
   },
-  retake() { this.setData({ result: null, trend: null, answers: {}, recommendations: [], addedNames: {} }); },
+  retake() { this.setData({ result: null, trend: null, answers: {}, recommendations: [], addedNames: {}, planCreated: false }); },
+  createAssessmentPlan() {
+    const child = app.globalData.child || {};
+    const created = store.createAssessmentGoals({ assignee: child.name || '孩子' });
+    if (!created.length) {
+      wx.showToast({ title: '重点目标已在进行中', icon: 'none' });
+      return;
+    }
+    this.setData({ planCreated: true });
+    wx.showToast({ title: '已生成 ' + created.length + ' 个重点目标', icon: 'success' });
+  },
   addRecommendation(e) {
     const id = e.currentTarget.dataset.id;
     const task = this.data.recommendations.find(item => item.id === id);
