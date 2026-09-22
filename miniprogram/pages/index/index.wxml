@@ -98,6 +98,20 @@
       </view>
     </view>
 
+    <!-- 精简荣誉预览：保留可见反馈，完整列表进入勋章墙 -->
+    <view class="honor-preview tap" bindtap="goBadges">
+      <view class="honor-preview-head">
+        <view><view class="honor-preview-title">荣誉勋章</view><view class="honor-preview-sub">已点亮 {{badgeGot}} / {{badgeTotal}} 枚</view></view>
+        <text>查看全部 ›</text>
+      </view>
+      <view class="honor-preview-grid">
+        <view wx:for="{{badges}}" wx:key="id" class="honor-preview-item {{item.got ? '' : 'locked'}}">
+          <view class="honor-preview-icon">{{item.got ? item.icon : '🔒'}}</view>
+          <view>{{item.name}}</view>
+        </view>
+      </view>
+    </view>
+
     <!-- 今日待打卡：首页首要行动 -->
     <view class="igroup">
       <view class="igroup-card">

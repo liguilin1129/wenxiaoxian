@@ -111,7 +111,7 @@ Page({
       classicRecommendations: classicRecommendations,
       reminders: reminders,
       // 荣誉墙：加载成就勋章 + 已点亮数量
-      badges: store.getBadges().slice(0, 8),
+      badges: store.getBadges().slice(0, 4),
       badgeGot: store.getBadges().filter(b => b.got).length,
       badgeTotal: store.getBadges().length
     });
