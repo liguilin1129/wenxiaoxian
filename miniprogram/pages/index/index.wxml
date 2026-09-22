@@ -98,30 +98,22 @@
       </view>
     </view>
 
-    <!-- 荣誉墙 -->
+    <!-- 今日待打卡：首页首要行动 -->
     <view class="igroup">
       <view class="igroup-card">
         <view class="ghead">
-          <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">荣誉墙</view></view>
-          <view class="ghead-more" bindtap="goBadges">全部勋章 <text class="chev">›</text></view>
+          <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">今日待打卡</view></view>
+          <view class="ghead-more" bindtap="goTasks">任务中心 <text class="chev">›</text></view>
         </view>
-        <view class="badge-user">
-          <view class="avatar">{{child.avatar}}</view>
-          <view class="top-bar-info">
-            <view class="top-bar-name">{{child.name}}</view>
-            <view class="top-bar-sub">积分 {{child.points}} · 已点亮 {{badgeGot}}/{{badgeTotal}}</view>
-          </view>
-        </view>
-        <view class="badge-grid">
-          <view wx:for="{{badges}}" wx:key="id" class="badge {{item.got ? '' : 'off'}}">
-            <view class="badge-ic">{{item.got ? item.icon : '🔒'}}</view>
-            <view class="badge-name">{{item.name}}</view>
-          </view>
+        <view class="irow" wx:for="{{today}}" wx:key="id" data-id="{{item.id}}" bindtap="toggleToday">
+          <view class="check {{item.done ? 'on' : ''}}">{{item.done ? '✓' : ''}}</view>
+          <view class="tx" style="margin-left:18rpx">{{item.name}}</view>
+          <text class="pill pill-{{item.dim}}" style="margin-left:auto">{{dimName[item.dim]}} +{{item.points}}</text>
         </view>
       </view>
     </view>
 
-    <!-- 快捷入口 -->
+    <!-- 快捷入口：只保留高频四项 -->
     <view class="igroup">
       <view class="igroup-card">
         <view class="ghead">
@@ -158,95 +150,6 @@
       </view>
     </view>
 
-    <!-- 今日概览 -->
-    <view class="igroup">
-      <view class="igroup-card ov-card">
-        <view class="ghead">
-          <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">今日概览</view></view>
-          <view class="ghead-more" bindtap="goCheckin">查看全部 <text class="chev">›</text></view>
-        </view>
-        <view class="ov-content">
-          <view class="ov-body">
-            <view class="ring" style="background: conic-gradient(var(--brand) {{ovPct}}%, var(--line) 0)">
-              <view class="ring-inner">
-                <view class="ring-pct">{{ovPct}}%</view>
-                <view class="ring-sub">今日完成</view>
-              </view>
-            </view>
-            <view class="ov-stats">
-              <view class="ov-stat">
-                <view class="ov-stat-num">{{doneCount}}<text class="ov-stat-unit">/{{total}}</text></view>
-                <view class="ov-stat-label">任务打卡</view>
-              </view>
-              <view class="ov-stat">
-                <view class="ov-stat-num">🔥 {{child.streak}}</view>
-                <view class="ov-stat-label">连续打卡(天)</view>
-              </view>
-              <view class="ov-stat">
-                <view class="ov-stat-num">+{{child.weekGain}}</view>
-                <view class="ov-stat-label">本周积分</view>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
-    </view>
-
-    <!-- 四维成长 -->
-    <view class="igroup">
-      <view class="igroup-card">
-        <view class="ghead">
-          <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">四维成长</view></view>
-          <view class="ghead-more" bindtap="goReport">成长报告 <text class="chev">›</text></view>
-        </view>
-        <view class="irow" wx:for="{{dims}}" wx:key="key" bindtap="goReport">
-          <text class="dot" style="background:{{item.color}}"></text>
-          <view class="tx" style="margin-left:14rpx">{{item.name}}</view>
-          <view class="rt">{{item.pct}}%</view>
-          <text class="chev">›</text>
-        </view>
-      </view>
-    </view>
-
-    <!-- 今日待打卡 -->
-    <view class="igroup">
-      <view class="igroup-card">
-        <view class="ghead">
-          <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">今日待打卡</view></view>
-          <view class="ghead-more" bindtap="goTasks">任务中心 <text class="chev">›</text></view>
-        </view>
-        <view class="irow" wx:for="{{today}}" wx:key="id" data-id="{{item.id}}" bindtap="toggleToday">
-          <view class="check {{item.done ? 'on' : ''}}">{{item.done ? '✓' : ''}}</view>
-          <view class="tx" style="margin-left:18rpx">{{item.name}}</view>
-          <text class="pill pill-{{item.dim}}" style="margin-left:auto">{{dimName[item.dim]}} +{{item.points}}</text>
-        </view>
-      </view>
-    </view>
-
-    <!-- 经典今日推荐 -->
-    <view class="igroup">
-      <view class="igroup-card tap classic-today-card" bindtap="goClassics">
-        <view class="ghead">
-          <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">经典今日推荐</view></view>
-          <view class="ghead-more" bindtap="goClassics">全部经典 <text class="chev">›</text></view>
-        </view>
-        <view class="classic-today-body">
-          <view
-            wx:for="{{classicRecommendations}}"
-            wx:key="name"
-            class="row between classic-today-row"
-            data-name="{{item.name}}"
-            catchtap="goClassicRead"
-          >
-            <view class="classic-today-copy">
-              <view class="classic-today-title">《{{item.name}}》</view>
-              <view class="classic-today-sub">已读 {{item.read}} / {{item.total}} 章 · {{item.read ? '继续诵读' : '开始学习'}}</view>
-            </view>
-            <text class="classic-read-btn">诵读</text>
-          </view>
-        </view>
-      </view>
-    </view>
   </block>
 </view>
 

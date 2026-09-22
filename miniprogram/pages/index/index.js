@@ -41,7 +41,7 @@ Page({
     nextLevel: 6,
     need: 0,
     classicRecommendations: [],
-    quickEntries: QUICK_ENTRIES,
+    quickEntries: QUICK_ENTRIES.slice(0, 4),
     reminders: [],
     searchOpen: false,
     searchKey: '',
