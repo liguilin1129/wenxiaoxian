@@ -32,6 +32,7 @@ Page({
   goCheckin() { wx.navigateTo({ url: '/pages/checkin/checkin' }); },
   goAssessment() { wx.navigateTo({ url: '/pages/assessment/assessment' }); },
   goGoals() { wx.navigateTo({ url: '/pages/growth-goals/growth-goals' }); },
+  goReviewMeeting() { wx.navigateTo({ url: '/pages/family/meeting?review=1' }); },
   goProfileEdit() { wx.navigateTo({ url: '/pages/profile-edit/profile-edit' }); },
   saveArchive() {
     const assessment = this.data.assessment || {};

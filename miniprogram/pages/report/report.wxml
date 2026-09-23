@@ -34,7 +34,7 @@
     <view class="observation-row"><view class="observation-icon focus">◎</view><view><view class="observation-title">成长重点 · {{focus.name}}</view><view class="small">当前综合表现 {{focus.pct}}%，{{suggestion}}</view></view></view>
   </view>
 
-  <view class="card action-card"><view class="h3">下一步行动</view><view class="action-row" bindtap="goCheckin"><view><view class="action-title">完成今日任务</view><view class="small">当前 {{done}} / {{total}} 项已完成，保持连续打卡节奏。</view></view><text>›</text></view><view class="action-row" bindtap="goAssessment"><view><view class="action-title">复盘成长初评</view><view class="small">围绕“{{focus.name}}”安排一项容易坚持的小目标。</view></view><text>›</text></view></view>
+  <view class="card action-card"><view class="h3">下一步行动</view><view class="action-row" bindtap="goCheckin"><view><view class="action-title">完成今日任务</view><view class="small">当前 {{done}} / {{total}} 项已完成，保持连续打卡节奏。</view></view><text>›</text></view><view class="action-row" bindtap="goAssessment"><view><view class="action-title">复盘成长初评</view><view class="small">围绕“{{focus.name}}”安排一项容易坚持的小目标。</view></view><text>›</text></view><view class="action-row" bindtap="goReviewMeeting"><view><view class="action-title">发起家庭复盘会议</view><view class="small">自动带入评分变化、重点方向和当前成长目标。</view></view><text>›</text></view></view>
 
   <view class="card archive-card"><view><view class="h3">成长档案</view><view class="small">把当前报告保存为本地阶段快照，方便之后对比。</view></view><view class="archive-actions"><button class="btn soft" bindtap="goArchive">查看档案</button><button class="btn" bindtap="saveArchive">存入档案</button></view></view>
 

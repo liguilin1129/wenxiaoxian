@@ -19,6 +19,13 @@ function topicId() {
   return 'tp_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
 }
 
+function reviewTopic(type, title, content, target) {
+  return {
+    id: topicId(), type, title, content, approved: true,
+    target: target || { name: '', points: '' }
+  };
+}
+
 Page({
   data: {
     mode: 'list',
@@ -28,8 +35,14 @@ Page({
     current: null,
     summary: ''
   },
+  onLoad(options) {
+    this.openReviewOnShow = options && options.review === '1';
+  },
   onShow() {
-    this.refreshList();
+    if (this.openReviewOnShow) {
+      this.openReviewOnShow = false;
+      this.openReviewForm();
+    } else this.refreshList();
   },
   refreshList() {
     const meetings = store.getMeetings() || [];
@@ -41,6 +54,29 @@ Page({
     } else {
       this.refreshList();
     }
+  },
+  // 从成长报告进入时，自动带入本次评分、重点方向和正在执行的目标，家长仍可编辑每条议题。
+  openReviewForm() {
+    const assessment = store.getAssessment();
+    const trend = store.getAssessmentTrend();
+    const goals = store.getGrowthGoals().filter(item => item.status === 'active');
+    const scoreText = assessment ? ('本次综合 ' + assessment.overall + ' 分，等级“' + assessment.levelName + '”。' + (trend.previous ? ('较上次 ' + (trend.overallDelta > 0 ? '+' : '') + trend.overallDelta + ' 分。') : '这是第一次评估结果。')) : '暂未完成成长评估。';
+    const focusText = assessment ? ('优势方向：' + assessment.strength.name + '；本期优先关注：' + assessment.focus.name + '。请讨论哪些做法需要保留或调整。') : '请讨论本期最值得持续练习的一项成长方向。';
+    const goalText = goals.length ? ('正在进行：' + goals.map(item => item.name + '（第 ' + (item.currentStage + 1) + ' 阶段）').join('、') + '。') : '当前还没有进行中的成长目标，可根据评分结果决定是否开启。';
+    const focusName = assessment && assessment.focus ? assessment.focus.name : '';
+    this.setData({
+      meetings: store.getMeetings() || [],
+      mode: 'form', current: null, summary: '',
+      form: {
+        title: '本期成长复盘会议',
+        topics: [
+          reviewTopic('custom', '回顾本期成长评分', scoreText),
+          reviewTopic('custom', '讨论重点成长方向', focusText),
+          reviewTopic('custom', '确认目标推进情况', goalText),
+          reviewTopic('task', '确定本周行动', '根据复盘结果，填写一项全家同意、容易坚持的具体行动。', { name: focusName ? ('练习“' + focusName + '”的一项小行动') : '', points: '5' })
+        ]
+      }
+    });
   },
   topicTypeName(type) {
     return TYPE_NAMES[type] || type;
