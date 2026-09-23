@@ -1,5 +1,4 @@
 const app = getApp();
-const store = require('../../utils/store.js');
 
 const ENTRIES = [
       {
@@ -45,7 +44,8 @@ Page({
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 2 });
     }
-    this.setData({ entries: store.isParentMode() ? ENTRIES : ENTRIES.filter(item => ['classics', 'rewards'].indexOf(item.key) >= 0) });
+    // 发现页只提供阅读与浏览入口，不会修改家庭数据；两种模式均可完整查看。
+    this.setData({ entries: ENTRIES });
   },
   go(e) {
     const url = e.currentTarget.dataset.url;
