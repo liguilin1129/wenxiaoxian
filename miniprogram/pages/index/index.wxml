@@ -102,8 +102,8 @@
     <view class="igroup">
       <view class="igroup-card tap honor-preview" bindtap="goBadges">
         <view class="ghead">
-          <view class="ghead-left"><view class="ghead-bar"></view><view><view class="ghead-title">荣誉勋章</view><view class="honor-preview-sub">已点亮 {{badgeGot}} / {{badgeTotal}} 枚</view></view></view>
-          <view class="ghead-more">查看全部 <text class="chev">›</text></view>
+          <view class="ghead-left"><view class="ghead-bar"></view><view class="ghead-title">荣誉勋章</view></view>
+          <view class="ghead-more"><text class="honor-preview-count">已点亮 {{badgeGot}} / {{badgeTotal}} 枚</text><text>查看全部 <text class="chev">›</text></text></view>
         </view>
         <view class="honor-preview-grid">
           <view wx:for="{{badges}}" wx:key="id" class="honor-preview-item {{item.got ? '' : 'locked'}}">
