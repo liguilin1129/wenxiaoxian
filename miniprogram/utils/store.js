@@ -368,6 +368,20 @@ function advanceGrowthGoal(goalId, stageIndex, taskId) {
   return { completed: completed, goal: goalView(goal) };
 }
 
+// 当孩子取消当天尚未达标的目标打卡时，同步撤回本次阶段进度，
+// 避免任务积分与目标完成次数出现不一致。
+function revertGrowthGoalProgress(goalId, stageIndex, taskId) {
+  const goals = loadGrowthGoals();
+  const goal = goals.find(item => item.id === goalId && item.status === 'active');
+  if (!goal || goal.currentStage !== Number(stageIndex) || goal.taskId !== taskId) return null;
+  const stage = goal.stages[goal.currentStage];
+  if (!stage || !(stage.progress > 0)) return null;
+  stage.progress -= 1;
+  saveGrowthGoals(goals);
+  save(state()._ci, { localOnly: true });
+  return { reverted: true, goal: goalView(goal) };
+}
+
 function getAssessment() {
   const saved = wx.getStorageSync(ASSESSMENT_KEY);
   return saved && typeof saved === 'object' && Array.isArray(saved.dimensions) ? saved : null;
@@ -595,6 +609,7 @@ function toggleDaily(index) {
   recompute(s, st);
   let goalUpdate = null;
   if (t.done && t.goalId) goalUpdate = advanceGrowthGoal(t.goalId, t.goalStage, t.id);
+  else if (!t.done && t.goalId) goalUpdate = revertGrowthGoalProgress(t.goalId, t.goalStage, t.id);
   else save(st, { localOnly: !!t.localOnly });
   return { done: t.done, delta: t.done ? t.points : -t.points, goalUpdate: goalUpdate };
 }

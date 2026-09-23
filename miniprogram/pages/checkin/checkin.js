@@ -19,7 +19,16 @@ Page({
     const tasks = g.todayTasks;
     const done = store.todayDoneCount();
     const total = tasks.length;
-    const indexedTasks = tasks.map((task, index) => Object.assign({ index: index }, task));
+    const goalMap = {};
+    store.getGrowthGoals().filter(goal => goal.status === 'active').forEach(goal => { goalMap[goal.id] = goal; });
+    const indexedTasks = tasks.map((task, index) => {
+      const goal = task.goalId && goalMap[task.goalId];
+      return Object.assign({
+        index: index,
+        goalName: goal ? goal.name : '',
+        goalProgress: goal && goal.stage ? ('第 ' + (goal.currentStage + 1) + ' 阶段 · ' + goal.stage.progress + '/' + goal.stage.target) : ''
+      }, task);
+    });
     const progressPct = total ? Math.round(done / total * 100) : 0;
     const encouragement = total === 0 ? '今天还没有安排任务' : (done === total ? '今日圆满，明天继续保持' : ('再完成 ' + (total - done) + ' 项，就能点亮今天'));
     this.setData({

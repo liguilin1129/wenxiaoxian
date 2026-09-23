@@ -29,6 +29,7 @@
       <view class="check"></view>
     </view>
     <view class="chips">
+      <text wx:if="{{task.goalName}}" class="pill pill-goal">目标 · {{task.goalProgress}}</text>
       <text class="pill pill-{{task.dim}}">{{dimName[task.dim]}}</text>
       <text class="pill">+{{task.points}}</text>
     </view>
@@ -44,6 +45,7 @@
     </view>
     <view class="chips">
       <text wx:if="{{task.fromAiCheckin}}" class="pill pill-ai">AI 打卡</text>
+      <text wx:if="{{task.goalName}}" class="pill pill-goal">目标 · {{task.goalProgress}}</text>
       <text class="pill pill-{{task.dim}}">{{dimName[task.dim]}}</text>
       <text class="pill">+{{task.points}}</text>
     </view>

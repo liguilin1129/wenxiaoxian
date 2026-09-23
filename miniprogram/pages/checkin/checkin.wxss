@@ -7,6 +7,7 @@
 .checkin-completed { opacity: .7; }
 .checkin-completed .tn { text-decoration: line-through; color: var(--ink-3); }
 .pill-ai { color: #4F46E5; background: #EEEDFE; }
+.pill-goal { color: #16835A; background: #EAF8F1; }
 
 .record-section { margin-top: 42rpx; }
 .checkin-record {
