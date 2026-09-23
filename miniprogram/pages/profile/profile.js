@@ -42,13 +42,13 @@ Page({
     const mode = store.getAppMode();
     const tools = this.data.tools.map(item => Object.assign({}, item, {
       badge: item.action === 'goApprovals' && pendingApprovals ? pendingApprovals : 0
-    })).filter(item => mode === 'parent' || item.action !== 'goApprovals');
+    })).filter(item => mode === 'parent' || ['goReport', 'goRewards', 'goBadges', 'goMode'].indexOf(item.action) >= 0);
     const age = child.birthday ? Math.max(0, new Date().getFullYear() - Number(String(child.birthday).slice(0, 4))) : '';
     const bmi = child.height && child.weight ? (Number(child.weight) / Math.pow(Number(child.height) / 100, 2)).toFixed(1) : '';
     this.setData({ signed: true, mode, child: Object.assign({}, child, { age: age, bmi: bmi }), stats: stats, tools: tools, pendingApprovals: pendingApprovals, assessment: store.getAssessment() });
   },
   goLogin() { wx.navigateTo({ url: '/pages/login/login' }); },
-  editProfile() { wx.navigateTo({ url: '/pages/profile-edit/profile-edit' }); },
+  editProfile() { if (!store.isParentMode()) return wx.showToast({ title: '请由家长模式编辑资料', icon: 'none' }); wx.navigateTo({ url: '/pages/profile-edit/profile-edit' }); },
   goBadges() { wx.navigateTo({ url: '/pages/badges/badges' }); },
   goRewards() { wx.navigateTo({ url: '/pages/rewards/rewards' }); },
   goReport() { wx.navigateTo({ url: '/pages/report/report' }); },
@@ -56,8 +56,8 @@ Page({
   goCheckinRecord() { wx.navigateTo({ url: '/pages/checkin-record/checkin-record' }); },
   goTasks() { wx.switchTab({ url: '/pages/tasks/tasks' }); },
   goMembers() { wx.navigateTo({ url: '/pages/family/family' }); },
-  goApprovals() { wx.navigateTo({ url: '/pages/approvals/approvals' }); },
-  goAssessment() { wx.navigateTo({ url: '/pages/assessment/assessment' }); },
+  goApprovals() { if (!store.isParentMode()) return wx.showToast({ title: '请切换到家长模式后确认', icon: 'none' }); wx.navigateTo({ url: '/pages/approvals/approvals' }); },
+  goAssessment() { if (!store.isParentMode()) return wx.showToast({ title: '成长初评由家长填写', icon: 'none' }); wx.navigateTo({ url: '/pages/assessment/assessment' }); },
   goMode() { wx.navigateTo({ url: '/pages/app-mode/app-mode' }); },
   goSettings() { wx.showToast({ title: '提醒 · 主题', icon: 'none' }); },
   switchMode(e) { const mode = store.setAppMode(e.currentTarget.dataset.mode); this.setData({ mode }); wx.showToast({ title: mode === 'child' ? '已切换为孩子模式' : '已切换为家长模式', icon: 'none' }); this.onShow(); },

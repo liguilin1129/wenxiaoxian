@@ -1,8 +1,7 @@
 const app = getApp();
+const store = require('../../utils/store.js');
 
-Page({
-  data: {
-    entries: [
+const ENTRIES = [
       {
         key: 'classics',
         icon: '📚',
@@ -38,12 +37,15 @@ Page({
         desc: '家庭教育真实蜕变故事',
         url: '/pages/case-list/case-list'
       }
-    ]
-  },
+];
+
+Page({
+  data: { entries: ENTRIES },
   onShow() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 2 });
     }
+    this.setData({ entries: store.isParentMode() ? ENTRIES : ENTRIES.filter(item => ['classics', 'rewards'].indexOf(item.key) >= 0) });
   },
   go(e) {
     const url = e.currentTarget.dataset.url;

@@ -87,7 +87,9 @@ Page({
     const doneCount = store.todayDoneCount();
     const ovPct = total ? Math.round(doneCount / total * 100) : 0;
 
-    const reminders = store.getSmartReminders().slice(0, 2);
+    const isParent = store.isParentMode();
+    const reminders = store.getSmartReminders().filter(item => isParent || ['checkin'].indexOf(item.target) >= 0).slice(0, 2);
+    const quickEntries = (isParent ? QUICK_ENTRIES : QUICK_ENTRIES.filter(item => ['任务打卡', '积分明细', '经典学习', '积分商城'].indexOf(item.name) >= 0)).slice(0, 4);
     // 首页固定展示 3 本：优先续读进行中的经典，再补充未开始的经典。
     const classics = (g.classics || mock.classics).slice();
     const reading = classics.filter(book => book.read > 0 && book.read < book.total);
@@ -105,11 +107,13 @@ Page({
       ovPct: ovPct,
       dimName: buildDimName(),
       assessment: store.getAssessment(),
+      isParent: isParent,
       levelPct: levelPct,
       nextLevel: child.levelNum + 1,
       need: need,
       classicRecommendations: classicRecommendations,
       reminders: reminders,
+      quickEntries: quickEntries,
       // 荣誉墙：加载成就勋章 + 已点亮数量
       badges: store.getBadges().slice(0, 4),
       badgeGot: store.getBadges().filter(b => b.got).length,
