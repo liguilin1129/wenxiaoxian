@@ -4,7 +4,7 @@
 </view>
 
 <view class="scr-body">
-  <view class="card family-local-card"><view class="tn">本机家庭管理</view><view class="small">家庭成员仅用于本机展示、任务分配和家庭会议；账号由家长统一使用，可在“使用模式”中切换给孩子。</view></view>
+  <view class="card family-local-card"><view class="tn">家庭成长管理</view><view class="small">家长可在这里管理家庭成员、分配任务和发起家庭会议；需要时可在“使用模式”中切换为孩子模式。</view></view>
 
   <!-- 家庭成员 -->
   <view class="card">
