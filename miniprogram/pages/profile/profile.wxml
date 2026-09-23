@@ -16,9 +16,8 @@
     </view>
     <view class="profile-section section-card assessment-entry" bindtap="goAssessment"><view class="section-head"><view class="section-title">成长初评</view><view class="section-sub">家长填写</view></view><view class="profile-group"><view class="profile-row"><view class="profile-row-left"><text class="profile-row-icon">🧭</text><text>{{assessment ? assessment.levelName : '完成成长初评'}}</text></view><text class="profile-row-note">{{assessment ? assessment.overall + ' 分' : '约 3 分钟'}}</text><text class="profile-row-right">›</text></view></view></view>
     <view class="profile-section section-card">
-      <view class="section-head"><view class="section-title">账户与家庭</view></view>
+      <view class="section-head"><view class="section-title">家庭管理</view></view>
       <view class="profile-group">
-        <view class="profile-row" bindtap="editProfile"><view class="profile-row-left"><text class="profile-row-icon">✏️</text><text>编辑个人资料</text></view><text class="profile-row-right">›</text></view>
         <view class="profile-row" bindtap="goMembers"><view class="profile-row-left"><text class="profile-row-icon">👨‍👩‍👦</text><text>我的家庭</text></view><text class="profile-row-note">家庭会议 · 公约</text><text class="profile-row-right">›</text></view>
         <view class="profile-row" bindtap="goApprovals"><view class="profile-row-left"><text class="profile-row-icon">✅</text><text>家长确认</text></view><text class="profile-row-note">{{pendingApprovals ? ('待确认 ' + pendingApprovals + ' 项') : '暂无待确认'}}</text><text class="profile-row-right">›</text></view>
       </view>
