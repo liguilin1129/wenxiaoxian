@@ -4,7 +4,7 @@
       <view class="greet" style="color:var(--c-habit-d);font-weight:600">家庭议事</view>
       <view class="title">家庭会议</view>
     </view>
-    <view class="mg-btn" bindtap="toggleMode">{{mode === 'list' ? '发起会议' : '返回列表'}}</view>
+    <view wx:if="{{isParent}}" class="mg-btn" bindtap="toggleMode">{{mode === 'list' ? '发起会议' : '返回列表'}}</view>
   </view>
 </view>
 
@@ -108,7 +108,7 @@
             落地：{{item.target.name}} · {{item.target.points}} 分
           </view>
         </view>
-        <view wx:if="{{current.status === 'pending'}}" class="check {{item.approved ? 'on' : ''}}" data-idx="{{index}}" bindtap="toggleApprove">
+        <view wx:if="{{current.status === 'pending' && isParent}}" class="check {{item.approved ? 'on' : ''}}" data-idx="{{index}}" bindtap="toggleApprove">
           <text wx:if="{{item.approved}}">✓</text>
         </view>
         <text wx:else class="pill pill-{{item.approved ? 'body' : 'taste'}}">{{item.approved ? '已通过' : '未通过'}}</text>
@@ -120,11 +120,11 @@
       <view wx:for="{{current.goalDecisionResults}}" wx:key="goalName" class="review-result-row"><view><text>{{item.goalName}}</text><text class="review-result-action">{{item.action}}</text></view><text>{{item.detail}}</text></view>
     </view>
 
-    <view wx:if="{{current.status === 'pending'}}" class="card" style="margin-top:24rpx">
+    <view wx:if="{{current.status === 'pending' && isParent}}" class="card" style="margin-top:24rpx">
       <view class="field-label">会议纪要</view>
       <textarea class="field-textarea" placeholder="记录本次家庭会议的核心结论..." value="{{summary}}" bindinput="onSummary" />
     </view>
 
-    <button wx:if="{{current.status === 'pending'}}" class="btn" style="margin-top:32rpx" bindtap="closeMeeting">结束会议并落地决议</button>
+    <button wx:if="{{current.status === 'pending' && isParent}}" class="btn" style="margin-top:32rpx" bindtap="closeMeeting">结束会议并落地决议</button>
   </block>
 </view>

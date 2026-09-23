@@ -34,6 +34,7 @@ Page({
     form: { title: '', topics: [], goalDecisions: [], kind: 'standard' },
     goalOptions: [],
     assignees: [],
+    isParent: true,
     current: null,
     summary: ''
   },
@@ -43,14 +44,20 @@ Page({
   onShow() {
     if (this.openReviewOnShow) {
       this.openReviewOnShow = false;
+      if (!store.isParentMode()) {
+        wx.showToast({ title: '请切换到家长模式后发起复盘', icon: 'none' });
+        this.refreshList();
+        return;
+      }
       this.openReviewForm();
     } else this.refreshList();
   },
   refreshList() {
     const meetings = store.getMeetings() || [];
-    this.setData({ meetings: meetings, mode: 'list', current: null, form: { title: '', topics: [], goalDecisions: [], kind: 'standard' }, summary: '' });
+    this.setData({ meetings: meetings, mode: 'list', current: null, form: { title: '', topics: [], goalDecisions: [], kind: 'standard' }, summary: '', isParent: store.isParentMode() });
   },
   toggleMode() {
+    if (!store.isParentMode()) return wx.showToast({ title: '请切换到家长模式后发起会议', icon: 'none' });
     if (this.data.mode === 'list') {
       this.setData({ mode: 'form' });
     } else {
@@ -59,6 +66,7 @@ Page({
   },
   // 从成长报告进入时，自动带入本次评分、重点方向和正在执行的目标，家长仍可编辑每条议题。
   openReviewForm() {
+    if (!store.isParentMode()) return wx.showToast({ title: '请切换到家长模式后发起复盘', icon: 'none' });
     const assessment = store.getAssessment();
     const trend = store.getAssessmentTrend();
     const goals = store.getGrowthGoals().filter(item => item.status === 'active');
@@ -187,6 +195,7 @@ Page({
 
   // 创建会议
   createMeeting() {
+    if (!store.isParentMode()) return wx.showToast({ title: '请切换到家长模式后创建会议', icon: 'none' });
     const form = this.data.form;
     const title = form.title.trim();
     if (!title) {
@@ -229,6 +238,7 @@ Page({
 
   // 切换议题通过状态
   toggleApprove(e) {
+    if (!store.isParentMode()) return wx.showToast({ title: '请切换到家长模式后修改决议', icon: 'none' });
     const idx = Number(e.currentTarget.dataset.idx);
     const current = this.data.current;
     current.topics[idx].approved = !current.topics[idx].approved;
@@ -258,6 +268,7 @@ Page({
     this.doClose(current);
   },
   doClose(current) {
+    if (!store.isParentMode()) return wx.showToast({ title: '请切换到家长模式后结束会议', icon: 'none' });
     const summary = this.data.summary.trim();
     const ok = store.closeMeeting(current.id, summary);
     if (!ok) {

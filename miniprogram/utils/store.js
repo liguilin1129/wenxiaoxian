@@ -246,6 +246,7 @@ function addGoalStageTask(goal, stageIndex) {
 
 function createGrowthGoal(input) {
   ensure();
+  if (!isParentMode()) return null;
   const dim = input && GROWTH_GOAL_TEMPLATES[input.dim] ? input.dim : '';
   const active = loadGrowthGoals().filter(item => item.status === 'active');
   if (!dim || active.length >= 2 || active.some(item => item.dim === dim)) return null;
@@ -307,6 +308,7 @@ function updateGoalStageTask(goal, decision) {
 // 家庭复盘会议的目标决议：继续、暂停、完成或替换，并同步阶段任务。
 function applyGrowthGoalDecisions(decisions) {
   ensure();
+  if (!isParentMode()) return [];
   let goals = loadGrowthGoals();
   const records = [];
   (Array.isArray(decisions) ? decisions : []).forEach(decision => {
@@ -679,6 +681,7 @@ function approveCenter(id) {
 
 function rejectCenter(id) {
   ensure();
+  if (!isParentMode()) return { forbidden: true };
   const s = state();
   const record = s._ci.center[id];
   if (!record || record.status !== 'pending') return false;
@@ -891,6 +894,7 @@ function syncMeetingsToStorage() {
 
 function createMeeting(meeting) {
   ensure();
+  if (!isParentMode()) return null;
   const s = state();
   if (!s.meetings) s.meetings = loadMeetings();
   s.meetings.unshift(meeting);
@@ -900,6 +904,7 @@ function createMeeting(meeting) {
 
 function updateMeeting(meeting) {
   ensure();
+  if (!isParentMode()) return false;
   const s = state();
   if (!s.meetings) s.meetings = loadMeetings();
   const idx = s.meetings.findIndex(m => m.id === meeting.id);
@@ -913,6 +918,7 @@ function updateMeeting(meeting) {
 
 function closeMeeting(id, summary) {
   ensure();
+  if (!isParentMode()) return false;
   const s = state();
   if (!s.meetings) s.meetings = loadMeetings();
   const meeting = s.meetings.find(m => m.id === id);

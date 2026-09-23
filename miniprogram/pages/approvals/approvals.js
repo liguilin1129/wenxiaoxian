@@ -24,7 +24,10 @@ Page({
       content: '退回后孩子可以重新提交。',
       confirmText: '退回',
       success: (result) => {
-        if (!result.confirm || !store.rejectCenter(id)) return;
+        if (!result.confirm) return;
+        const rejected = store.rejectCenter(id);
+        if (rejected && rejected.forbidden) return wx.showToast({ title: '请切换到家长模式后处理', icon: 'none' });
+        if (!rejected) return;
         wx.showToast({ title: '已退回', icon: 'none' });
         this.refresh();
       }
