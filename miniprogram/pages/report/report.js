@@ -8,7 +8,7 @@ function dateLabel() {
 }
 
 Page({
-  data: { dims: [], neigong: [], rules: [], assessment: null, assessmentTrend: null, assessmentHistory: [], assessmentReview: {}, goals: [], weekGain: 0, points: 0, streak: 0, done: 0, total: 0, completionPct: 0, earned: 0, spent: 0, recordCount: 0, focus: {}, strength: {}, suggestion: '', body: {}, hasBodyData: false },
+  data: { dims: [], neigong: [], rules: [], assessment: null, assessmentTrend: null, assessmentHistory: [], assessmentReview: {}, goals: [], latestReview: null, weekGain: 0, points: 0, streak: 0, done: 0, total: 0, completionPct: 0, earned: 0, spent: 0, recordCount: 0, focus: {}, strength: {}, suggestion: '', body: {}, hasBodyData: false },
   onShow() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 2 });
@@ -27,7 +27,7 @@ Page({
     const body = { height: child.height || '未填写', weight: child.weight || '未填写', bmi: child.bmi || '填写身高体重后自动计算' };
     const assessmentHistory = store.getAssessmentHistory().slice().reverse().slice(0, 3);
     const goals = store.getGrowthGoals().filter(item => item.status === 'active');
-    this.setData({ dims: dims, neigong: g.neigong || [], rules: store.getScoreRules(), assessment: store.getAssessment(), assessmentTrend: store.getAssessmentTrend(), assessmentHistory: assessmentHistory, assessmentReview: store.getAssessmentReviewStatus(), goals: goals, weekGain: child.weekGain || 0, points: child.points || 0, streak: child.streak || 0, done: done, total: today.length, completionPct: today.length ? Math.round(done / today.length * 100) : 0, earned: earned, spent: spent, recordCount: history.length, focus: focus, strength: strength, suggestion: suggestion, body: body, hasBodyData: !!(child.height || child.weight) });
+    this.setData({ dims: dims, neigong: g.neigong || [], rules: store.getScoreRules(), assessment: store.getAssessment(), assessmentTrend: store.getAssessmentTrend(), assessmentHistory: assessmentHistory, assessmentReview: store.getAssessmentReviewStatus(), goals: goals, latestReview: store.getLatestReviewMeeting(), weekGain: child.weekGain || 0, points: child.points || 0, streak: child.streak || 0, done: done, total: today.length, completionPct: today.length ? Math.round(done / today.length * 100) : 0, earned: earned, spent: spent, recordCount: history.length, focus: focus, strength: strength, suggestion: suggestion, body: body, hasBodyData: !!(child.height || child.weight) });
   },
   goCheckin() { wx.navigateTo({ url: '/pages/checkin/checkin' }); },
   goAssessment() { wx.navigateTo({ url: '/pages/assessment/assessment' }); },

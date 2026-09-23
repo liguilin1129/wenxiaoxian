@@ -31,7 +31,9 @@ Page({
     mode: 'list',
     meetings: [],
     templates: TEMPLATES,
-    form: { title: '', topics: [] },
+    form: { title: '', topics: [], goalDecisions: [], kind: 'standard' },
+    goalOptions: [],
+    assignees: [],
     current: null,
     summary: ''
   },
@@ -46,7 +48,7 @@ Page({
   },
   refreshList() {
     const meetings = store.getMeetings() || [];
-    this.setData({ meetings: meetings, mode: 'list', current: null, form: { title: '', topics: [] }, summary: '' });
+    this.setData({ meetings: meetings, mode: 'list', current: null, form: { title: '', topics: [], goalDecisions: [], kind: 'standard' }, summary: '' });
   },
   toggleMode() {
     if (this.data.mode === 'list') {
@@ -60,15 +62,26 @@ Page({
     const assessment = store.getAssessment();
     const trend = store.getAssessmentTrend();
     const goals = store.getGrowthGoals().filter(item => item.status === 'active');
+    const goalOptions = store.getGrowthGoalTemplates();
+    const assignees = store.getFamilyMembers().filter(item => item.role === '孩子');
     const scoreText = assessment ? ('本次综合 ' + assessment.overall + ' 分，等级“' + assessment.levelName + '”。' + (trend.previous ? ('较上次 ' + (trend.overallDelta > 0 ? '+' : '') + trend.overallDelta + ' 分。') : '这是第一次评估结果。')) : '暂未完成成长评估。';
     const focusText = assessment ? ('优势方向：' + assessment.strength.name + '；本期优先关注：' + assessment.focus.name + '。请讨论哪些做法需要保留或调整。') : '请讨论本期最值得持续练习的一项成长方向。';
     const goalText = goals.length ? ('正在进行：' + goals.map(item => item.name + '（第 ' + (item.currentStage + 1) + ' 阶段）').join('、') + '。') : '当前还没有进行中的成长目标，可根据评分结果决定是否开启。';
     const focusName = assessment && assessment.focus ? assessment.focus.name : '';
+    const goalDecisions = goals.map(goal => {
+      const stage = goal.stage || {};
+      const replaceDimIndex = Math.max(0, goalOptions.findIndex(item => item.key === goal.dim));
+      const assigneeIndex = Math.max(0, assignees.findIndex(item => item.name === goal.assignee));
+      return { goalId: goal.id, goalName: goal.name, currentStage: goal.currentStage + 1, action: 'continue', taskName: stage.name || '', points: String(stage.points || 5), assignee: goal.assignee || (assignees[0] && assignees[0].name) || '', assigneeIndex: assigneeIndex, replaceDim: goal.dim, replaceDimIndex: replaceDimIndex, replaceDimName: (goalOptions[replaceDimIndex] || {}).name || '' };
+    });
     this.setData({
       meetings: store.getMeetings() || [],
       mode: 'form', current: null, summary: '',
+      goalOptions: goalOptions, assignees: assignees,
       form: {
         title: '本期成长复盘会议',
+        kind: 'review',
+        goalDecisions: goalDecisions,
         topics: [
           reviewTopic('custom', '回顾本期成长评分', scoreText),
           reviewTopic('custom', '讨论重点成长方向', focusText),
@@ -135,6 +148,42 @@ Page({
     else topic[field] = value;
     this.setData({ form: form });
   },
+  setGoalAction(e) {
+    const idx = Number(e.currentTarget.dataset.idx);
+    const form = this.data.form;
+    if (!form.goalDecisions[idx]) return;
+    form.goalDecisions[idx].action = e.currentTarget.dataset.action;
+    this.setData({ form: form });
+  },
+  onGoalDecision(e) {
+    const idx = Number(e.currentTarget.dataset.idx);
+    const field = e.currentTarget.dataset.field;
+    const form = this.data.form;
+    if (!form.goalDecisions[idx]) return;
+    form.goalDecisions[idx][field] = e.detail.value;
+    this.setData({ form: form });
+  },
+  chooseGoalAssignee(e) {
+    const idx = Number(e.currentTarget.dataset.idx);
+    const optionIndex = Number(e.detail.value);
+    const form = this.data.form;
+    const person = this.data.assignees[optionIndex];
+    if (!form.goalDecisions[idx] || !person) return;
+    form.goalDecisions[idx].assignee = person.name;
+    form.goalDecisions[idx].assigneeIndex = optionIndex;
+    this.setData({ form: form });
+  },
+  chooseReplacementDim(e) {
+    const idx = Number(e.currentTarget.dataset.idx);
+    const optionIndex = Number(e.detail.value);
+    const form = this.data.form;
+    const target = this.data.goalOptions[optionIndex];
+    if (!form.goalDecisions[idx] || !target) return;
+    form.goalDecisions[idx].replaceDim = target.key;
+    form.goalDecisions[idx].replaceDimIndex = optionIndex;
+    form.goalDecisions[idx].replaceDimName = target.name;
+    this.setData({ form: form });
+  },
 
   // 创建会议
   createMeeting() {
@@ -159,7 +208,9 @@ Page({
       date: (m < 10 ? '0' + m : m) + '-' + (d < 10 ? '0' + d : d),
       time: (h < 10 ? '0' + h : h) + ':' + (min < 10 ? '0' + min : min),
       status: 'pending',
+      kind: form.kind || 'standard',
       topics: form.topics,
+      goalDecisions: form.goalDecisions || [],
       summary: ''
     };
     store.createMeeting(meeting);

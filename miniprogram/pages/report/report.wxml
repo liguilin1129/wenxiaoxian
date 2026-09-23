@@ -16,6 +16,8 @@
 
   <view class="card" wx:if="{{goals.length}}"><view class="card-head"><view class="h3">当前成长目标</view><text bindtap="goGoals">查看全部 ›</text></view><view wx:for="{{goals}}" wx:key="id" class="report-goal"><view class="report-goal-head"><text>{{item.name}}</text><text>第 {{item.currentStage + 1}} 阶段</text></view><view class="small">{{item.stage.name}} · 已完成 {{item.stage.progress}} / {{item.stage.target}} 次</view><view class="report-goal-progress"><view style="width:{{item.progressPct}}%"></view></view></view></view>
 
+  <view class="card review-decision-card" wx:if="{{latestReview}}"><view class="card-head"><view class="h3">本期家庭决议</view><text bindtap="goReviewMeeting">再次复盘 ›</text></view><view class="small">最近一次会议：{{latestReview.date}} {{latestReview.time}}</view><view wx:if="{{latestReview.goalDecisionResults.length}}"><view wx:for="{{latestReview.goalDecisionResults}}" wx:key="goalName" class="report-decision-row"><view><text>{{item.goalName}}</text><text class="report-decision-action">{{item.action}}</text></view><text>{{item.detail}}</text></view></view><view wx:if="{{latestReview.summary}}" class="review-summary">会议纪要：{{latestReview.summary}}</view></view>
+
   <view class="card body-card"><view class="card-head"><view class="h3">身体成长记录</view><text bindtap="goProfileEdit">去填写 ›</text></view><view class="body-metrics"><view><text>{{body.height}}</text><text>身高（cm）</text></view><view><text>{{body.weight}}</text><text>体重（kg）</text></view><view><text>{{body.bmi}}</text><text>BMI · 仅供记录</text></view></view><view wx:if="{{!hasBodyData}}" class="small body-tip">填写身高和体重后，报告会自动汇总身体成长记录。</view></view>
 
   <view class="card">

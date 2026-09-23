@@ -63,6 +63,27 @@
       </view>
     </view>
 
+    <view wx:if="{{form.goalDecisions.length}}" class="meeting-form-card review-goals-card">
+      <view class="step-label"><text>4</text>调整成长目标</view>
+      <view class="agenda-tip">每个目标选择一项决议；继续或替换时，可同步修改当前阶段任务、积分和执行人。</view>
+      <view wx:for="{{form.goalDecisions}}" wx:for-item="decision" wx:key="goalId" class="review-goal-editor">
+        <view class="review-goal-name">{{decision.goalName}}<text>第 {{decision.currentStage}} 阶段</text></view>
+        <view class="decision-actions">
+          <text class="decision-action {{decision.action === 'continue' ? 'selected' : ''}}" data-idx="{{index}}" data-action="continue" bindtap="setGoalAction">继续</text>
+          <text class="decision-action {{decision.action === 'pause' ? 'selected' : ''}}" data-idx="{{index}}" data-action="pause" bindtap="setGoalAction">暂停</text>
+          <text class="decision-action {{decision.action === 'complete' ? 'selected' : ''}}" data-idx="{{index}}" data-action="complete" bindtap="setGoalAction">完成</text>
+          <text class="decision-action {{decision.action === 'replace' ? 'selected' : ''}}" data-idx="{{index}}" data-action="replace" bindtap="setGoalAction">替换</text>
+        </view>
+        <view wx:if="{{decision.action === 'continue' || decision.action === 'replace'}}" class="decision-fields">
+          <input class="topic-input-sm" placeholder="阶段任务" value="{{decision.taskName}}" data-idx="{{index}}" data-field="taskName" bindinput="onGoalDecision" />
+          <input class="topic-input-sm decision-points" type="digit" placeholder="积分" value="{{decision.points}}" data-idx="{{index}}" data-field="points" bindinput="onGoalDecision" />
+          <picker class="decision-picker" range="{{assignees}}" range-key="name" value="{{decision.assigneeIndex}}" data-idx="{{index}}" bindchange="chooseGoalAssignee"><view>执行人：{{decision.assignee}} ›</view></picker>
+          <picker wx:if="{{decision.action === 'replace'}}" class="decision-picker" range="{{goalOptions}}" range-key="name" value="{{decision.replaceDimIndex}}" data-idx="{{index}}" bindchange="chooseReplacementDim"><view>替换为：{{decision.replaceDimName}} ›</view></picker>
+        </view>
+        <view wx:else class="decision-note">{{decision.action === 'pause' ? '结束会议后将暂停目标并移出当前打卡。' : '结束会议后将完成目标并移出当前打卡。'}}</view>
+      </view>
+    </view>
+
     <button class="btn meeting-create" bindtap="createMeeting">创建会议并开始决议</button>
   </block>
 
@@ -92,6 +113,11 @@
         </view>
         <text wx:else class="pill pill-{{item.approved ? 'body' : 'taste'}}">{{item.approved ? '已通过' : '未通过'}}</text>
       </view>
+    </view>
+
+    <view wx:if="{{current.status === 'done' && current.goalDecisionResults.length}}" class="meeting-card review-result-card">
+      <view class="tn">本期目标决议</view>
+      <view wx:for="{{current.goalDecisionResults}}" wx:key="goalName" class="review-result-row"><view><text>{{item.goalName}}</text><text class="review-result-action">{{item.action}}</text></view><text>{{item.detail}}</text></view>
     </view>
 
     <view wx:if="{{current.status === 'pending'}}" class="card" style="margin-top:24rpx">

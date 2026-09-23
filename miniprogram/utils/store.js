@@ -269,6 +269,83 @@ function createAssessmentGoals(input) {
   return created;
 }
 
+function deactivateGoalTask(goal) {
+  const s = state();
+  const taskId = goal && goal.taskId;
+  if (!taskId) return;
+  const custom = (s._ci && s._ci.customTasks || []).find(item => item.id === taskId);
+  if (custom) custom.active = false;
+  s.todayTasks = (s.todayTasks || []).filter(item => item.id !== taskId);
+  delete (s._ci && s._ci.daily || {})[taskId];
+  goal.taskId = '';
+}
+
+function updateGoalStageTask(goal, decision) {
+  const stage = (goal.stages || [])[goal.currentStage];
+  if (!stage) return;
+  const name = cleanText(decision.taskName, 40);
+  const points = Number(decision.points);
+  const assignee = cleanText(decision.assignee, 32);
+  if (name) stage.name = name;
+  if (Number.isInteger(points) && points >= 1 && points <= 100) stage.points = points;
+  if (assignee) goal.assignee = assignee;
+  const s = state();
+  const task = (s._ci && s._ci.customTasks || []).find(item => item.id === goal.taskId);
+  if (task) {
+    task.name = stage.name;
+    task.points = stage.points;
+    task.assignee = goal.assignee;
+  }
+  const todayTask = (s.todayTasks || []).find(item => item.id === goal.taskId);
+  if (todayTask) {
+    todayTask.name = stage.name;
+    todayTask.points = stage.points;
+    todayTask.assignee = goal.assignee;
+  }
+}
+
+// 家庭复盘会议的目标决议：继续、暂停、完成或替换，并同步阶段任务。
+function applyGrowthGoalDecisions(decisions) {
+  ensure();
+  let goals = loadGrowthGoals();
+  const records = [];
+  (Array.isArray(decisions) ? decisions : []).forEach(decision => {
+    const goal = goals.find(item => item.id === decision.goalId && item.status === 'active');
+    if (!goal) return;
+    const action = ['continue', 'pause', 'complete', 'replace'].indexOf(decision.action) >= 0 ? decision.action : 'continue';
+    if (action === 'continue') {
+      updateGoalStageTask(goal, decision);
+      records.push({ goalName: goal.name, action: '继续', detail: (goal.stages[goal.currentStage] || {}).name || '' });
+    } else if (action === 'pause') {
+      deactivateGoalTask(goal);
+      goal.status = 'paused';
+      goal.pausedAt = todayStr();
+      records.push({ goalName: goal.name, action: '暂停', detail: '可在下一次复盘时重新开启' });
+    } else if (action === 'complete') {
+      deactivateGoalTask(goal);
+      goal.status = 'completed';
+      goal.completedAt = todayStr();
+      records.push({ goalName: goal.name, action: '完成', detail: '本期目标已完成' });
+    } else {
+      deactivateGoalTask(goal);
+      goal.status = 'replaced';
+      goal.replacedAt = todayStr();
+      // createGrowthGoal 从本地目标表读取，先保存旧目标的替换状态，避免被覆盖。
+      saveGrowthGoals(goals);
+      const replacement = createGrowthGoal({ dim: decision.replaceDim || goal.dim, assignee: decision.assignee || goal.assignee });
+      if (replacement) {
+        goals = loadGrowthGoals();
+        const created = goals.find(item => item.id === replacement.id);
+        if (created) updateGoalStageTask(created, decision);
+        records.push({ goalName: goal.name, action: '替换', detail: '已改为“' + replacement.name + '”' });
+      } else records.push({ goalName: goal.name, action: '替换', detail: '未能创建新目标' });
+    }
+  });
+  saveGrowthGoals(goals);
+  save(state()._ci, { localOnly: true });
+  return records;
+}
+
 function advanceGrowthGoal(goalId, stageIndex, taskId) {
   const goals = loadGrowthGoals();
   const goal = goals.find(item => item.id === goalId && item.status === 'active');
@@ -788,6 +865,10 @@ function getMeetings() {
   return s.meetings;
 }
 
+function getLatestReviewMeeting() {
+  return getMeetings().find(item => item.status === 'done' && item.kind === 'review') || null;
+}
+
 function syncMeetingsToStorage() {
   const s = state();
   if (s.meetings) saveMeetings(s.meetings);
@@ -866,6 +947,10 @@ function closeMeeting(id, summary) {
     }
   });
 
+  if (meeting.kind === 'review') {
+    meeting.goalDecisionResults = applyGrowthGoalDecisions(meeting.goalDecisions);
+  }
+
   saveMeetingTasks(mtList);
   syncMeetingsToStorage();
   return true;
@@ -913,9 +998,9 @@ module.exports = {
   redeem, login, isSigned, recordBonus,
   aiRecordBonus, getAiCheckinRecords, addDailyTask,
   getCustomTasks, addCustomTask, removeCustomTask,
-  getGrowthGoalTemplates, getGrowthGoals, createGrowthGoal, createAssessmentGoals,
+  getGrowthGoalTemplates, getGrowthGoals, createGrowthGoal, createAssessmentGoals, applyGrowthGoalDecisions,
   getRewards, saveRewards,
-  getMeetings, createMeeting, updateMeeting, closeMeeting,
+  getMeetings, getLatestReviewMeeting, createMeeting, updateMeeting, closeMeeting,
   getFamilyMembers, updateFamilyMember, addFamilyMember, removeFamilyMember, getFamilyConvention, saveFamilyConvention,
   isCaseLiked, isCaseFaved, toggleCaseLike, toggleCaseFav
 };
