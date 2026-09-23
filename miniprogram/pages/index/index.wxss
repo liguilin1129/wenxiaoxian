@@ -50,12 +50,9 @@
 .growth-metric-label { font-size: 20rpx; opacity: .74; }
 
 /* 首页只展示四枚代表勋章，避免恢复完整荣誉墙后再次挤占首屏。 */
-.honor-preview { margin-top: 20rpx; padding: 24rpx 28rpx; border-radius: var(--radius-sm); background: var(--surface); box-shadow: var(--shadow-soft); }
-.honor-preview-head { display: flex; align-items: center; justify-content: space-between; }
-.honor-preview-title { color: var(--ink-1); font-size: 29rpx; font-weight: 750; }
-.honor-preview-sub { margin-top: 5rpx; color: var(--ink-3); font-size: 22rpx; }
-.honor-preview-head > text { color: var(--brand); font-size: 23rpx; }
-.honor-preview-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12rpx; margin-top: 20rpx; }
+.honor-preview { overflow: hidden; }
+.honor-preview-sub { margin-top: 3rpx; color: var(--ink-3); font-size: 20rpx; font-weight: 400; }
+.honor-preview-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12rpx; padding: 22rpx 28rpx 26rpx; }
 .honor-preview-item { min-width: 0; display: flex; flex-direction: column; align-items: center; color: var(--ink-2); font-size: 20rpx; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .honor-preview-icon { width: 64rpx; height: 64rpx; display: flex; align-items: center; justify-content: center; border-radius: 20rpx; background: var(--brand-soft); font-size: 34rpx; }
 .honor-preview-item.locked { color: var(--ink-3); }.honor-preview-item.locked .honor-preview-icon { filter: grayscale(1); opacity: .55; background: var(--surface-2); }
