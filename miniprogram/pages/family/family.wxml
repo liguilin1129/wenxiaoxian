@@ -4,8 +4,6 @@
 </view>
 
 <view class="scr-body">
-  <view class="card family-local-card"><view class="tn">家庭成长管理</view><view class="small">家长可在这里管理家庭成员、分配任务和发起家庭会议；需要时可在“使用模式”中切换为孩子模式。</view></view>
-
   <!-- 家庭成员 -->
   <view class="card">
     <view class="row between" style="margin-bottom:20rpx">
