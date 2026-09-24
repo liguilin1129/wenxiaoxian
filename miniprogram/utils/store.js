@@ -103,6 +103,7 @@ function load() {
   if (!st.aiRecords) st.aiRecords = [];
   if (!st.aiCheckins) st.aiCheckins = [];
   if (!st.customTasks) st.customTasks = [];
+  if (!st.customApprovals) st.customApprovals = {};
   // 跨天：清空「今日习惯」打卡（任务中心为累积行为，保留）
   if (st.date !== today) {
     st.date = today;
@@ -584,7 +585,7 @@ function initCheckIns(appInstance) {
     });
   });
   (st.customTasks || []).filter(item => item.active && (item.frequency === 'daily' ? (!item.deadline || todayStr() <= item.deadline) : item.date === formatToday())).forEach(item => {
-    if (!s.todayTasks.some(task => task.id === item.id)) s.todayTasks.push(Object.assign({}, item, { done: !!st.daily[item.id], fromCustomTask: true }));
+    if (!s.todayTasks.some(task => task.id === item.id)) s.todayTasks.push(Object.assign({}, item, { done: !!st.daily[item.id], pendingApproval: !!(st.customApprovals[item.id] && st.customApprovals[item.id].status === 'pending'), fromCustomTask: true }));
   });
   recompute(s, st);
 }
@@ -604,9 +605,18 @@ function toggleDaily(index) {
   const t = s.todayTasks[index];
   if (!t) return null;
   if (t.fromAiCheckin) return { locked: true, done: true, delta: 0 };
+  const st = s._ci;
+  if (t.requiresApproval) {
+    const pending = st.customApprovals[t.id];
+    if (!pending) {
+      st.customApprovals[t.id] = { status: 'pending', date: formatToday() };
+      t.pendingApproval = true;
+      save(st, { localOnly: !!t.localOnly });
+    }
+    return { pending: true, done: false, delta: 0 };
+  }
   const was = t.done;
   t.done = !t.done;
-  const st = s._ci;
   if (t.done) st.daily[t.id] = formatToday(); else delete st.daily[t.id];
   recompute(s, st);
   let goalUpdate = null;
@@ -668,6 +678,20 @@ function approveCenter(id) {
   ensure();
   if (!isParentMode()) return { forbidden: true };
   const s = state();
+  const customRecord = s._ci.customApprovals[id];
+  if (customRecord && customRecord.status === 'pending') {
+    const task = (s._ci.customTasks || []).find(item => item.id === id);
+    if (!task) return null;
+    customRecord.status = 'approved';
+    s._ci.daily[id] = customRecord.date;
+    const todayTask = (s.todayTasks || []).find(item => item.id === id);
+    if (todayTask) { todayTask.done = true; todayTask.pendingApproval = false; }
+    recompute(s, s._ci);
+    let goalUpdate = null;
+    if (task.goalId) goalUpdate = advanceGrowthGoal(task.goalId, task.goalStage, id);
+    save(s._ci, { localOnly: !!task.localOnly });
+    return { points: task.points, experience: task.points, status: 'approved', levelUp: false, goalUpdate: goalUpdate };
+  }
   const record = s._ci.center[id];
   if (!record || record.status !== 'pending') return null;
   const oldLevel = Number(s.child.levelNum) || 1;
@@ -683,6 +707,13 @@ function rejectCenter(id) {
   ensure();
   if (!isParentMode()) return { forbidden: true };
   const s = state();
+  if (s._ci.customApprovals[id] && s._ci.customApprovals[id].status === 'pending') {
+    delete s._ci.customApprovals[id];
+    const todayTask = (s.todayTasks || []).find(item => item.id === id);
+    if (todayTask) todayTask.pendingApproval = false;
+    save(s._ci);
+    return true;
+  }
   const record = s._ci.center[id];
   if (!record || record.status !== 'pending') return false;
   delete s._ci.center[id];
@@ -694,7 +725,7 @@ function rejectCenter(id) {
 function getPendingApprovals() {
   ensure();
   const s = state();
-  return Object.keys(s._ci.center)
+  const centerPending = Object.keys(s._ci.center)
     .filter(id => s._ci.center[id] && s._ci.center[id].status === 'pending' && centerMap[id])
     .map(id => ({
       id: id,
@@ -705,6 +736,14 @@ function getPendingApprovals() {
       date: s._ci.center[id].date,
       note: s._ci.center[id].note || '', evidence: s._ci.center[id].evidence || []
     }));
+  const customPending = Object.keys(s._ci.customApprovals || {})
+    .filter(id => s._ci.customApprovals[id] && s._ci.customApprovals[id].status === 'pending')
+    .map(id => {
+      const task = (s._ci.customTasks || []).find(item => item.id === id);
+      const record = s._ci.customApprovals[id];
+      return task ? { id: id, name: task.name, dim: task.dim, points: task.points, rewards: [], date: record.date, note: '', evidence: [] } : null;
+    }).filter(Boolean);
+  return centerPending.concat(customPending);
 }
 
 function todayDoneCount() {
@@ -859,7 +898,7 @@ function addCustomTask(input) {
   const frequency = input && input.frequency === 'daily' ? 'daily' : 'once';
   const deadline = typeof (input && input.deadline) === 'string' ? input.deadline : '';
   const assignee = cleanText(input && input.assignee, 32) || (state().child && state().child.name) || '孩子';
-  const task = { id: 'custom_' + Date.now(), name, points, dim, date: formatToday(), frequency, deadline, assignee, active: true, goalId: cleanText(input && input.goalId, 64), goalStage: Number(input && input.goalStage) || 0, localOnly: !!(input && input.localOnly) };
+  const task = { id: 'custom_' + Date.now(), name, points, dim, date: formatToday(), frequency, deadline, assignee, active: true, requiresApproval: !!(input && input.requiresApproval), goalId: cleanText(input && input.goalId, 64), goalStage: Number(input && input.goalStage) || 0, localOnly: !!(input && input.localOnly) };
   state()._ci.customTasks.unshift(task); save(state()._ci, { localOnly: task.localOnly });
   state().todayTasks.push(Object.assign({}, task, { done: false, fromCustomTask: true }));
   return task;

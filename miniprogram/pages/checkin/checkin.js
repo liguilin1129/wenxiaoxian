@@ -25,6 +25,7 @@ Page({
       const goal = task.goalId && goalMap[task.goalId];
       return Object.assign({
         index: index,
+        approvalText: task.requiresApproval ? (task.pendingApproval ? '等待家长确认' : '需家长确认') : '',
         goalName: goal ? goal.name : '',
         goalProgress: goal && goal.stage ? ('第 ' + (goal.currentStage + 1) + ' 阶段 · ' + goal.stage.progress + '/' + goal.stage.target) : ''
       }, task);
@@ -51,6 +52,11 @@ Page({
     if (res) {
       if (res.locked) {
         wx.showToast({ title: 'AI 打卡记录不能在此取消', icon: 'none' });
+        return;
+      }
+      if (res.pending) {
+        wx.showToast({ title: '已提交，等待家长确认', icon: 'none' });
+        this.refresh();
         return;
       }
       const tip = res.goalUpdate && res.goalUpdate.completed ? (res.goalUpdate.goal.done ? '成长目标已达成！' : '本阶段完成，已解锁下一阶段') : (res.delta > 0 ? '打卡 +' + res.delta + ' 分' : '已取消打卡');
