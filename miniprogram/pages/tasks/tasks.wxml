@@ -1,8 +1,3 @@
-<view class="scr-head">
-  <view class="greet">鼓励中心</view>
-  <view class="title">任务与行为</view>
-</view>
-
 <view class="scr-body">
   <view class="task-overview card">
     <view class="chips">

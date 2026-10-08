@@ -83,6 +83,7 @@
 /* 顶部搜索栏（iOS 灰底） */
 .scr-head { padding: 8rpx 32rpx 16rpx; }
 .scr-body { padding-top: 8rpx; }
+.home-nav .search-trigger { margin-left: auto; }
 .home-nav { display:flex; align-items:center; justify-content:space-between; }
 .search-trigger { display:flex; align-items:center; gap:8rpx; padding:14rpx 18rpx; border-radius:999rpx; background:var(--surface); border:1rpx solid var(--line); color:var(--ink-2); font-size:24rpx; box-shadow:0 2rpx 6rpx rgba(17,17,26,.04); }
 .search-trigger text:first-child { font-size:26rpx; }
