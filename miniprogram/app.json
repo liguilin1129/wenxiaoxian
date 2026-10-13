@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/search/search",
     "pages/login/login",
     "pages/badges/badges",
     "pages/tasks/tasks",
@@ -11,6 +12,7 @@
     "pages/checkin-record/checkin-record",
     "pages/reminders/reminders",
     "pages/points/points",
+    "pages/growth-bank/growth-bank",
     "pages/classics/classics",
     "pages/classic-read/classic-read",
     "pages/discover/discover",
@@ -30,6 +32,7 @@
     "pages/assessment/assessment",
     "pages/profile/profile",
     "pages/profile-edit/profile-edit",
+    "pages/profile-detail/profile-detail",
     "pages/family/family",
     "pages/family/meeting",
     "pages/family/member-edit",

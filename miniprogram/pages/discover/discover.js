@@ -1,6 +1,7 @@
 const app = getApp();
 
 const ENTRIES = [
+      { key: 'growth-bank', icon: '🏦', title: '成长银行', desc: '成长记录 · 五育积累 · 积分流水', url: '/pages/growth-bank/growth-bank' },
       {
         key: 'classics',
         icon: '📚',

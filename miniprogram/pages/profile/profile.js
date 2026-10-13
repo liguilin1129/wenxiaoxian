@@ -14,6 +14,7 @@ Page({
       { num: 0, suffix: '天', label: '连续打卡', action: 'goCheckinRecord' }
     ],
     tools: [
+      { icon: '🏦', name: '成长银行', action: 'goBank', bg: '#ECECFF', color: '#5E5CE6' },
       { icon: '📊', name: '成长报告', action: 'goReport', bg: '#FFFBEB', color: '#B7791F' },
       { icon: '🎁', name: '奖励兑换', action: 'goRewards', bg: '#ECFDF5', color: '#0F9D6B' },
       { icon: '✅', name: '家长确认', action: 'goApprovals', bg: '#F5F3FF', color: '#7C3AED' },
@@ -42,7 +43,7 @@ Page({
     const mode = store.getAppMode();
     const tools = this.data.tools.map(item => Object.assign({}, item, {
       badge: item.action === 'goApprovals' && pendingApprovals ? pendingApprovals : 0
-    })).filter(item => mode === 'parent' || ['goReport', 'goRewards', 'goBadges', 'goMode'].indexOf(item.action) >= 0);
+    })).filter(item => mode === 'parent' || ['goBank', 'goReport', 'goRewards', 'goBadges', 'goMode'].indexOf(item.action) >= 0);
     const age = child.birthday ? Math.max(0, new Date().getFullYear() - Number(String(child.birthday).slice(0, 4))) : '';
     const bmi = child.height && child.weight ? (Number(child.weight) / Math.pow(Number(child.height) / 100, 2)).toFixed(1) : '';
     this.setData({ signed: true, mode, child: Object.assign({}, child, { age: age, bmi: bmi }), stats: stats, tools: tools, pendingApprovals: pendingApprovals, assessment: store.getAssessment() });
@@ -53,6 +54,7 @@ Page({
   goRewards() { wx.navigateTo({ url: '/pages/rewards/rewards' }); },
   goReport() { wx.navigateTo({ url: '/pages/report/report' }); },
   goPoints() { wx.navigateTo({ url: '/pages/points/points' }); },
+  goBank() { wx.navigateTo({ url: '/pages/growth-bank/growth-bank' }); },
   goCheckinRecord() { wx.navigateTo({ url: '/pages/checkin-record/checkin-record' }); },
   goTasks() { wx.switchTab({ url: '/pages/tasks/tasks' }); },
   goMembers() { wx.navigateTo({ url: '/pages/family/family' }); },

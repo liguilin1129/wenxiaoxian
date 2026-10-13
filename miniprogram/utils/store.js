@@ -4,6 +4,7 @@
 
 const mock = require('./mock.js');
 const cloudData = require('./cloud-data.js');
+const growthBank = require('./growth-bank.js');
 
 const KEY = 'checkInState';
 // 基准积分 = mock 默认积分 减去 默认已完成的今日任务积分，
@@ -530,6 +531,11 @@ function recompute(s, st) {
     hist.push({ title: 'AI记录：' + r.name, dim: 'habit', date: r.date, delta: r.points });
   });
   hist.sort((a, b) => b.date.localeCompare(a.date));
+  // 新模块账务单独追加保存，不写入云同步的旧打卡快照。
+  const bank = growthBank.overview();
+  pts += bank.credits;
+  bank.flows.forEach(flow => hist.push({ title: '成长银行：' + flow.title, dim: 'bank', date: flow.date, delta: flow.amount }));
+  hist.sort((a, b) => b.date.localeCompare(a.date));
   s.child.points = pts;
   s.pointsHistory = hist;
   const experience = 1200 + hist.filter(item => item.delta > 0).reduce((sum, item) => sum + item.delta, 0);
@@ -1047,6 +1053,7 @@ function toggleCaseFav(id) {
 }
 
 module.exports = {
+  refreshBankPoints: function () { ensure(); recompute(state(), state()._ci); },
   state, dimMeta, initCheckIns,
   toggleDaily, toggleCenter, toggleTodayTask: toggleDaily,
   isCenterDone, getCenterStatus, submitCenter, approveCenter, rejectCenter, getPendingApprovals, todayDoneCount, todayGain,

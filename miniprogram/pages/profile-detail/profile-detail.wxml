@@ -1,0 +1,15 @@
+<view class="detail-page">
+  <block wx:if="{{signed}}">
+    <view class="detail-card detail-hero">
+      <image wx:if="{{child.avatarUrl}}" class="detail-avatar" src="{{child.avatarUrl}}" mode="aspectFill"/>
+      <view wx:else class="detail-avatar">{{child.avatar}}</view>
+      <view class="detail-name">{{child.name}}</view>
+      <view class="detail-level">Lv.{{child.levelNum}} · {{child.levelName}}</view>
+      <button wx:if="{{isParent}}" class="detail-edit" bindtap="editProfile">编辑资料</button>
+    </view>
+    <view class="detail-card"><view class="detail-heading">基本资料</view><view wx:for="{{fields}}" wx:key="name" class="detail-row"><text class="detail-label">{{item.name}}</text><text class="detail-value">{{item.value}}</text></view></view>
+    <view class="detail-card" bindtap="goPoints"><view class="detail-row detail-link"><text>成长积分</text><text class="detail-highlight">{{child.points}} 分 ›</text></view></view>
+    <view class="detail-card" bindtap="goBadges"><view class="detail-row detail-link"><text class="detail-heading">荣誉勋章</text><text class="detail-more">已点亮 {{badgeGot}} 枚 ›</text></view><view class="detail-badges"><view wx:for="{{badges}}" wx:key="id" class="detail-badge {{item.got ? '' : 'locked'}}"><view class="detail-badge-icon">{{item.got ? item.icon : '🔒'}}</view><text>{{item.name}}</text></view></view></view>
+  </block>
+  <view wx:else class="detail-card"><button class="btn" bindtap="goLogin">登录后查看资料</button></view>
+</view>

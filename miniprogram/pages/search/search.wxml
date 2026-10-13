@@ -1,0 +1,5 @@
+<view class="search-page">
+  <view class="search-bar"><view class="search-icon"></view><input value="{{searchKey}}" placeholder="搜索任务、经典、商城、文章" maxlength="60" focus="{{true}}" confirm-type="search" bindinput="onSearchInput" bindconfirm="onSearchConfirm"/><text wx:if="{{searchKey}}" bindtap="clearSearch">清除</text></view>
+  <view wx:if="{{!searchKey}}" class="search-suggestions"><view class="search-heading">试试搜索</view><view class="suggestions"><text wx:for="{{suggestions}}" wx:key="*this" data-key="{{item}}" bindtap="chooseSuggestion">{{item}}</text></view></view>
+  <block wx:else><view class="search-heading">搜索结果 · {{searchResults.length}}</view><view wx:for="{{searchResults}}" wx:key="key" class="search-result" data-url="{{item.url}}" bindtap="goSearchItem"><text class="result-icon">{{item.icon}}</text><view class="result-copy"><view>{{item.name}}</view><view class="result-sub">{{item.sub}}</view></view><text class="result-type">{{item.type}}</text></view><view wx:if="{{!searchResults.length}}" class="search-empty">没有找到相关内容，换一个关键词试试。</view></block>
+</view>

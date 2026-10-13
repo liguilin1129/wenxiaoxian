@@ -4,6 +4,7 @@ const store = require('../../utils/store.js');
 function dimNameMap() {
   const m = {};
   app.globalData.dimensions.forEach(d => { m[d.key] = d.name; });
+  m.bank = '成长银行';
   return m;
 }
 
