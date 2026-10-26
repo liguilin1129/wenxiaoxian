@@ -9,6 +9,7 @@ Thumbs.db
 
 # ===== 依赖（本小程序为纯源码，无 node_modules；此处为通用预留） =====
 node_modules/
+dist/
 
 # ===== 微信开发者工具本地缓存（不入库） =====
 project.private.config.json
@@ -16,7 +17,7 @@ project.private.config.json
 # ===== 密钥 / 本地配置（切勿入库） =====
 *.local
 .env
-server/.env
-server/data/users.json
-server/data/app-state.json
-miniprogram/utils/ai-config.secret.js
+miniapp/auth-server/.env
+miniapp/auth-server/data/users.json
+miniapp/auth-server/data/app-state.json
+miniapp/miniprogram/utils/ai-config.secret.js

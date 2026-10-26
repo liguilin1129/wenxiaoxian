@@ -1,0 +1,35 @@
+<view class="bank-page">
+  <view wx:if="{{!signed}}" class="bank-card"><view class="bank-title">登录后开启成长银行</view><button class="btn" data-key="login" bindtap="go">去登录</button></view>
+  <block wx:else>
+    <view class="bank-hero">
+      <view class="bank-caption">{{isParent ? '家庭成长资产' : '我的成长资产'}}</view>
+      <view class="bank-balance">{{balance}}<text>积分</text></view>
+      <view wx:if="{{tab === 'dashboard'}}" class="bank-hero-stats">
+        <view data-key="tasks" bindtap="go"><text class="bank-stat-value">{{done}} / {{total}}</text><text class="bank-stat-label">今日执行 ›</text></view>
+        <view data-key="reminders" bindtap="go"><text class="bank-stat-value">提醒</text><text class="bank-stat-label">查看待办 ›</text></view>
+        <view data-key="events" bindtap="switchTab"><text class="bank-stat-value">{{pending}}</text><text class="bank-stat-label">记录待确认 ›</text></view>
+      </view>
+      <view class="bank-links"><text data-key="points" bindtap="go">全部积分明细 ›</text><text data-key="rewards" bindtap="go">兑换心愿 ›</text></view>
+    </view>
+    <view wx:if="{{tab === 'dashboard'}}" class="bank-card bank-radar-card"><view class="bank-title">五育仪表盘</view><growth-radar dimensions="{{dimensions}}" /></view>
+    <view class="bank-tabs"><view wx:for="{{tabs}}" wx:key="key" class="{{tab === item.key ? 'active' : ''}}" data-key="{{item.key}}" bindtap="switchTab">{{item.name}}</view></view>
+    <block wx:if="{{tab === 'dashboard'}}">
+      <view class="bank-card">
+        <view class="bank-title">挑战活动</view>
+        <view class="bank-challenge-row" data-tab="official" bindtap="goChallenges"><text>官方挑战</text><text>›</text></view>
+        <view class="bank-challenge-row" data-tab="family" bindtap="goChallenges"><text>家庭自定义挑战</text><text>›</text></view>
+      </view>
+      <view class="bank-card bank-between" data-key="badges" bindtap="go"><view><view class="bank-title">荣誉勋章</view><view class="bank-note">查看现有荣誉与解锁进度</view></view><text>›</text></view>
+      <view class="bank-card bank-between" data-key="report" bindtap="go"><view><view class="bank-title">成长报告</view><view class="bank-note">查看孩子的阶段成长总结</view></view><text>›</text></view>
+    </block>
+    <block wx:if="{{tab === 'events'}}">
+      <view wx:if="{{!consent}}" class="bank-card"><view class="bank-title">成长记录使用说明</view><view class="bank-note">本版仅在当前设备保存文字、图片与积分记录，用于家庭成长回顾，不上传 AI 或共享给第三方，不采集位置、人脸或声纹。请勿填写身份证号、联系方式等无关信息。家长可随时撤销授权、导出或删除记录内容。此开发版本说明不替代正式上线的儿童个人信息处理规则。</view><block wx:if="{{isParent}}"><button class="btn" bindtap="grantConsent">监护人同意并开启</button><view class="bank-note">也可不启用，继续使用现有任务与积分功能。</view></block><view wx:else class="bank-note">请家长切换到家长模式后决定是否开启。</view></view>
+      <view wx:if="{{isParent && consent}}" class="bank-card"><view class="bank-title">记下一次成长</view><picker range="{{indicators}}" range-key="name" value="{{indicatorIndex}}" bindchange="pickIndicator"><view class="bank-picker">成长指标：{{indicators[indicatorIndex].name}} ›</view></picker><textarea placeholder="发生了什么？记录孩子的具体行动与进步" maxlength="500" value="{{text}}" bindinput="onText"/><view class="bank-images"><view wx:for="{{images}}" wx:key="*this"><image src="{{item}}" mode="aspectFill"/><text data-index="{{index}}" bindtap="removeImage">移除</text></view></view><button wx:if="{{images.length < 3}}" class="btn soft" bindtap="chooseImages">添加图片（最多 3 张）</button><button class="btn" bindtap="submit">保存记录，待确认</button><view class="bank-note">保存不计分，家长确认后才入账。</view></view>
+      <view wx:if="{{isParent && consent && pending}}" class="bank-card"><view class="bank-title">本次确认计分规则</view><picker range="{{difficulties}}" value="{{difficultyIndex}}" bindchange="pickDifficulty"><view class="bank-picker">难度：{{difficulties[difficultyIndex]}} ›</view></picker><picker range="{{qualities}}" value="{{qualityIndex}}" bindchange="pickQuality"><view class="bank-picker">质量：{{qualities[qualityIndex]}} ›</view></picker><view class="bank-note">基础 10 分 × 难度 × 质量 × 维度权重（德育 ×2，其余 ×1）。每个指标每日最多 60 分。</view></view>
+      <view wx:for="{{events}}" wx:key="id" class="bank-card"><view class="bank-between"><text class="bank-title">{{item.indicatorName}}</text><text class="bank-note">{{item.statusText}}</text></view><view class="bank-note">{{item.date}}</view><view class="bank-event-text">{{item.text}}</view><view class="bank-images"><image wx:for="{{item.images}}" wx:for-item="path" wx:key="*this" src="{{path}}" mode="aspectFill" data-id="{{item.id}}" data-path="{{path}}" bindtap="preview"/></view><button wx:if="{{isParent && consent && item.status === 'pending'}}" class="btn soft" data-id="{{item.id}}" bindtap="confirm">确认并计分</button><button wx:if="{{isParent && item.status === 'confirmed'}}" class="btn soft" data-id="{{item.id}}" bindtap="reverse">冲正此笔积分</button></view>
+      <view wx:if="{{!events.length}}" class="bank-card bank-note">暂无成长记录，记录一次具体进步，开始积累成长资产。</view>
+      <view wx:if="{{isParent}}" class="bank-card"><view class="bank-title">记录管理</view><button class="btn soft" bindtap="exportData">导出成长银行数据</button><button wx:if="{{consent}}" class="btn soft" bindtap="revokeConsent">撤销采集授权</button><button class="btn soft" bindtap="deleteContent">删除记录内容</button></view>
+    </block>
+    <block wx:if="{{tab === 'flows'}}"><view class="bank-card"><view class="bank-title">成长记录净入账：{{credits}} 分</view><view class="bank-note">这里只展示新增成长记录的追加式流水；任务和兑换流水可在全部积分明细查看。冲正保留原流水。</view></view><view wx:for="{{flows}}" wx:key="id" class="bank-card"><view class="bank-between"><text>{{item.title}}</text><text class="bank-amount">{{item.amount > 0 ? '+' : ''}}{{item.amount}}</text></view><view class="bank-note">{{item.date}} · 成长记录账户结余 {{item.balanceAfter}} 分</view><view wx:if="{{item.rule}}" class="bank-note">{{item.rule.base}} × {{item.rule.difficulty}} × {{item.rule.quality}} × {{item.rule.weight}} · 规则 v{{item.rule.version}}</view><view wx:if="{{item.refFlowId}}" class="bank-note">关联原流水：{{item.refFlowId}}</view></view><view wx:if="{{!flows.length}}" class="bank-card bank-note">暂无积分流水，确认成长记录后会自动入账。</view></block>
+  </block>
+</view>

@@ -1,0 +1,7 @@
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import axios from 'axios';
+const health = ref('正在连接 API…');
+onMounted(async () => { try { const { data } = await axios.get((import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001') + '/api/health'); health.value = data.ok ? 'API 服务正常' : 'API 服务异常'; } catch { health.value = 'API 尚未启动'; } });
+</script>
+<template><section><h1>数据概览</h1><p class="muted">以下为演示数据。接入 PostgreSQL 后将展示实时运营数据。</p><el-row :gutter="16"><el-col v-for="item in [{label:'注册家庭',value:'1,286',trend:'+12.4%'},{label:'今日打卡',value:'842',trend:'+8.7%'},{label:'待审核内容',value:'18',trend:'需处理'},{label:'今日发放积分',value:'6,420',trend:'+5.2%'}]" :key="item.label" :span="6"><el-card><div class="muted">{{ item.label }}</div><strong>{{ item.value }}</strong><small class="trend">{{ item.trend }}</small></el-card></el-col></el-row><el-row :gutter="16" class="section-row"><el-col :span="15"><el-card><template #header>近 7 日活跃趋势</template><div class="chart"><div v-for="height in [45,62,54,76,68,83,91]" :key="height" class="bar-wrap"><div class="bar" :style="{ height: height + '%' }"></div></div></div></el-card></el-col><el-col :span="9"><el-card><template #header>待办事项</template><el-timeline><el-timeline-item type="warning">18 条社区内容待审核</el-timeline-item><el-timeline-item type="primary">6 条成长记录待家长确认</el-timeline-item><el-timeline-item type="success">本周官方挑战将于周五结束</el-timeline-item></el-timeline></el-card></el-col></el-row><el-alert class="status" :title="health" type="info" :closable="false" /></section></template>

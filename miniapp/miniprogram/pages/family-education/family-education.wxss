@@ -1,0 +1,7 @@
+.education-page { padding:28rpx; }
+.education-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22rpx; }
+.education-card { position:relative; min-width:0; background:#fff; border-radius:26rpx; padding:28rpx; min-height:228rpx; box-shadow:var(--shadow-soft); }
+.education-mark { width:78rpx; height:78rpx; border-radius:24rpx; display:flex; align-items:center; justify-content:center; font-size:34rpx; font-weight:700; background:var(--brand-soft); color:var(--brand); }
+.education-meeting .education-mark { background:#fff0e2; color:#b48353; }.education-report .education-mark { background:#e8f4ed; color:#489775; }.education-assessment .education-mark { background:#eaf0ff; color:#6482cc; }
+.education-name { font-size:30rpx; font-weight:700; margin-top:24rpx; }.education-arrow { position:absolute; right:24rpx; bottom:25rpx; color:var(--ink-3); font-size:32rpx; }
+.education-pressed { opacity:.75; }.education-empty { padding:40rpx 24rpx; text-align:center; background:#fff; border-radius:24rpx; font-size:26rpx; color:var(--ink-3); }

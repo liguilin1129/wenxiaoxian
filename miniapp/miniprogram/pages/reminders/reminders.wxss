@@ -1,0 +1,12 @@
+.reminder-page { min-height:100vh; box-sizing:border-box; padding:28rpx 28rpx calc(120rpx + env(safe-area-inset-bottom)); background:var(--bg); }
+.reminder-toolbar { margin:0 4rpx 20rpx; color:var(--ink-3); font-size:24rpx; }
+.reminder-card { display:flex; align-items:center; gap:20rpx; margin-bottom:20rpx; padding:30rpx 26rpx; border-radius:24rpx; background:#fff; box-shadow:var(--shadow-soft); }
+.reminder-content { flex:1; min-width:0; }
+.reminder-name { border-left:5rpx solid var(--brand); padding-left:12rpx; color:var(--ink-1); font-size:28rpx; font-weight:700; }
+.reminder-deadline .reminder-name { border-color:#D58A45; }
+.reminder-copy { margin-top:14rpx; color:var(--ink-2); font-size:25rpx; line-height:1.5; overflow-wrap:break-word; }
+.reminder-go { flex:none; color:var(--brand); font-size:24rpx; }
+.reminder-pressed { opacity:.75; }
+.reminder-empty { padding:72rpx 24rpx; border-radius:24rpx; background:#fff; text-align:center; }
+.reminder-empty-title { color:var(--ink-2); font-size:28rpx; }
+.reminder-login { margin-top:28rpx; width:240rpx; background:var(--brand); color:#fff; border-radius:40rpx; font-size:26rpx; }

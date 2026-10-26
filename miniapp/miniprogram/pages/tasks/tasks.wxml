@@ -1,0 +1,40 @@
+<view class="scr-body">
+  <view class="task-overview card">
+    <view class="chips" style="margin-bottom:20rpx"><text class="pill {{view === 'today' ? 'pill-habit' : ''}}" data-view="today" bindtap="setView">今日任务</text><text class="pill {{view === 'templates' ? 'pill-habit' : ''}}" data-view="templates" bindtap="setView">任务模板</text></view>
+    <view class="chips">
+      <text class="pill {{filter==='all'?'pill-habit':''}}" data-f="all" bindtap="setFilter">全部</text>
+      <text class="pill {{filter==='heart'?'pill-heart':''}}" data-f="heart" bindtap="setFilter">好身心</text>
+      <text class="pill {{filter==='body'?'pill-body':''}}" data-f="body" bindtap="setFilter">好身体</text>
+      <text class="pill {{filter==='habit'?'pill-habit':''}}" data-f="habit" bindtap="setFilter">好习惯</text>
+      <text class="pill {{filter==='taste'?'pill-taste':''}}" data-f="taste" bindtap="setFilter">好品味</text>
+    </view>
+    <view class="done-summary">
+      已打卡 <text class="num">{{doneCount}}</text> / {{total}} 个任务
+    </view>
+    <view style="margin-top:20rpx;color:var(--brand);font-size:26rpx" bindtap="goMakeup">集中补打卡 ›</view>
+  </view>
+
+  <block wx:for="{{groups}}" wx:key="dim">
+    <view class="task-group card">
+      <view class="task-section-title"><view class="task-section-bar"></view><text>{{item.dimName}}</text></view>
+      <view wx:for="{{item.list}}" wx:for-item="t" wx:key="id" class="task {{t.done ? 'task-done' : ''}}" data-id="{{t.id}}" bindtap="goDetail">
+        <view class="task-main">
+          <view class="tn">{{t.name}}</view>
+          <view class="chips">
+            <text wx:for="{{t.tags}}" wx:for-item="tag" wx:key="*this" class="pill">{{tag}}</text>
+          </view>
+          <view wx:for="{{t.rewards}}" wx:for-item="r" wx:key="name" class="reward">
+            <text>{{r.name}}</text><text class="pts-pos">+{{r.points}}</text>
+          </view>
+        </view>
+        <view class="check-btn {{t.status === 'approved' ? 'on' : ''}}" data-id="{{t.id}}" catchtap="toggleCenter">
+          <text wx:if="{{t.status === 'approved'}}">✓</text>
+          <text wx:else>打卡</text>
+        </view>
+      </view>
+    </view>
+  </block>
+  <view wx:if="{{!groups.length}}" class="card muted">{{view === 'today' ? '今天暂无任务' : '暂无任务模板'}}</view>
+</view>
+
+<ai-assistant id="aiAssistant" />

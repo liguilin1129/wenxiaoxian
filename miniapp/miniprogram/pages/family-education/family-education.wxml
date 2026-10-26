@@ -1,0 +1,7 @@
+<view class="education-page">
+  <view wx:if="{{!signed}}" class="education-empty"><button class="btn" bindtap="goLogin">登录后查看家庭空间</button></view>
+  <view wx:elif="{{!isParent}}" class="education-empty">请切换到家长模式</view>
+  <view wx:else class="education-grid">
+    <view wx:for="{{entries}}" wx:key="key" class="education-card education-{{item.key}}" data-key="{{item.key}}" bindtap="go" hover-class="education-pressed"><view class="education-mark">{{item.mark}}</view><view class="education-name">{{item.name}}</view><text class="education-arrow">›</text></view>
+  </view>
+</view>

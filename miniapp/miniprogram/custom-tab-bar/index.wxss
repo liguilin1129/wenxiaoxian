@@ -1,0 +1,176 @@
+/* ===== 液态玻璃岛底部导航（Floating Glass Dock · iOS 风格） ===== */
+
+.tabbar-shell {
+  position: fixed;
+  left: 28rpx;
+  right: 28rpx;
+  bottom: calc(8rpx + env(safe-area-inset-bottom));
+  height: 112rpx;
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+  z-index: 999;
+  transition: transform 0.25s ease;
+}
+.tabbar {
+  position: relative;
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 8rpx;
+
+  /* 轻磨砂底色；模糊不可用时仍保留可读的半透明底。 */
+  background: rgba(248, 249, 255, 0.58);
+  border: 1rpx solid rgba(255, 255, 255, 0.76);
+  border-radius: 56rpx;
+  box-shadow: 0 12rpx 32rpx rgba(32, 32, 48, 0.09),
+    0 2rpx 6rpx rgba(32, 32, 48, 0.04),
+    inset 0 2rpx 1rpx rgba(255, 255, 255, 0.8),
+    inset 0 -1rpx 2rpx rgba(128, 132, 154, 0.12);
+  backdrop-filter: blur(20px) saturate(145%);
+  -webkit-backdrop-filter: blur(20px) saturate(145%);
+
+  overflow: hidden;
+}
+
+/* 聊天面板等全屏弹层打开时，把导航栏下移移出屏幕 */
+.tabbar-hidden {
+  transform: translateY(140%);
+}
+
+/* 玻璃底色晕染（品牌色，极低透明度，营造玻璃质感） */
+.glass-wash {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 56rpx;
+  background: linear-gradient(165deg, rgba(255,255,255,.3) 0%, rgba(255,255,255,.08) 48%, rgba(231,233,248,.1) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---- Tab 项 ---- */
+.selection-track {
+  position: absolute;
+  left: 8rpx;
+  right: 8rpx;
+  top: 10rpx;
+  bottom: 10rpx;
+  pointer-events: none;
+}
+.selection-pill {
+  position: absolute;
+  left: 0;
+  width: 25%;
+  height: 100%;
+  border-radius: 44rpx;
+  background: linear-gradient(155deg, rgba(131,133,153,.14), rgba(108,110,134,.18));
+  border: 1rpx solid rgba(255,255,255,.55);
+  box-sizing: border-box;
+  box-shadow: inset 0 1rpx 2rpx rgba(255,255,255,.65), 0 2rpx 6rpx rgba(68,65,96,.04);
+  animation-duration: .22s;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+/* 相邻两次切换交替动画名；新页面用负延迟接着播放，不重置到首页。 */
+@keyframes dock-slide-a {
+  from { transform: translateX(var(--dock-from)); }
+  to { transform: translateX(var(--dock-to)); }
+}
+@keyframes dock-slide-b {
+  from { transform: translateX(var(--dock-from)); }
+  to { transform: translateX(var(--dock-to)); }
+}
+.tb {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 0%;
+  min-width: 0;
+  height: 92rpx;
+  margin: 0;
+  border-radius: 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #8E8E98;
+  transition: color .22s ease;
+}
+.tb.on {
+  color: #5E5CE6;
+}
+.tb.on .icon { transform: scale(1.08); }
+.txt {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 22rpx;
+  font-weight: 500;
+  margin-top: 6rpx;
+  text-align: center;
+  line-height: 1.2;
+  transition: color .22s ease;
+}
+.tb.on .txt { font-weight: 650; }
+
+/* ---- 图标容器 ---- */
+.icon-wrap {
+  flex: none;
+  position: relative;
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* 图标：现代简洁风（选中实心填充 / 未选中细线描边，与 iOS/微信原生风格一致） */
+.icon {
+  position: relative;
+  z-index: 1;
+  width: 48rpx;
+  height: 48rpx;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  transition: transform .22s ease;
+}
+
+.ai-tab { position:relative; display:flex; flex:none; flex-direction:column; align-items:center; justify-content:center; width:112rpx; height:112rpx; border:5rpx solid rgba(255,255,255,.95); border-radius:50%; color:#fff; background:linear-gradient(145deg,#7C9EF4,#4C7FE3); box-shadow:0 10rpx 24rpx rgba(76,127,227,.32); box-sizing:border-box; }.ai-tab:active { transform:scale(.95); }.ai-tab-spark { position:absolute; top:18rpx; right:24rpx; font-size:18rpx; }.ai-tab-label { font-size:30rpx; font-weight:800; letter-spacing:1rpx; }
+
+/* ---- 首页（房子） ---- */
+.icon-learning { background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2024%2024'%3E%3Cpath%20d%3D'M12%205C8%202%204%203%203%204v15c3-1%206-1%209%201%203-2%206-2%209-1V4c-3-2-6-2-9%201z'%20fill%3D'none'%20stroke%3D'%23999999'%20stroke-width%3D'1.8'%20stroke-linejoin%3D'round'%2F%3E%3Cpath%20d%3D'M12%205v15'%20stroke%3D'%23999999'%20stroke-width%3D'1.8'%2F%3E%3C%2Fsvg%3E"); }
+.tb.on .icon-learning { background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2024%2024'%3E%3Cpath%20d%3D'M11%205C8%202%204%203%202%204v15c3-1%206-1%209%201V5zm2%200c3-3%207-2%209-1v15c-3-1-6-1-9%201V5z'%20fill%3D'%235E5CE6'%2F%3E%3C%2Fsvg%3E"); }
+
+.icon-home {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M12%203L4%2010v10h6v-6h4v6h6V10z%27%20fill%3D%27none%27%20stroke%3D%27%23999999%27%20stroke-width%3D%271.8%27%20stroke-linejoin%3D%27round%27%20stroke-linecap%3D%27round%27%2F%3E%3C%2Fsvg%3E");
+}
+.tb.on .icon-home {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M12%202.5L3.5%2010l1.5%201.5V20h5v-6h4v6h5v-8.5l1.5-1.5z%27%20fill%3D%27%235E5CE6%27%2F%3E%3C%2Fsvg%3E");
+}
+
+/* ---- 任务（勾选圆） ---- */
+.icon-task {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%2712%27%20r%3D%279%27%20fill%3D%27none%27%20stroke%3D%27%23999999%27%20stroke-width%3D%271.8%27%2F%3E%3Cpath%20d%3D%27M8%2012l2.5%202.5L16%209%27%20fill%3D%27none%27%20stroke%3D%27%23999999%27%20stroke-width%3D%271.8%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%2F%3E%3C%2Fsvg%3E");
+}
+.tb.on .icon-task {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%2712%27%20r%3D%279%27%20fill%3D%27%235E5CE6%27%2F%3E%3Cpath%20d%3D%27M8%2011.5l2.5%202.5L16%208.5%27%20fill%3D%27none%27%20stroke%3D%27%23fff%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%2F%3E%3C%2Fsvg%3E");
+}
+
+/* ---- 发现（指南针） ---- */
+.icon-discover {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%2712%27%20r%3D%279%27%20fill%3D%27none%27%20stroke%3D%27%23999999%27%20stroke-width%3D%271.8%27%2F%3E%3Cpath%20d%3D%27M12%208l2.4%204-2.4%204-2.4-4z%27%20fill%3D%27none%27%20stroke%3D%27%23999999%27%20stroke-width%3D%271.6%27%20stroke-linejoin%3D%27round%27%2F%3E%3C%2Fsvg%3E");
+}
+.tb.on .icon-discover {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%2712%27%20r%3D%279%27%20fill%3D%27%235E5CE6%27%2F%3E%3Cpath%20d%3D%27M12%207.5l3%204.5-3%204.5-3-4.5z%27%20fill%3D%27%23fff%27%2F%3E%3C%2Fsvg%3E");
+}
+
+/* ---- 我的（人物） ---- */
+.icon-mine {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%277.5%27%20r%3D%274%27%20fill%3D%27none%27%20stroke%3D%27%23999999%27%20stroke-width%3D%271.8%27%2F%3E%3Cpath%20d%3D%27M4.5%2021c0-4%203.5-6.5%207.5-6.5s7.5%202.5%207.5%206.5%27%20fill%3D%27none%27%20stroke%3D%27%23999999%27%20stroke-width%3D%271.8%27%20stroke-linecap%3D%27round%27%2F%3E%3C%2Fsvg%3E");
+}
+.tb.on .icon-mine {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Ccircle%20cx%3D%2712%27%20cy%3D%277.5%27%20r%3D%274%27%20fill%3D%27%235E5CE6%27%2F%3E%3Cpath%20d%3D%27M4.5%2021c0-4%203.5-6.5%207.5-6.5s7.5%202.5%207.5%206.5%27%20fill%3D%27%235E5CE6%27%2F%3E%3C%2Fsvg%3E");
+}

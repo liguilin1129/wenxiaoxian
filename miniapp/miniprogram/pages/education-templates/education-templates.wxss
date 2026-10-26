@@ -1,0 +1,4 @@
+.templates-page { padding:28rpx; }.template-card { margin-bottom:22rpx; background:#fff; border-radius:24rpx; padding:26rpx; box-shadow:var(--shadow-soft); }
+.template-head { display:flex; align-items:center; justify-content:space-between; gap:16rpx; font-size:30rpx; font-weight:700; }.template-arrow { color:var(--brand); }
+.template-steps { padding-top:22rpx; margin-top:22rpx; border-top:1rpx solid var(--sep); }.template-step { display:flex; align-items:flex-start; gap:16rpx; margin-bottom:18rpx; font-size:26rpx; line-height:1.7; color:var(--ink-2); }.template-step:last-child { margin-bottom:0; }
+.step-number { flex:none; width:36rpx; height:36rpx; line-height:36rpx; text-align:center; border-radius:50%; background:var(--brand-soft); color:var(--brand); font-size:22rpx; margin-top:4rpx; }.templates-empty { text-align:center; padding:40rpx; color:var(--ink-3); font-size:26rpx; }

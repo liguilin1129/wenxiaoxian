@@ -1,0 +1,14 @@
+<view class="shop-page">
+  <view class="shop-hero"><view class="shop-eyebrow">PARENT SELECT</view><view class="shop-hero-title">为家庭挑选真正需要的好物</view><view class="shop-hero-sub">商品、价格与库存以后台发布为准</view></view>
+  <view class="shop-section-head"><view><view class="shop-section-title">官方商城</view><view class="shop-section-sub">面向家长的品质好物</view></view></view>
+  <scroll-view wx:if="{{categories.length > 1}}" class="shop-categories" scroll-x="true" show-scrollbar="false"><view class="shop-category-list"><view wx:for="{{categories}}" wx:key="id" class="shop-category {{activeCategory === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="chooseCategory">{{item.name}}</view></view></scroll-view>
+  <view wx:if="{{!products.length}}" class="shop-empty"><view class="shop-empty-title">商城正在筹备</view><view>精选商品将由后台发布后展示在这里</view></view>
+  <view wx:elif="{{!filteredProducts.length}}" class="shop-empty">该分类暂时没有商品</view>
+  <view wx:else class="shop-grid">
+    <view wx:for="{{filteredProducts}}" wx:key="id" class="shop-product" data-id="{{item.id}}" bindtap="goProduct">
+      <image class="shop-image" src="{{item.image}}" mode="aspectFill"/>
+      <view class="shop-product-body"><view class="shop-product-tag" wx:if="{{item.category}}">{{item.category}}</view><view class="shop-name">{{item.name}}</view><view class="shop-price">¥{{item.priceText}}</view></view>
+    </view>
+  </view>
+  <view class="points-mall-entry" bindtap="goRewards"><view><view class="points-mall-title">积分商城</view><view class="points-mall-sub">使用任务积分兑换心愿好礼</view></view><view class="points-mall-arrow">›</view></view>
+</view>

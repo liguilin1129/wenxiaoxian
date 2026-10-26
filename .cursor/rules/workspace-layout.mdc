@@ -1,0 +1,18 @@
+---
+description: Enforce the 文小贤 workspace layout for all new and modified artifacts
+alwaysApply: true
+---
+
+# 工作区目录归档规则
+
+所有新增、修改、生成或写入的项目文件都必须按用途归档；不得在仓库根目录散放业务文件。
+
+- 小程序运行代码、云函数、小程序登录服务和小程序文档：`miniapp/`
+- 运营后台管理端、后台 API、数据库迁移、后台基础设施和后台文档：`admin-system/`
+- 自动化测试、测试夹具、验收脚本、预览 HTML、截图和测试生成物：`test-data/`
+
+仓库根目录仅保留项目级入口或配置文件，例如 `README.md`、`.gitignore`、`.cursor/` 和版本控制文件。
+
+修改已有文件时必须保持其所属目录；创建新文件前先确定归属。若一个文件同时服务多个模块，优先放在使用它的模块目录，并在对应 README 中说明引用关系。
+
+不要重新创建顶层 `miniprogram/`、`cloudfunctions/`、`server/`、`admin/`、`backend/`、`tests/` 或 `docs/` 目录。需要新的模块时，在上述三个归档目录内建立子目录。

@@ -1,0 +1,16 @@
+<view class="learning-page">
+  <view class="learning-section">
+    <view class="learning-heading">经典学习</view>
+    <view class="learning-books"><view wx:for="{{classics}}" wx:key="name" class="learning-book" data-name="{{item.name}}" bindtap="goClassic"><view class="book-cover" style="background:{{item.color}}"><view class="book-title">{{item.name}}</view></view><view class="book-progress">{{item.read >= item.total && item.total ? '已读全本' : '已读 ' + item.read + ' / ' + item.total + ' 章'}}</view><view class="reading-track"><view style="width:{{item.pct}}%"></view></view></view></view>
+    <view wx:if="{{!classics.length}}" class="learning-empty">暂无经典内容</view>
+  </view>
+  <view wx:if="{{courses.length}}" class="learning-section">
+    <view class="learning-heading">成长课程</view>
+    <view class="learning-courses"><view wx:for="{{courses}}" wx:key="id" class="learning-course" data-id="{{item.id}}" bindtap="goCourse"><image wx:if="{{item.cover}}" class="course-image" src="{{item.cover}}" mode="aspectFill"/><view wx:else class="course-mark" style="background:{{item.bg}};color:{{item.color}}">{{item.mark}}</view><view class="course-name">{{item.name}}</view><view class="course-action">查看案例 ›</view></view></view>
+  </view>
+  <view class="learning-section video-entry" bindtap="goVideoResources">
+    <view><view class="learning-heading">精选视频</view><view class="video-entry-sub">家长为孩子挑选的课程与讲座</view></view>
+    <view class="video-entry-arrow">›</view>
+  </view>
+</view>
+<ai-assistant id="aiAssistant" tab-mode="{{true}}" />

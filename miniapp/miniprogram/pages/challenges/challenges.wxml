@@ -1,0 +1,8 @@
+<view class="challenge-page">
+  <view class="challenge-tabs">
+    <view class="challenge-tab {{activeTab === 'official' ? 'active' : ''}}" data-tab="official" bindtap="selectTab" role="button">官方挑战</view>
+    <view class="challenge-tab {{activeTab === 'family' ? 'active' : ''}}" data-tab="family" bindtap="selectTab" role="button">家庭自定义</view>
+  </view>
+  <view class="challenge-empty">{{activeTab === 'official' ? '官方挑战即将开放' : '家庭挑战即将开放'}}</view>
+</view>
+<ai-assistant />

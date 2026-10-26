@@ -1,0 +1,11 @@
+<view class="makeup-page">
+  <view wx:if="{{!signed}}" class="makeup-card"><button class="btn" bindtap="goLogin">登录后查看补卡资格</button></view>
+  <block wx:else>
+    <view class="makeup-card"><view class="makeup-title">集中补打卡</view><view class="makeup-quota">免费机会剩余 <text>{{remaining}}</text> 次</view><view class="makeup-note">连续七天未正常打卡，可集中补记最近七天已完成的任务。开发版首次免费一次，暂未开放购买。</view><view wx:if="{{!eligible}}" class="makeup-reason">{{reason}}</view></view>
+    <block wx:if="{{eligible}}">
+      <view class="makeup-toolbar"><text bindtap="selectAll">全选</text><text bindtap="clear">清空</text></view>
+      <checkbox-group bindchange="change"><view wx:for="{{groups}}" wx:key="date" class="makeup-card"><view class="makeup-date">{{item.date}}</view><label wx:for="{{item.items}}" wx:for-item="task" wx:key="key" class="makeup-task"><checkbox value="{{task.key}}" checked="{{task.checked}}" disabled="{{submitting}}" color="#5E5CE6"/><view class="makeup-task-name">{{task.name}}</view><text class="makeup-points">+{{task.points}}</text></label></view></checkbox-group>
+      <view class="makeup-submit"><view>已选 {{selectedCount}} 项 · 共 {{selectedPoints}} 分</view><button class="btn" disabled="{{!selectedCount || submitting}}" loading="{{submitting}}" bindtap="submit">确认补卡</button></view>
+    </block>
+  </block>
+</view>

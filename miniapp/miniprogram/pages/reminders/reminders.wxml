@@ -1,0 +1,15 @@
+<view class="reminder-page">
+  <view wx:if="{{!signed}}" class="reminder-empty">
+    <view class="reminder-empty-title">登录后查看智能提醒</view>
+    <button class="reminder-login" bindtap="goLogin">去登录</button>
+  </view>
+  <block wx:elif="{{reminders.length}}">
+    <view class="reminder-toolbar">待处理 {{reminders.length}} 项</view>
+    <view wx:for="{{reminders}}" wx:key="id" class="reminder-card reminder-{{item.kind}}" data-item="{{item}}" bindtap="handle" hover-class="reminder-pressed">
+      <view class="reminder-content"><view class="reminder-name">{{item.title}}</view><view class="reminder-copy">{{item.text}}</view></view>
+      <view class="reminder-go">{{item.action}} ›</view>
+    </view>
+  </block>
+  <view wx:else class="reminder-empty"><view class="reminder-empty-title">暂无提醒</view></view>
+</view>
+<ai-assistant />

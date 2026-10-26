@@ -1,0 +1,5 @@
+.challenge-page { min-height:100vh; box-sizing:border-box; padding:28rpx 28rpx calc(120rpx + env(safe-area-inset-bottom)); background:var(--bg); }
+.challenge-tabs { display:flex; gap:12rpx; padding:8rpx; border-radius:22rpx; background:#fff; }
+.challenge-tab { flex:1; padding:20rpx 8rpx; border-radius:16rpx; text-align:center; color:var(--ink-3); font-size:28rpx; }
+.challenge-tab.active { background:var(--brand-soft); color:var(--brand); font-weight:700; }
+.challenge-empty { margin-top:24rpx; padding:84rpx 24rpx; border-radius:24rpx; background:#fff; color:var(--ink-3); text-align:center; font-size:27rpx; }

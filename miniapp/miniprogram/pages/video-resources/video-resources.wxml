@@ -1,0 +1,5 @@
+<view class="resource-page">
+  <view class="resource-head"><view><view class="resource-title">家长视频资源</view><view class="resource-desc">选择适合当前家庭阶段的课程与讲座</view></view><text wx:if="{{isParent}}" bindtap="manage">管理</text></view>
+  <view wx:if="{{resources.length}}"><view wx:for="{{resources}}" wx:key="id" class="resource-card" data-id="{{item.id}}" bindtap="play"><view class="resource-play">▶</view><view class="resource-copy"><view class="resource-name">{{item.title}}</view><view class="resource-source">{{item.source}}</view></view><text>›</text></view></view>
+  <view wx:else class="resource-empty"><view>暂未添加视频资源</view><text wx:if="{{isParent}}" bindtap="manage">去添加 ›</text></view>
+</view>

@@ -1,0 +1,5 @@
+<view class="growth-radar">
+  <canvas type="2d" class="growth-radar-canvas" aria-label="德智体美劳五育成长雷达图"></canvas>
+  <view wx:if="{{failed}}" class="radar-message">图表暂不可用</view>
+  <view wx:if="{{failed}}" class="radar-fallback"><view wx:for="{{summary}}" wx:key="code">{{item.name}} {{item.points}} 分</view></view>
+</view>

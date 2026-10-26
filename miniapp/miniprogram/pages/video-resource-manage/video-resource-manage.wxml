@@ -1,0 +1,4 @@
+<view class="manage-page">
+  <view class="manage-card"><view class="manage-title">添加视频资源</view><input placeholder="视频标题" value="{{title}}" data-key="title" bindinput="input"/><input placeholder="来源平台，例如 B 站、视频号" value="{{source}}" data-key="source" bindinput="input"/><input placeholder="HTTPS 视频或课程链接" value="{{url}}" data-key="url" bindinput="input"/><button class="btn" bindtap="add">添加资源</button></view>
+  <view wx:for="{{resources}}" wx:key="id" class="manage-item"><view><view>{{item.title}}</view><view>{{item.source}} · {{item.createdAt}}</view></view><text data-id="{{item.id}}" bindtap="remove">删除</text></view>
+</view>

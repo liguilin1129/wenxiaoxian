@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AdminStatus {
+  ACTIVE
+  DISABLED
+}
+
+enum ContentStatus {
+  DRAFT
+  PENDING
+  PUBLISHED
+  REJECTED
+  ARCHIVED
+}
+
+enum LedgerType {
+  EARN
+  SPEND
+  REVERSAL
+}
+
+model AdminUser {
+  id           String      @id @default(cuid())
+  email        String      @unique
+  passwordHash String
+  displayName  String
+  status       AdminStatus @default(ACTIVE)
+  roles        AdminUserRole[]
+  auditLogs    AuditLog[]  @relation("AuditActor")
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+model Role {
+  id          String          @id @default(cuid())
+  code        String          @unique
+  name        String
+  description String?
+  users       AdminUserRole[]
+  permissions RolePermission[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model Permission {
+  id          String           @id @default(cuid())
+  code        String           @unique
+  name        String
+  roles       RolePermission[]
+  createdAt   DateTime         @default(now())
+}
+
+model AdminUserRole {
+  adminUserId String
+  roleId      String
+  adminUser   AdminUser @relation(fields: [adminUserId], references: [id], onDelete: Cascade)
+  role        Role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  @@id([adminUserId, roleId])
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  @@id([roleId, permissionId])
+}
+
+model Family {
+  id        String       @id @default(cuid())
+  name      String
+  members   FamilyMember[]
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+model AppUser {
+  id        String       @id @default(cuid())
+  wechatId  String       @unique
+  nickname  String?
+  avatarUrl String?
+  families  FamilyMember[]
+  ledgers   PointLedger[]
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+model FamilyMember {
+  familyId String
+  userId   String
+  role     String
+  family   Family  @relation(fields: [familyId], references: [id], onDelete: Cascade)
+  user     AppUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@id([familyId, userId])
+}
+
+model PointLedger {
+  id             String     @id @default(cuid())
+  userId         String
+  type           LedgerType
+  amount         Int
+  balanceAfter   Int
+  idempotencyKey String     @unique
+  referenceType  String
+  referenceId    String
+  ruleVersion    String?
+  metadata       Json?
+  user           AppUser    @relation(fields: [userId], references: [id])
+  createdAt      DateTime   @default(now())
+  @@index([userId, createdAt])
+  @@index([referenceType, referenceId])
+}
+
+model ContentItem {
+  id        String        @id @default(cuid())
+  type      String
+  title     String
+  body      String?
+  status    ContentStatus @default(DRAFT)
+  metadata  Json?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  @@index([type, status])
+}
+
+model AuditLog {
+  id          String     @id @default(cuid())
+  actorId     String?
+  action      String
+  resource    String
+  resourceId  String?
+  requestId   String?
+  ip          String?
+  before      Json?
+  after       Json?
+  actor       AdminUser? @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+  createdAt   DateTime   @default(now())
+  @@index([resource, resourceId])
+  @@index([actorId, createdAt])
+}

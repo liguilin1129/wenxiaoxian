@@ -1,0 +1,4 @@
+<view class="templates-page">
+  <view wx:if="{{!allowed}}" class="templates-empty">请在登录后的家长模式查看</view>
+  <block wx:else><view wx:for="{{templates}}" wx:key="id" class="template-card"><view class="template-head" data-id="{{item.id}}" bindtap="toggle"><text>{{item.name}}</text><text class="template-arrow">{{expanded === item.id ? '−' : '＋'}}</text></view><view wx:if="{{expanded === item.id}}" class="template-steps"><view wx:for="{{item.steps}}" wx:for-item="step" wx:for-index="stepIndex" wx:key="*this" class="template-step"><text class="step-number">{{stepIndex + 1}}</text><text>{{step}}</text></view></view></view></block>
+</view>

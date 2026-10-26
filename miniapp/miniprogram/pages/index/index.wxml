@@ -1,0 +1,86 @@
+<view class="home-page">
+  <view class="home-nav" style="padding-top:{{statusBarHeight}}px;padding-right:{{navRight}}px">
+    <view class="home-nav-row" style="height:{{navHeight}}px">
+    <view class="challenge-entry" style="height:{{searchHeight}}px" bindtap="goChallenges" role="button" aria-label="挑战活动">挑战</view>
+    <view class="search-button" style="height:{{searchHeight}}px" bindtap="openSearch" aria-label="搜索">
+      <view class="search-glyph"></view>
+      <swiper class="search-keywords" vertical="{{true}}" autoplay="{{true}}" circular="{{true}}" disable-touch="{{true}}" interval="3000" duration="400" catchtap="openSearch">
+        <swiper-item wx:for="{{searchKeywords}}" wx:key="*this"><view class="search-keyword">{{item}}</view></swiper-item>
+      </swiper>
+    </view>
+    </view>
+  </view>
+  <view style="height:{{statusBarHeight + navHeight}}px"></view>
+  <swiper class="home-banner" autoplay="{{true}}" circular="{{true}}" interval="5000" duration="450" indicator-dots="{{true}}" indicator-color="rgba(94,92,230,.2)" indicator-active-color="#5E5CE6">
+    <swiper-item wx:for="{{banners}}" wx:key="id">
+      <image wx:if="{{item.image}}" class="banner-image" src="{{item.image}}" mode="aspectFill"/>
+      <view wx:else class="banner-placeholder banner-{{item.tone}}"><view class="banner-content"><view class="banner-label">{{item.label}}</view><view class="banner-title">{{item.title}}</view><view class="banner-sub">{{item.sub}}</view></view><view class="banner-art"><view class="art-orbit"></view><view class="art-leaf"></view><view class="art-seed"></view></view></view>
+    </swiper-item>
+  </swiper>
+  <view class="home-content">
+    <view wx:if="{{signed}}" class="profile-strip">
+      <view class="profile-main" bindtap="goProfileDetail"><image wx:if="{{child.avatarUrl}}" class="home-avatar" src="{{child.avatarUrl}}" mode="aspectFill"/><view wx:else class="home-avatar">{{child.avatar}}</view><view class="profile-copy"><view class="home-name">{{child.name}}</view><view class="home-level">Lv.{{child.levelNum}} · {{child.levelName}}</view></view></view>
+      <view class="profile-more" bindtap="goProfileDetail">更多 <text>›</text></view>
+    </view>
+    <view wx:else class="profile-strip guest-strip" bindtap="goLogin"><view class="home-avatar">芽</view><view class="profile-copy"><view class="home-name">开启你的成长之旅</view><view class="home-level">登录，记录每一次进步</view></view><text class="guest-arrow">›</text></view>
+    <view class="medals-card" bindtap="goBadges">
+      <block wx:if="{{signed}}"><view wx:for="{{badges}}" wx:key="id" class="medal-item {{item.got ? '' : 'locked'}}"><view class="medal-icon">{{item.got ? item.icon : '🔒'}}</view><view class="medal-name">{{item.name}}</view></view></block>
+      <view wx:else class="medals-guest">登录查看荣誉勋章 ›</view>
+    </view>
+    <view class="feature-shortcuts">
+      <view wx:for="{{quickEntries}}" wx:key="key" class="feature-card feature-{{item.key}}" data-key="{{item.key}}" bindtap="goQuick" hover-class="feature-pressed">
+        <view class="feature-name">{{item.name}}</view>
+        <view class="entry-icon entry-{{item.key}}"><view class="entry-symbol"></view></view>
+        <block wx:if="{{item.key === 'tasks'}}">
+          <block wx:if="{{signed}}">
+            <view class="task-preview-count">待完成 <text>{{remaining}}</text> 项</view>
+            <view class="task-preview-list">
+              <view wx:for="{{taskPreview}}" wx:for-item="task" wx:key="id" class="task-preview-row"><text class="task-preview-name">{{task.name}}</text><text class="task-preview-status">+{{task.points}}</text></view>
+              <view wx:if="{{!taskPreview.length}}" class="task-preview-empty">{{total ? '今日任务已完成' : '今日暂无任务'}}</view>
+            </view>
+          </block>
+          <view wx:else class="task-preview-empty">登录后查看今日任务</view>
+          <view class="feature-action">{{signed && !remaining ? '查看任务' : '去打卡'}} <text>›</text></view>
+        </block>
+        <view wx:if="{{item.key === 'smart'}}" class="feature-reminder">
+          <view wx:for="{{reminderPreview}}" wx:for-item="reminder" wx:key="id" class="feature-reminder-row">{{reminder.text}}</view>
+          <view wx:if="{{!reminderPreview.length}}" class="feature-reminder-row">{{reminderText}}</view>
+        </view>
+        <text wx:if="{{item.key !== 'tasks'}}" class="feature-arrow">›</text>
+      </view>
+    </view>
+    <view class="today-quote">
+      <view class="quote-heading"><view class="quote-title">今日金句推荐</view><view class="quote-title-en">DAILY INSPIRATION</view></view>
+      <view class="quote-mark">“</view>
+      <view class="quote-cn">教育不是注满一桶水，而是点燃一把火。</view>
+      <view class="quote-en">Education is not the filling of a pail, but the lighting of a fire.</view>
+      <view class="quote-author">— 叶芝 · W. B. Yeats</view>
+      <view class="quote-smart-reminder" bindtap="goReminders">
+        <view class="quote-smart-title">智能提醒</view>
+        <view class="quote-smart-content">
+          <view wx:for="{{reminderPreview}}" wx:for-item="reminder" wx:key="id" class="quote-reminder-row">{{reminder.text}}</view>
+          <view wx:if="{{!reminderPreview.length}}" class="quote-reminder-row">{{reminderText}}</view>
+        </view>
+      </view>
+    </view>
+    <view class="home-shop">
+      <view class="home-shop-head"><view class="home-shop-title">精选商品</view><view class="home-shop-more" bindtap="goShop">全部商品 ›</view></view>
+      <view class="home-product-grid">
+        <block wx:if="{{products.length}}">
+          <view wx:for="{{products}}" wx:key="id" class="home-product-card" data-id="{{item.id}}" bindtap="goProduct">
+            <image class="home-product-image" src="{{item.image}}" mode="aspectFill"/>
+            <view class="home-product-name">{{item.name}}</view>
+            <view class="home-product-price">¥{{item.priceText}}</view>
+          </view>
+        </block>
+        <block wx:else>
+          <view wx:for="{{productSlots}}" wx:key="id" class="home-product-card home-product-pending" data-id="{{item.id}}" bindtap="goProduct">
+            <view class="home-product-image product-image-pending"></view>
+            <view class="home-product-name">商品待上架</view>
+          </view>
+        </block>
+      </view>
+    </view>
+  </view>
+</view>
+<ai-assistant id="aiAssistant" tab-mode="{{true}}" />

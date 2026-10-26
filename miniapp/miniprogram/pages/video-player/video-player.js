@@ -1,0 +1,1 @@
+Page({ data: { url: '' }, onLoad(options) { const url = decodeURIComponent((options && options.url) || ''); if (/^https:\/\//i.test(url)) this.setData({ url: url }); if (options && options.title) wx.setNavigationBarTitle({ title: decodeURIComponent(options.title) }); } });
