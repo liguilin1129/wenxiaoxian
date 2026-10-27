@@ -6,6 +6,7 @@
   background: var(--brand-soft);
   border-radius: var(--radius-xs);
 }
+.meeting-page-action { display:flex; justify-content:flex-end; margin-bottom:20rpx; }
 .empty {
   text-align: center;
   padding: 80rpx 40rpx;

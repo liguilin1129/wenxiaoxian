@@ -1,0 +1,12 @@
+.goal-card { display:flex; align-items:center; justify-content:space-between; background:#F5F4FF; }
+.goal-btn { width:150rpx; margin:0; font-size:23rpx; }
+.template-hint { margin-top:8rpx; }
+.template-groups { margin:20rpx 0 24rpx; padding:20rpx; border-radius:16rpx; background:var(--surface-2); }
+.template-group + .template-group { margin-top:18rpx; }
+.template-dim { margin-bottom:10rpx; color:var(--ink-2); font-size:23rpx; font-weight:700; }
+.template-pill { background:#fff; }
+.field-space { margin-top:18rpx; }
+.points-input { flex:1; }
+.section-space { margin-top:24rpx; }
+.assigned-title { margin-top:30rpx; }
+.delete { color:#E5484D; }

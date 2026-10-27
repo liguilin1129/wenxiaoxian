@@ -678,6 +678,20 @@ function getTask(id) {
   return centerMap[id] ? Object.assign({ id, source: 'template', done: false }, centerMap[id]) : null;
 }
 
+// 任务模板仅供家长在创建任务时套用，孩子端任务中心只展示已分配的任务。
+function getTaskTemplates() {
+  return mock.tasks.map(group => ({
+    dim: group.dim,
+    dimName: group.dimName,
+    list: group.list.map(task => ({
+      id: task.id,
+      name: task.name,
+      dim: group.dim,
+      points: (task.rewards || []).reduce((sum, reward) => sum + Number(reward.points || 0), 0)
+    }))
+  }));
+}
+
 // 同一任务、同一天重复调用完成不会重复加分。取消是独立的反向流水。
 function setTaskDone(id, done) {
   ensure();
@@ -1013,7 +1027,7 @@ function toggleCaseFav(id) {
 }
 
 module.exports = {
-  getTodayTasks, getTaskHistory, getTask, setTaskDone, getMakeupStatus, submitMakeup,
+  getTodayTasks, getTaskHistory, getTask, getTaskTemplates, setTaskDone, getMakeupStatus, submitMakeup,
   refreshBankPoints: function () { ensure(); recompute(state(), state()._ci); },
   state, dimMeta, initCheckIns,
   toggleDaily, toggleCenter, toggleTodayTask: toggleDaily,

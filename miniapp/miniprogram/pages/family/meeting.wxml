@@ -1,14 +1,5 @@
-<view class="scr-head">
-  <view class="row between" style="align-items:flex-end">
-    <view>
-      <view class="greet" style="color:var(--c-habit-d);font-weight:600">家庭议事</view>
-      <view class="title">家庭会议</view>
-    </view>
-    <view wx:if="{{isParent}}" class="mg-btn" bindtap="toggleMode">{{mode === 'list' ? '发起会议' : '返回列表'}}</view>
-  </view>
-</view>
-
 <view class="scr-body">
+  <view wx:if="{{isParent}}" class="meeting-page-action"><view class="mg-btn" bindtap="toggleMode">{{mode === 'list' ? '发起会议' : '返回列表'}}</view></view>
   <!-- 列表模式 -->
   <block wx:if="{{mode === 'list'}}">
     <view wx:if="{{!meetings.length}}" class="empty">

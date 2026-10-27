@@ -24,6 +24,8 @@
   font-size: 40rpx;
   font-weight: 700;
   margin-bottom: 10rpx;
+  color: var(--ink-1);
+  background: var(--brand-soft);
 }
 .member-name {
   width: 100%;

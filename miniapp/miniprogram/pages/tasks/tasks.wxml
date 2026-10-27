@@ -1,6 +1,5 @@
 <view class="scr-body">
   <view class="task-overview card">
-    <view class="chips" style="margin-bottom:20rpx"><text class="pill {{view === 'today' ? 'pill-habit' : ''}}" data-view="today" bindtap="setView">今日任务</text><text class="pill {{view === 'templates' ? 'pill-habit' : ''}}" data-view="templates" bindtap="setView">任务模板</text></view>
     <view class="chips">
       <text class="pill {{filter==='all'?'pill-habit':''}}" data-f="all" bindtap="setFilter">全部</text>
       <text class="pill {{filter==='heart'?'pill-heart':''}}" data-f="heart" bindtap="setFilter">好身心</text>
@@ -34,7 +33,7 @@
       </view>
     </view>
   </block>
-  <view wx:if="{{!groups.length}}" class="card muted">{{view === 'today' ? '今天暂无任务' : '暂无任务模板'}}</view>
+  <view wx:if="{{!groups.length}}" class="card muted">今天暂无任务</view>
 </view>
 
 <ai-assistant id="aiAssistant" />

@@ -4,32 +4,12 @@ const apiConfig = require('../../utils/api-config.js');
 const cloudHosting = require('../../utils/cloud-hosting.js');
 
 Page({
-  data: { avatarUrl: '', nickname: '', submitting: false },
-  onChooseAvatar(e) {
-    this.setData({ avatarUrl: e.detail.avatarUrl || '' });
-  },
-  onNickname(e) {
-    this.setData({ nickname: (e.detail.value || '').trim() });
-  },
+  data: { submitting: false },
   onWechatLogin() {
-    if (!this.data.nickname) return wx.showToast({ title: '请先填写昵称', icon: 'none' });
+    if (this.data.submitting) return;
     if (!apiConfig.USE_CLOUD_HOSTING && !apiConfig.BASE_URL) return wx.showToast({ title: '登录服务尚未配置', icon: 'none' });
     this.setData({ submitting: true });
-    if (apiConfig.USE_CLOUD_HOSTING) return this.finishDevelopmentWechatLogin();
     this.requestWechatLogin();
-  },
-  finishDevelopmentWechatLogin() {
-    const profile = {
-      avatar: this.data.nickname.slice(0, 1) || '贤',
-      avatarUrl: this.data.avatarUrl || '',
-      name: this.data.nickname,
-      phoneNumber: ''
-    };
-    // 开发阶段仅保存用户主动提供的微信昵称和头像；不伪造或采集真实 openid。
-    wx.setStorageSync('childProfile', profile);
-    app.globalData.child = Object.assign({}, app.globalData.child, profile);
-    store.login();
-    wx.reLaunch({ url: '/pages/index/index' });
   },
   requestWechatLogin() {
     wx.login({
@@ -38,7 +18,7 @@ Page({
         const requestOptions = {
           method: 'POST',
           header: { 'Content-Type': 'application/json' },
-          data: { loginCode: loginResult.code, profile: { nickname: this.data.nickname, avatarUrl: this.data.avatarUrl } },
+          data: { loginCode: loginResult.code, profile: {} },
           success: (response) => this.finishLogin(response.data),
           fail: (error) => this.handleServiceError(error)
         };
@@ -68,14 +48,14 @@ Page({
     });
   },
   finishLogin(result) {
-    if (!result || !result.ok || !result.user || !result.token) {
+    if (!result || !result.ok || !result.user || !result.user.id || typeof result.token !== 'string' || !result.token) {
       return this.finishLoginError((result && result.error && result.error.message) || '授权失败，请重试');
     }
     const user = result.user;
     const profile = {
       avatar: user.nickname ? user.nickname.slice(0, 1) : '贤',
       avatarUrl: user.avatarUrl || '',
-      name: user.nickname,
+      name: user.nickname || '微信用户',
       phoneNumber: user.phoneNumber || ''
     };
     app.globalData.child = Object.assign({}, app.globalData.child, profile);
@@ -83,6 +63,7 @@ Page({
     wx.setStorageSync('authToken', result.token);
     wx.setStorageSync('authExpiresAt', result.expiresAt);
     store.login();
+    this.setData({ submitting: false });
     wx.reLaunch({ url: '/pages/index/index' });
   },
   finishLoginError(message) {

@@ -4,6 +4,7 @@ const { spawnSync } = require('node:child_process');
 const path = require('node:path');
 
 const suites = [
+  ['简洁微信登录页与认证分流', 'login.test.js'],
   ['直接打卡与任务历史', 'task-flow.test.js'],
   ['集中补卡、额度与幂等', 'makeup.test.js'],
   ['智能提醒规则与首页联动', 'reminders.test.js'],

@@ -1,18 +1,13 @@
 const app = getApp();
 const store = require('../../utils/store.js');
 Page({
-  data: { filter: 'all', view: 'today', groups: [], doneCount: 0, total: 0 },
+  data: { filter: 'all', groups: [], doneCount: 0, total: 0 },
   onShow() { this.buildGroups(); },
   setFilter(e) { this.setData({ filter: e.currentTarget.dataset.f }); this.buildGroups(); },
-  setView(e) { this.setData({ view: e.currentTarget.dataset.view }); this.buildGroups(); },
   goMakeup() { wx.navigateTo({ url: '/pages/makeup-checkin/makeup-checkin' }); },
   buildGroups() {
     const today = store.getTodayTasks();
-    const library = this.data.view === 'templates';
-    const all = library ? (app.globalData.tasks || []).map(group => Object.assign({}, group, {
-      list: group.list.map(task => Object.assign({}, task, { dim: group.dim,
-        points: task.rewards.reduce((sum,item) => sum + item.points,0), done: store.isCenterDone(task.id) }))
-    })) : (app.globalData.dimensions || []).map(dim => ({ dim: dim.key, dimName: dim.name, list: today.filter(task => task.dim === dim.key) }));
+    const all = (app.globalData.dimensions || []).map(dim => ({ dim: dim.key, dimName: dim.name, list: today.filter(task => task.dim === dim.key) }));
     const groups = all.filter(group => (this.data.filter === 'all' || group.dim === this.data.filter) && group.list.length).map(group => ({
       dim: group.dim, dimName: group.dimName,
       list: group.list.map(task => Object.assign({}, task, { status: task.done ? 'approved' : 'todo',

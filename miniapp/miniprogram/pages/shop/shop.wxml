@@ -1,14 +1,14 @@
 <view class="shop-page">
-  <view class="shop-hero"><view class="shop-eyebrow">PARENT SELECT</view><view class="shop-hero-title">为家庭挑选真正需要的好物</view><view class="shop-hero-sub">商品、价格与库存以后台发布为准</view></view>
-  <view class="shop-section-head"><view><view class="shop-section-title">官方商城</view><view class="shop-section-sub">面向家长的品质好物</view></view></view>
-  <scroll-view wx:if="{{categories.length > 1}}" class="shop-categories" scroll-x="true" show-scrollbar="false"><view class="shop-category-list"><view wx:for="{{categories}}" wx:key="id" class="shop-category {{activeCategory === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="chooseCategory">{{item.name}}</view></view></scroll-view>
-  <view wx:if="{{!products.length}}" class="shop-empty"><view class="shop-empty-title">商城正在筹备</view><view>精选商品将由后台发布后展示在这里</view></view>
+  <view class="shop-top-bar"><view class="shop-search" bindtap="openShopSearch"><text class="shop-search-text">搜索成长好物</text><text class="shop-search-icon">⌕</text></view><button class="points-mall-top-button" bindtap="goRewards" style="width: 212rpx; display: flex; box-sizing: border-box; left: 0rpx; top: 0rpx">积分商城</button></view>
+  <scroll-view class="shop-categories" scroll-x="true" show-scrollbar="false"><view class="shop-category-list"><view wx:for="{{categories}}" wx:key="id" class="shop-category {{activeCategory === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="chooseCategory">{{item.name}}</view><view class="shop-category-more">☰ 分类</view></view></scroll-view>
+  <scroll-view class="shop-topics" scroll-x="true" show-scrollbar="false"><view class="shop-topic-list"><view wx:for="{{topics}}" wx:key="id" class="shop-topic" data-id="{{item.id}}" bindtap="openTopic"><view class="shop-topic-icon topic-{{item.id}}">{{item.mark}}</view><view>{{item.name}}</view></view></view></scroll-view>
+  <view class="shop-notice"><text class="shop-notice-badge">官方</text><text class="shop-notice-main">为家庭成长挑选安心好物</text><text class="shop-notice-link">品质保障 ›</text></view>
+  <view wx:if="{{!products.length}}" class="shop-empty"><view class="shop-empty-icon">◈</view><view class="shop-empty-title">好物正在陆续上架</view><view>精选商品将由商城后台发布后展示在这里</view></view>
   <view wx:elif="{{!filteredProducts.length}}" class="shop-empty">该分类暂时没有商品</view>
   <view wx:else class="shop-grid">
     <view wx:for="{{filteredProducts}}" wx:key="id" class="shop-product" data-id="{{item.id}}" bindtap="goProduct">
-      <image class="shop-image" src="{{item.image}}" mode="aspectFill"/>
-      <view class="shop-product-body"><view class="shop-product-tag" wx:if="{{item.category}}">{{item.category}}</view><view class="shop-name">{{item.name}}</view><view class="shop-price">¥{{item.priceText}}</view></view>
+      <view class="shop-image-wrap"><image wx:if="{{item.image}}" class="shop-image" src="{{item.image}}" mode="aspectFill"/><view wx:else class="shop-image shop-image-placeholder">商品主图</view><view wx:if="{{item.badge}}" class="shop-product-badge">{{item.badge}}</view></view>
+      <view class="shop-product-body"><view wx:if="{{item.category}}" class="shop-product-tag">{{item.category}}</view><view class="shop-name">{{item.name}}</view><view class="shop-price-row"><view class="shop-price">¥<text>{{item.priceText}}</text></view><text wx:if="{{item.originalPrice}}" class="shop-original-price">¥{{item.originalPrice}}</text></view><view class="shop-product-foot"><text wx:if="{{item.salesText}}" class="shop-sales">{{item.salesText}}</text><text wx:else class="shop-sales">官方精选</text><text class="shop-detail-action">详情 ›</text></view></view>
     </view>
   </view>
-  <view class="points-mall-entry" bindtap="goRewards"><view><view class="points-mall-title">积分商城</view><view class="points-mall-sub">使用任务积分兑换心愿好礼</view></view><view class="points-mall-arrow">›</view></view>
 </view>

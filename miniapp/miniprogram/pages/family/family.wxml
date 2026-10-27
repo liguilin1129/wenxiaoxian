@@ -1,8 +1,3 @@
-<view class="scr-head">
-  <view class="greet" style="color:var(--c-habit-d);font-weight:600">文小贤的家庭</view>
-  <view class="title">家庭空间</view>
-</view>
-
 <view class="scr-body">
   <!-- 家庭成员 -->
   <view class="card">
@@ -12,7 +7,7 @@
     </view>
     <view class="member-row">
       <view class="member" wx:for="{{members}}" wx:key="id" data-id="{{item.id}}" bindtap="editMember">
-        <view class="member-avatar" style="background:{{item.bg}};color:{{item.color}}">{{item.avatar}}</view>
+        <view class="member-avatar">{{item.avatar}}</view>
         <view class="member-name">{{item.name}}</view>
       </view>
       <view class="member member-add" bindtap="addMember">

@@ -1,50 +1,7 @@
 <view class="login-page">
-  <!-- 顶部品牌区 -->
-  <view class="hero">
-    <view class="logo">🌱</view>
-    <view class="hero-title">加入成长花园</view>
-    <view class="hero-sub">填写资料，开启文小贤成长之旅</view>
-  </view>
-
-  <!-- 头像 -->
-  <view class="igroup">
-    <view class="igroup-title">头像</view>
-    <view class="group-card">
-      <button class="avatar-row" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
-        <image wx:if="{{avatarUrl}}" class="ava-big" src="{{avatarUrl}}" mode="aspectFill" />
-        <view wx:else class="ava-big ava-placeholder">{{nickname ? nickname.slice(0,1) : '贤'}}</view>
-        <view class="change">选择微信头像</view>
-      </button>
-    </view>
-  </view>
-
-  <!-- 昵称 -->
-  <view class="igroup">
-    <view class="igroup-title">昵称</view>
-    <view class="group-card">
-      <view class="irow">
-        <input
-          class="nick-input"
-          type="nickname"
-          placeholder="填写或授权微信昵称"
-          placeholder-class="ph"
-          value="{{nickname}}"
-          maxlength="32"
-          bindinput="onNickname"
-        />
-      </view>
-    </view>
-  </view>
-
-  <view class="privacy">
-    登录后将使用头像和昵称创建账号，仅用于本小程序服务。
-  </view>
-
-  <!-- 底部登录按钮 -->
-  <view class="bottom">
-    <button class="enter-btn {{submitting ? 'dis' : ''}}" bindtap="onWechatLogin" loading="{{submitting}}" disabled="{{submitting}}">
-      微信授权登录
-    </button>
-    <view class="sub">轻量登录，安全便捷</view>
+  <view class="login-glow glow-one"></view><view class="login-glow glow-two"></view>
+  <view class="login-main">
+    <view class="brand-halo"><view class="brand-spark spark-one"></view><view class="brand-spark spark-two"></view><view class="app-mark">贤</view></view>
+    <view class="login-panel"><view class="login-heading">开启家庭成长陪伴</view><view class="login-subheading">授权登录，记录每一次小进步</view><button class="wechat-login" bindtap="onWechatLogin" loading="{{submitting}}" disabled="{{submitting}}">一键登录</button><view class="agreement-line"><view class="agreement-circle"></view><text>登录即表示同意</text><text class="agreement-link">《个人信息保护政策》</text><text>与</text><text class="agreement-link">《用户服务协议》</text></view></view>
   </view>
 </view>
